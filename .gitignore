@@ -286,3 +286,5 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+eBikesProjectTeamD/eBikesWebsite/Bin/eBikesSystem.pdb
+eBikesProjectTeamD/eBikesWebsite/Bin/eBikes.Data.pdb
