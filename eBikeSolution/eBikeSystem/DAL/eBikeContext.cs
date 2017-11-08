@@ -6,7 +6,7 @@ namespace eBikeSystem.DAL
     using System.Linq;
     using eBike.Data.Entities;
 
-    public partial class eBikeContext : DbContext
+    internal class eBikeContext : DbContext
     {
         public eBikeContext()
             : base("name=eBikeContext")
