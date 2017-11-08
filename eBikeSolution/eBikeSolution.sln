@@ -10,6 +10,7 @@ EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "eBikeWebsite", "eBikeWebsite\", "{8E47D0B3-3AE9-4F92-A605-FBC3570E92F0}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
+		ProjectReferences = "{a4f31df2-0b0a-4607-8a64-e84371be10c1}|eBike.Data.dll;{5c50d32d-9581-48b7-8cc8-c37d56a75bc3}|eBikeSystem.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_2420"
 		Debug.AspNetCompiler.PhysicalPath = "eBikeWebsite\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_2420\"
