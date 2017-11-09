@@ -3,8 +3,8 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     
-        <h1>Team MJIV </h1>
-        <img src="logo.png" alt="team logo" height="200" width="200">
+        <h1>Team JVMI </h1>
+        <img src="teamlogo.png" alt="team logo" height="200" width="200">
         
     
 
@@ -31,7 +31,7 @@
             Shared Components - </p><ul>
                                     <li>Pages: Igor, Vadim</li>
                                     <li>MessageUserControl: Jamie</li>
-                                    <li>Group logo: Vadim</li>
+                                    <li>Group logo: Mike</li>
                                 </ul>
                   
         
