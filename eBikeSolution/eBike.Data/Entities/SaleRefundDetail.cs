@@ -19,7 +19,8 @@ namespace eBike.Data.Entities
         [Column(TypeName = "money")]
         public decimal SellingPrice { get; set; }
 
-        [StringLength(150)]
+        
+        [StringLength(50, ErrorMessage = "Reason is limited to 50 characters")]
         public string Reason { get; set; }
 
         public virtual Part Part { get; set; }

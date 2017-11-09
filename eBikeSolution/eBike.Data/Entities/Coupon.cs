@@ -17,8 +17,8 @@ namespace eBike.Data.Entities
 
         public int CouponID { get; set; }
 
-        [Required]
-        [StringLength(10)]
+        [Required(ErrorMessage = " Coupon ID Value is required")]
+        [StringLength(10,ErrorMessage ="The length is limited to 10 characters")]
         public string CouponIDValue { get; set; }
 
         public DateTime StartDate { get; set; }

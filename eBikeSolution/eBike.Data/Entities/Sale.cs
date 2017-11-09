@@ -19,7 +19,7 @@ namespace eBike.Data.Entities
 
         public DateTime SaleDate { get; set; }
 
-        [StringLength(128)]
+        [StringLength(128, ErrorMessage ="User name is limited to 128 characters")]
         public string UserName { get; set; }
 
         public int EmployeeID { get; set; }
@@ -32,8 +32,8 @@ namespace eBike.Data.Entities
 
         public int? CouponID { get; set; }
 
-        [Required]
-        [StringLength(1)]
+        [Required(ErrorMessage ="Payment type is required")]
+        [StringLength(1, ErrorMessage ="Payment type is limited to 1 character")]
         public string PaymentType { get; set; }
 
         public Guid? PaymentToken { get; set; }

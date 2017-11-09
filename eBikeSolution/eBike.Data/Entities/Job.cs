@@ -31,12 +31,12 @@ namespace eBike.Data.Entities
 
         public decimal ShopRate { get; set; }
 
-        [Required]
-        [StringLength(1)]
+        [Required(ErrorMessage ="Status Code is required")]
+        [StringLength(1, ErrorMessage ="Status code is limited to 1 character")]
         public string StatusCode { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage ="Vehicle ID is required")]
+        [StringLength(50, ErrorMessage ="Vehicle ID length is limited to 50 characters")]
         public string VehicleIdentification { get; set; }
 
         public virtual Customer Customer { get; set; }

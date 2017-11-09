@@ -19,34 +19,34 @@ namespace eBike.Data.Entities
 
         public int EmployeeID { get; set; }
 
-        [Required]
-        [StringLength(9)]
+        [Required(ErrorMessage = "Social Insurance Number is required")]
+        [StringLength(9, ErrorMessage = "SIN cant be longer than 9 characters")]
         public string SocialInsuranceNumber { get; set; }
 
-        [Required]
-        [StringLength(30)]
+        [Required(ErrorMessage = "Last Name is required")]
+        [StringLength(30, ErrorMessage = "Last Name cant be longer than 30 characters")]
         public string LastName { get; set; }
 
-        [Required]
-        [StringLength(30)]
+        [Required(ErrorMessage = "First Name is required")]
+        [StringLength(30, ErrorMessage = "First Name cant be longer than 30 characters")]
         public string FirstName { get; set; }
 
-        [StringLength(40)]
+        [StringLength(40, ErrorMessage = "Address cant be longer than 40 characters")]
         public string Address { get; set; }
 
-        [StringLength(20)]
+        [StringLength(20, ErrorMessage = "City cant be longer than 20 characters")]
         public string City { get; set; }
 
-        [StringLength(2)]
+        [StringLength(2, ErrorMessage = "Province cant be longer than 2 characters")]
         public string Province { get; set; }
 
-        [StringLength(6)]
+        [StringLength(6, ErrorMessage = "Postal Code cant be longer than 6 characters")]
         public string PostalCode { get; set; }
 
-        [StringLength(12)]
+        [StringLength(12, ErrorMessage = "Home Phone cant be longer than 12 characters")]
         public string HomePhone { get; set; }
 
-        [StringLength(30)]
+        [StringLength(30, ErrorMessage = "Email Address cant be longer than 30 characters")]
         public string EmailAddress { get; set; }
 
         public int PositionID { get; set; }

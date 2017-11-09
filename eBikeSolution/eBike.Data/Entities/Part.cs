@@ -21,8 +21,8 @@ namespace eBike.Data.Entities
 
         public int PartID { get; set; }
 
-        [Required]
-        [StringLength(40)]
+        [Required(ErrorMessage = "Description is required")]
+        [StringLength(40, ErrorMessage = "Length of Description is limited to 40 characters")]
         public string Description { get; set; }
 
         [Column(TypeName = "smallmoney")]
@@ -39,8 +39,8 @@ namespace eBike.Data.Entities
 
         public int CategoryID { get; set; }
 
-        [Required]
-        [StringLength(1)]
+        [Required(ErrorMessage ="Refundable or non refundable status is required ")]
+        [StringLength(1,ErrorMessage ="Refundable is limited to one character")]
         public string Refundable { get; set; }
 
         public bool Discontinued { get; set; }

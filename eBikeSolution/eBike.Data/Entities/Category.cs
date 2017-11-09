@@ -16,8 +16,8 @@ namespace eBike.Data.Entities
 
         public int CategoryID { get; set; }
 
-        [Required]
-        [StringLength(40)]
+        [Required(ErrorMessage = "Description is required")]
+        [StringLength(40, ErrorMessage = "The length of Description is limited to 40 characters")]
         public string Description { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

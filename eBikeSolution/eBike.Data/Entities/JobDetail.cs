@@ -18,8 +18,8 @@ namespace eBike.Data.Entities
 
         public int JobID { get; set; }
 
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "Description is required")]
+        [StringLength(100, ErrorMessage = "Length of Description is limited to 100 characters")]
         public string Description { get; set; }
 
         public decimal JobHours { get; set; }

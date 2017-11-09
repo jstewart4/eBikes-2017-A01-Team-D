@@ -14,16 +14,16 @@ namespace eBike.Data.Entities
 
         public int? PurchaseOrderDetailID { get; set; }
 
-        [StringLength(50)]
+        [StringLength(50,ErrorMessage ="Item description is limited to 50 characters")]
         public string ItemDescription { get; set; }
 
         public int Quantity { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage ="Reason is required")]
+        [StringLength(50,ErrorMessage = "Reason is limited to 50 characters")]
         public string Reason { get; set; }
 
-        [StringLength(50)]
+        [StringLength(50, ErrorMessage = "Vendr part number is limited to 50 characters")]
         public string VendorPartNumber { get; set; }
 
         public virtual PurchaseOrderDetail PurchaseOrderDetail { get; set; }

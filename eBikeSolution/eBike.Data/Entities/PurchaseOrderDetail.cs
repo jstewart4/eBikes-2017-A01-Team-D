@@ -26,7 +26,7 @@ namespace eBike.Data.Entities
         [Column(TypeName = "money")]
         public decimal PurchasePrice { get; set; }
 
-        [StringLength(50)]
+        [StringLength(50, ErrorMessage ="Vendor part Number is limited to 50 characters")]
         public string VendorPartNumber { get; set; }
 
         public virtual Part Part { get; set; }

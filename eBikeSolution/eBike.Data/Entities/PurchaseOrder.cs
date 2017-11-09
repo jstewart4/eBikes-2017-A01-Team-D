@@ -29,7 +29,7 @@ namespace eBike.Data.Entities
 
         public bool Closed { get; set; }
 
-        [StringLength(100)]
+        [StringLength(100,ErrorMessage ="Notes is limited to 100 characters")]
         public string Notes { get; set; }
 
         public int EmployeeID { get; set; }
