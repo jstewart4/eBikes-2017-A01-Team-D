@@ -76,10 +76,10 @@
                         StaticMenuItemStyle-Font-Size="Large" DynamicMenuItemStyle-Font-Size="Large" DynamicMenuItemStyle-VerticalPadding="10px" DynamicMenuItemStyle-HorizontalPadding="10px" >
                         <Items>
                             <asp:MenuItem Text="Home" NavigateUrl="~/"></asp:MenuItem>
-                            <asp:MenuItem Text="Purchasing" NavigateUrl="~/"></asp:MenuItem>                               
-                            <asp:MenuItem Text="Receiving" NavigateUrl="~/"></asp:MenuItem>
-                            <asp:MenuItem Text="Sales" NavigateUrl="~/"></asp:MenuItem>
-                            <asp:MenuItem Text="Jobing" NavigateUrl="~/"></asp:MenuItem>
+                            <asp:MenuItem Text="Purchasing" NavigateUrl="~/WebSites/Purchasing.aspx"></asp:MenuItem>                               
+                            <asp:MenuItem Text="Receiving" NavigateUrl="~/WebSites/Receiving.aspx"></asp:MenuItem>
+                            <asp:MenuItem Text="Sales" NavigateUrl="~/WebSites/Sales.aspx"></asp:MenuItem>
+                            <asp:MenuItem Text="Jobing" NavigateUrl="~/WebSites/Jobing.aspx"></asp:MenuItem>
                             <asp:MenuItem Text="About" NavigateUrl="~/About.aspx"></asp:MenuItem>
                             <asp:MenuItem Text="Contact" NavigateUrl="~/Contact.aspx"></asp:MenuItem>
                         </Items>
