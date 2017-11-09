@@ -33,7 +33,7 @@ namespace eBike.Data.Entities
         [StringLength(30, ErrorMessage = "City cant be longer than 30 characters")]
         public string City { get; set; }
 
-        [Required(ErrorMessage = "Province ID is required"]
+        [Required(ErrorMessage = "Province ID is required")]
         [StringLength(2, ErrorMessage = "Province cant be longer than 2 characters")]
         public string ProvinceID { get; set; }
 
