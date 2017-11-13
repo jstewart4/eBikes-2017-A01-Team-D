@@ -9,7 +9,7 @@ namespace eBikeSystem.DAL
     internal class eBikeContext : DbContext
     {
         public eBikeContext()
-            : base("name=eBikeContext")
+            : base("name=eBikeDB")
         {
         }
 
