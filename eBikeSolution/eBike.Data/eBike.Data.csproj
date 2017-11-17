@@ -38,6 +38,9 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\eBikeWebsite\Bin\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -70,17 +73,22 @@
     <Compile Include="Entities\SaleDetail.cs" />
     <Compile Include="Entities\SaleRefund.cs" />
     <Compile Include="Entities\SaleRefundDetail.cs" />
+    <Compile Include="Entities\Security\ApplicationUser.cs" />
+    <Compile Include="Entities\Security\RoleProfile.cs" />
+    <Compile Include="Entities\Security\SecurityRoles.cs" />
+    <Compile Include="Entities\Security\UserProfile.cs" />
     <Compile Include="Entities\ShoppingCart.cs" />
     <Compile Include="Entities\ShoppingCartItem.cs" />
     <Compile Include="Entities\StandardJob.cs" />
     <Compile Include="Entities\StandardJobPart.cs" />
     <Compile Include="Entities\UnorderedPurchaseItemCart.cs" />
     <Compile Include="Entities\Vendor.cs" />
+    <Compile Include="POCOs\EmployeeListPOCO.cs" />
+    <Compile Include="POCOs\RegisteredEmployeePOCO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\" />
-    <Folder Include="POCOs\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -3,6 +3,7 @@ using Microsoft.Owin.Security;
 using System;
 using System.Web;
 using eBikeWebsite;
+using eBike.Data.Entities.Security;
 
 public partial class Account_RegisterExternalLogin : System.Web.UI.Page
 {
