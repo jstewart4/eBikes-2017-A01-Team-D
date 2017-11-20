@@ -6,6 +6,7 @@ using eBikeWebsite;
 
 #region Additional Namespaces
 using eBike.Data.Entities.Security;
+using eBikeSystem.BLL.Security;
 #endregion
 public partial class Account_Register : Page
 {

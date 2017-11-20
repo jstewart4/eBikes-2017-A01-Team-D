@@ -4,6 +4,7 @@ using System;
 using System.Web;
 using eBikeWebsite;
 using eBike.Data.Entities.Security;
+using eBikeSystem.BLL.Security;
 
 public partial class Account_RegisterExternalLogin : System.Web.UI.Page
 {

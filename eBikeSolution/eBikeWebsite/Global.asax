@@ -2,6 +2,7 @@
 <%@ Import Namespace="eBikeWebsite" %>
 <%@ Import Namespace="System.Web.Optimization" %>
 <%@ Import Namespace="System.Web.Routing" %>
+<%@ Import Namespace="eBikeSystem.BLL.Security" %>
 
 <script runat="server">
 
