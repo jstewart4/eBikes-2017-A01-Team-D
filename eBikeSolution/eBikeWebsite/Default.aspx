@@ -4,7 +4,7 @@
 
     
         <h1>Team JVMI </h1>
-        <img src="teamlogo.png" alt="team logo" height="200" width="200">
+        <img src="img/teamlogo.png" alt="team logo" height="200" width="200">
         
     
 
