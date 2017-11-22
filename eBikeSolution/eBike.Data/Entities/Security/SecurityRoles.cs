@@ -11,6 +11,7 @@ namespace eBike.Data.Entities.Security
         public const string WebsiteAdmins = "WebsiteAdmins";
         public const string RegisteredUsers = "RegisteredUsers";
         public const string Staff = "Staff";
+        public const string Purchasing = "Purchasing";
         public static List<string> DefaultSecurityRoles
         {
             get
@@ -19,6 +20,7 @@ namespace eBike.Data.Entities.Security
                 value.Add(WebsiteAdmins);
                 value.Add(RegisteredUsers);
                 value.Add(Staff);
+                value.Add(Purchasing);
                 return value;
             }
         }
