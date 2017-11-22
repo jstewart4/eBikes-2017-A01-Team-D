@@ -82,6 +82,7 @@
                             <asp:MenuItem Text="Jobing" NavigateUrl="~/WebSites/Jobing.aspx"></asp:MenuItem>
                             <asp:MenuItem Text="About" NavigateUrl="~/About.aspx"></asp:MenuItem>
                             <asp:MenuItem Text="Contact" NavigateUrl="~/Contact.aspx"></asp:MenuItem>
+                            <asp:MenuItem Text="Security" NavigateUrl="~/Admin/Security/UserRoleAdmin.aspx"></asp:MenuItem>
                         </Items>
                         
 
