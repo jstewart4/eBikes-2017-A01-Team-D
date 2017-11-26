@@ -31,7 +31,7 @@
     </div>
     <div class="row">
         <div class="col-md-7">
-            <h2>Billing Details</h2>
+            <h3>Billing Details</h3>
             <fieldset>
                 <div class="form-group">             
                     <asp:Label ID="BillingNameLabel" runat="server" Text="Name:"></asp:Label>
@@ -54,7 +54,7 @@
     </div>
     <div class="row">
         <div class="col-md-7">
-            <h2>Shipping Details</h2>
+            <h3>Shipping Details</h3>
             <fieldset>
                 <div class="form-group">             
                     <asp:Label ID="ShippingNameLabel" runat="server" Text="Name:"></asp:Label>
