@@ -7,6 +7,9 @@
     td{
         padding: 10px;
     }
+    th{
+        text-align: center;
+    }
     table{
         width: 100%;
     }
@@ -39,22 +42,23 @@
             <div class="well">
                 <div class="form-group">
                 <h2><asp:Label ID="PartsListLabel" runat="server" Text="Products"></asp:Label></h2>
-                    <asp:ListView ID="PartsbyCategoryList" runat="server" DataSourceID="PartsbyCategoryODS">
+                    <asp:ListView ID="PartsbyCategoryList" runat="server" DataSourceID="PartsbyCategoryODS" OnItemCommand="PartsbyCategoryList_ItemCommand">
                         <AlternatingItemTemplate>
                             <tr style="background-color: #FFFFFF; color: #284775;">
-                                <td>
+                                <td style="width: 150px;">
                                     <asp:Button runat="server"
                                         ID="AddToCartBtn"
                                         CommandArgument='<%# Eval("PartID") %>'
                                         Text="Add"
                                         CssClass="btn btn-primary" />
-                                    <asp:TextBox runat="server" ID="QuanitityOrdered" MaxLength="3" Width="50px" TextMode="Number" Text="1"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="QuantityOrdered" MaxLength="3" Width="50px" TextMode="Number" Text="1">
+                                    </asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:Label Text='<%# Eval("Description") %>' runat="server" ID="DescriptionLabel" /></td>
-                                <td>
+                                <td style="width: 100px; text-align: right;">
                                     <asp:Label Text='<%# Eval("InStock") %>' runat="server" ID="InStockLabel" /></td>
-                                <td>
+                                <td style="width: 100px; text-align: right;">
                                     <asp:Label Text='<%# Eval("Price", "{0:C}") %>' runat="server" ID="PriceLabel" /></td>
                             </tr>
                         </AlternatingItemTemplate>
@@ -99,7 +103,7 @@
                         </InsertItemTemplate>
                         <ItemTemplate>
                             <tr style="background-color: #E0FFFF; color: #333333;">
-                                <td>
+                                <td style="width: 150px;">
                                     <asp:Button runat="server"
                                         ID="AddToCartBtn"
                                         CommandArgument='<%# Eval("PartID") %>'
@@ -109,9 +113,9 @@
                                 </td>
                                 <td>
                                     <asp:Label Text='<%# Eval("Description") %>' runat="server" ID="DescriptionLabel" /></td>
-                                <td>
+                                <td style="width: 100px; text-align: right;">
                                     <asp:Label Text='<%# Eval("InStock") %>' runat="server" ID="InStockLabel" /></td>
-                                <td>
+                                <td style="width: 100px; text-align: right;">
                                     <asp:Label Text='<%# Eval("Price", "{0:C}") %>' runat="server" ID="PriceLabel" /></td>
                             </tr>
                         </ItemTemplate>
@@ -122,7 +126,7 @@
                                         <table runat="server" id="itemPlaceholderContainer" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px; font-family: Verdana, Arial, Helvetica, sans-serif;" border="1">
                                             <tr runat="server" style="background-color: #E0FFFF; color: #333333;">
                                                 <th runat="server"></th>
-                                                <th runat="server">Description</th>
+                                                <th runat="server">Part Name</th>
                                                 <th runat="server">In Stock</th>
                                                 <th runat="server">Price</th>
                                             </tr>

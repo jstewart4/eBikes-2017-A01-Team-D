@@ -33,4 +33,27 @@ public partial class WebSites_Sales : System.Web.UI.Page
     {
         MessageUserControl.HandleDataBoundException(e);
     }
+
+    protected void PartsbyCategoryList_ItemCommand(object sender, ListViewCommandEventArgs e)
+    {
+        if (User.IsInRole(SecurityRoles.RegisteredUsers))
+        {
+            string username = User.Identity.Name;
+
+            int partid = int.Parse(e.CommandArgument.ToString());
+
+            MessageUserControl.TryRun(() =>
+            {
+                SalesController sysmgr = new SalesController();
+                sysmgr.Add_ItemToCart(username, partid);
+            //List<UserPlaylistTrack> refreshresults = sysmgr.Add_TrackToPLaylist(PlaylistName.Text, userName, trackid);
+            //PlayList.DataSource = refreshresults;
+            //PlayList.DataBind();
+            }, "Success", "Item added to cart");
+        }
+        else
+        {
+            MessageUserControl.ShowInfo("Warning", "Sorry, only online customers can shop. Please register an account or login as a customer.");
+        }
+    }
 }
