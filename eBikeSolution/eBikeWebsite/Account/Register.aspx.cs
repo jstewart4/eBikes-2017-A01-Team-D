@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Web.UI;
 using eBikeWebsite;
+using eBikeSystem.BLL;
 
 #region Additional Namespaces
 using eBike.Data.Entities.Security;
@@ -17,11 +18,17 @@ public partial class Account_Register : Page
         IdentityResult result = manager.Create(user, Password.Text);
         if (result.Succeeded)
         {
+            //add new registered users a Online Customers
+            var sysmgr = new OnlineUsersController();
+            sysmgr.Add_OnlineCustomer(UserName.Text);
             //add new registered users as customers
             manager.AddUserToRole(user, SecurityRoles.RegisteredUsers);
 
             IdentityHelper.SignIn(manager, user, isPersistent: false);
             IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
+
+            
+
         }
         else
         {

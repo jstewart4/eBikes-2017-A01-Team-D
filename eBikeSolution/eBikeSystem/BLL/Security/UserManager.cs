@@ -251,7 +251,12 @@ namespace eBikeSystem.BLL.Security
 
         public void RemoveUser(UserProfile userinfo)
         {
+            //var sysmgr = new OnlineUsersController();
+            //sysmgr.Remove_OnlineCustomer(userinfo.UserName);
+
             this.Delete(this.FindById(userinfo.UserId));
+
+            
         }
         #endregion
 
