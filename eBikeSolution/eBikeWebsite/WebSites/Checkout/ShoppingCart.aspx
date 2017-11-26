@@ -11,10 +11,13 @@
         th{
             text-align: center;
         }
+        input{
+            text-align: right;
+        }
     </style>
     <asp:Label ID="UserLabel" runat="server" Visible="false"></asp:Label>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="page-header">
                 <h1>Your Shopping Cart <span aria-hidden="true" class="glyphicon glyphicon-shopping-cart"></span></h1>
                 <asp:LinkButton ID="BackToShopping" runat="server"
@@ -25,18 +28,31 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <asp:ListView ID="ShoppingCartList" runat="server" DataSourceID="ShoppingCartListODS">
                 <AlternatingItemTemplate>
                     <tr style="background-color: #FFFFFF; color: #284775;">
                         <td>
                             <asp:Label Text='<%# Eval("Description") %>' runat="server" ID="DescriptionLabel" /></td>
                         <td style="width: 100px; text-align: center;">
-                            <asp:Label Text='<%# Eval("Quantity") %>' runat="server" ID="QuantityLabel" /></td>
+                            <asp:TextBox ID="QuantityTextBox" Text='<%# Eval("Quantity") %>' runat="server" Width="50px"></asp:TextBox></td>
+                            
                         <td style="width: 100px; text-align: right;">
                             <asp:Label Text='<%# Eval("UnitPrice", "{0:C}") %>' runat="server" ID="UnitPriceLabel" /></td>
                         <td style="width: 100px; text-align: right;">
                             <asp:Label Text='<%# Eval("TotalPrice", "{0:C}") %>' runat="server" ID="TotalPriceLabel" /></td>
+                        <td style="width: 100px; text-align: center;"> 
+                            <asp:LinkButton ID="UpdateCartBtn" runat="server"
+                                CssClass="btn btn-primary" >
+                                Update
+                            </asp:LinkButton>
+                        </td>
+                        <td style="width: 100px; text-align: center;">
+                            <asp:LinkButton ID="RemoveItemBtn" runat="server"
+                                CssClass="btn btn-danger" >
+                                Remove
+                            </asp:LinkButton>
+                        </td>
                     </tr>
                 </AlternatingItemTemplate>
                 <EditItemTemplate>
@@ -86,11 +102,23 @@
                         <td>
                             <asp:Label Text='<%# Eval("Description") %>' runat="server" ID="DescriptionLabel" /></td>
                         <td style="width: 100px; text-align: center;">
-                            <asp:Label Text='<%# Eval("Quantity") %>' runat="server" ID="QuantityLabel" /></td>
+                            <asp:TextBox ID="QuantityTextBox" Text='<%# Eval("Quantity") %>' runat="server" Width="50px"></asp:TextBox></td>
                         <td style="width: 100px; text-align: right;">
                             <asp:Label Text='<%# Eval("UnitPrice", "{0:C}") %>' runat="server" ID="UnitPriceLabel" /></td>
                         <td style="width: 100px; text-align: right;">
                             <asp:Label Text='<%# Eval("TotalPrice", "{0:C}") %>' runat="server" ID="TotalPriceLabel" /></td>
+                        <td style="width: 100px; text-align: center;">
+                            <asp:LinkButton ID="UpdateCartBtn" runat="server"
+                                CssClass="btn btn-primary" >
+                                Update
+                            </asp:LinkButton>
+                        </td>
+                        <td style="width: 100px; text-align: center;">
+                            <asp:LinkButton ID="RemoveItemBtn" runat="server"
+                                CssClass="btn btn-danger" >
+                                Remove
+                            </asp:LinkButton>
+                        </td>
                     </tr>
                 </ItemTemplate>
                 <LayoutTemplate>
