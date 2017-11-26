@@ -14,6 +14,15 @@
         input{
             text-align: right;
         }
+        .totals{
+            text-align: right;
+            padding: 10px;
+            font-size: 18px;
+        }
+        .continuebutton{
+            float: right;
+            margin-top: 20px;
+        }
     </style>
     <asp:Label ID="UserLabel" runat="server" Visible="false"></asp:Label>
     <div class="row">
@@ -157,6 +166,29 @@
                     </tr>
                 </SelectedItemTemplate>
             </asp:ListView>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7"></div>
+        <div class="col-md-3">
+            <div class="totals">
+                <asp:Label ID="SubTotalLabel" runat="server" Text="Sub-Total:"></asp:Label>
+                <asp:Label ID="SubTotal" runat="server" Text="$919.95"></asp:Label><br />
+                <asp:Label ID="GSTLabel" runat="server" Text="GST:"></asp:Label>
+                <asp:Label ID="GST" runat="server" Text="$46.00"></asp:Label><br />
+                <asp:Label ID="TotalLabel" runat="server" Text="Total:"></asp:Label>
+                <asp:Label ID="Total" runat="server" Text="$965.95"></asp:Label><br />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            <div class="continuebutton">
+                <asp:LinkButton ID="NextButton" runat="server"
+                                 CssClass="btn btn-primary" PostBackUrl="~/WebSites/Checkout/PurchaseDetails.aspx" >
+                                Continue <span aria-hidden="true" class="glyphicon glyphicon-menu-right"></span>
+                </asp:LinkButton>
+            </div>
         </div>
     </div>
     <asp:ObjectDataSource ID="ShoppingCartListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ShoppingCartList" TypeName="eBikeSystem.BLL.SalesController">
