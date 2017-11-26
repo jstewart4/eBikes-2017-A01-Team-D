@@ -33,7 +33,7 @@ namespace eBikeSystem.BLL
             using (var context = new eBikeContext())
             {
                 var customer = (from x in context.OnlineCustomers
-                               where x.UserName.Equals(username)
+                               where (x.UserName).Equals(username)
                                select x).SingleOrDefault();
 
                 if (customer != null)
@@ -41,8 +41,6 @@ namespace eBikeSystem.BLL
                     context.OnlineCustomers.Remove(customer);
                     context.SaveChanges();
                 }
-
-                
             }
         }
     }
