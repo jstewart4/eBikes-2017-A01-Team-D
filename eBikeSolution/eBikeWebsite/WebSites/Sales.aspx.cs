@@ -1,4 +1,5 @@
 ﻿using eBike.Data.Entities.Security;
+using eBikeSystem.BLL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ public partial class WebSites_Sales : System.Web.UI.Page
             else
             {
                 // now that you are logged on, are you in the approved role for this page?
-                if (!User.IsInRole(SecurityRoles.Sales) && !User.IsInRole(SecurityRoles.WebsiteAdmins))
+                if (!User.IsInRole(SecurityRoles.RegisteredUsers) && !User.IsInRole(SecurityRoles.Sales) && !User.IsInRole(SecurityRoles.WebsiteAdmins))
                 {
                     Response.Redirect("~/Account/Login.aspx");
                 }

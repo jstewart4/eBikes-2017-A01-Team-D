@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using eBike.Data.Entities;
 using eBikeSystem.DAL;
 #endregion
-namespace ChinookSystem.BLL
+namespace eBikeSystem.BLL
 {
     public class EmployeeController
     {
