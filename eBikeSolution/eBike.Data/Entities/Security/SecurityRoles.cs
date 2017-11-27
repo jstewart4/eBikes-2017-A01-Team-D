@@ -14,6 +14,7 @@ namespace eBike.Data.Entities.Security
         public const string Purchasing = "Purchasing";
         public const string Receiving = "Receiving";
         public const string Sales = "Sales";
+        public const string Jobing = "Jobing";
 
         public static List<string> DefaultSecurityRoles
         {
@@ -26,6 +27,7 @@ namespace eBike.Data.Entities.Security
                 value.Add(Purchasing);
                 value.Add(Receiving);
                 value.Add(Sales);
+                value.Add(Jobing);
                 return value;
             }
         }
