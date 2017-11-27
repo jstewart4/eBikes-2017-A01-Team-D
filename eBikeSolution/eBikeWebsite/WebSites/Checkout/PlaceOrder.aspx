@@ -27,6 +27,21 @@
             float: left;
             margin-top: 20px;
         }
+        .coupon-cont a{
+            float: right;
+        }
+        .coupon{
+            float: left;
+        }
+        .well{
+            margin-top: 20px;
+        }
+        .paymethod tr{
+            float: left;
+        }
+        .payment-title{
+            font-size: 16px;
+        }
     </style>
     <asp:Label ID="UserLabel" runat="server" Visible="false"></asp:Label>
     <div class="row">
@@ -113,11 +128,32 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-7"></div>
+        <div class="col-md-4">
+            <div class="well coupon-cont clearfix">
+                <asp:DropDownList ID="CouponListDD" runat="server" DataSourceID="CouponListODS" DataTextField="CouponIDValue" DataValueField="CouponID" CssClass="form-control coupon" AppendDataBoundItems="true">
+                    <asp:ListItem Text="Select a coupon code..." Value=0></asp:ListItem>
+                </asp:DropDownList>
+                <asp:LinkButton ID="CouponRefreshBtn" runat="server"
+                                 CssClass="btn btn-primary" PostBackUrl="~/WebSites/Checkout/PlaceOrder.aspx" >
+                                 <span aria-hidden="true" class="glyphicon glyphicon-refresh"></span>
+                    </asp:LinkButton>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="well paymethod">
+                <asp:Label ID="PaymentMethodLabel" runat="server" Text="Payment Method" CssClass="payment-title"></asp:Label>
+                <asp:RadioButtonList ID="PaymentMethodRB" runat="server">
+                    <asp:ListItem Value="1" Selected="True" >Credit</asp:ListItem>
+                    <asp:ListItem Value="2">Debit</asp:ListItem>
+                </asp:RadioButtonList>
+            </div>
+        </div>
         <div class="col-md-3">
             <div class="totals">
                 <asp:Label ID="SubTotalLabel" runat="server" Text="Sub-Total:"></asp:Label>
                 <asp:Label ID="SubTotal" runat="server" Text="$919.95"></asp:Label><br />
+                <asp:Label ID="DiscountLabel" runat="server" Text="Discount:"></asp:Label>
+                <asp:Label ID="Discount" runat="server" Text="$0.00"></asp:Label><br />
                 <asp:Label ID="GSTLabel" runat="server" Text="GST:"></asp:Label>
                 <asp:Label ID="GST" runat="server" Text="$46.00"></asp:Label><br />
                 <asp:Label ID="TotalLabel" runat="server" Text="Total:"></asp:Label>
@@ -146,5 +182,6 @@
             <asp:ControlParameter ControlID="UserLabel" PropertyName="Text" Name="username" Type="String"></asp:ControlParameter>
         </SelectParameters>
     </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="CouponListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="SalesCouponList" TypeName="eBikeSystem.BLL.SalesController"></asp:ObjectDataSource>
 </asp:Content>
 

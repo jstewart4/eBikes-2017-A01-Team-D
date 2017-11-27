@@ -122,6 +122,18 @@ namespace eBikeSystem.BLL
             }
         }
 
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<Coupon> SalesCouponList()
+        {
+            using (var context = new eBikeContext())
+            {
+                var results = from x in context.Coupons
+                              where x.SalesOrService.Equals(1)
+                              select x;
+                return results.ToList();
+            }
+        }
+
 
     }
 }
