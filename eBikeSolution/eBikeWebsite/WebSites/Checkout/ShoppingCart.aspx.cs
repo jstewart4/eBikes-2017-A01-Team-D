@@ -1,4 +1,5 @@
 ﻿using eBike.Data.Entities.Security;
+using eBikeSystem.BLL.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,15 @@ public partial class WebSites_Checkout_ShoppingCart : System.Web.UI.Page
                 {
                     UserLabel.Text = User.Identity.Name;
                 }
+            }
+
+            if (User.IsInRole(SecurityRoles.Staff))
+            {
+                var sysmgr = new UserManager();
+
+                string employeename = sysmgr.Get_EmployeeFullName(User.Identity.Name);
+
+                EmployeeNameLabel.Text = "Current user: " + employeename;
             }
         }
     }

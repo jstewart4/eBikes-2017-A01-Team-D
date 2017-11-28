@@ -26,6 +26,29 @@ namespace eBikeSystem.BLL.Security
         private const string STR_WEBMASTER_USERNAME = "Webmaster";
         #endregion
 
+        public string Get_EmployeeFullName(string username)
+        {
+            using (var context = new eBikeContext())
+            {
+
+                var findemployeeid = (from x in Users.ToList()
+                                    where x.UserName.Equals(username)
+                                    select x.EmployeeID).First();
+
+                int employeeid = int.Parse(findemployeeid.ToString());
+
+                var findemployeename = (from x in (context.Employees).ToList()
+                                   where x.EmployeeID.Equals(employeeid)
+                                   select x.FirstName + " " + x.LastName).First();
+
+                string employeename = findemployeename.ToString();
+
+                return employeename;
+                
+                
+            }
+        }
+
         public UserManager()
             : base(new UserStore<ApplicationUser>(new ApplicationDbContext()))
         {

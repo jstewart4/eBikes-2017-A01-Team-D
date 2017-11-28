@@ -2,6 +2,11 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <style>
+        .displayemployeename{
+            float: right;
+            margin-top: 20px;
+            font-size: 18px;
+        }
         .lead{
             float: right;
         }
@@ -17,6 +22,7 @@
             max-width: 100%;
         }
     </style>
+    <asp:Label ID="EmployeeNameLabel" runat="server" CssClass="displayemployeename"></asp:Label>
     <div class="row">
         <div class="col-md-7">
             <div class="page-header">

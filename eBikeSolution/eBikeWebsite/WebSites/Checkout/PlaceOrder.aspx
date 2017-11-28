@@ -2,6 +2,11 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <style>
+        .displayemployeename{
+            float: right;
+            margin-top: 20px;
+            font-size: 18px;
+        }
         table{
             width: 100%;
         }
@@ -43,6 +48,7 @@
             font-size: 16px;
         }
     </style>
+    <asp:Label ID="EmployeeNameLabel" runat="server" CssClass="displayemployeename"></asp:Label>
     <asp:Label ID="UserLabel" runat="server" Visible="false"></asp:Label>
     <div class="row">
         <div class="col-md-10">

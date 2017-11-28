@@ -1,8 +1,17 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="_Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <style>
+        .displayemployeename{
+            float: right;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
 
-    
+        <asp:Label ID="EmployeeNameLabel" runat="server" CssClass="displayemployeename"></asp:Label>
+
+        
         <h1>Team JVMI </h1>
         <img src="img/teamlogo.png" alt="team logo" height="200" width="200">
         
