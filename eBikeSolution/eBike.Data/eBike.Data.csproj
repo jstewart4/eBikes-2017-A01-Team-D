@@ -85,6 +85,7 @@
     <Compile Include="Entities\Vendor.cs" />
     <Compile Include="POCOs\CategoryListPOCO.cs" />
     <Compile Include="POCOs\EmployeeListPOCO.cs" />
+    <Compile Include="POCOs\JobListPoco.cs" />
     <Compile Include="POCOs\PartsListPOCO.cs" />
     <Compile Include="POCOs\RegisteredEmployeePOCO.cs" />
     <Compile Include="POCOs\ShoppingCartListPOCO.cs" />
