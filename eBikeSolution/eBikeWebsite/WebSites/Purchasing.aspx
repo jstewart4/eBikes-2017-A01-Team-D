@@ -51,7 +51,7 @@
         </div>
         <div class="col-md-12">
             <h2><asp:Label ID="CurrentPOLabel" runat="server" Text="Current Purchase Order"></asp:Label></h2>
-            <asp:ListView ID="CurrentPOListView" runat="server" DataSourceID="CurrentPOODS" OnItemCommand="CurrentPOListView_ItemCommand">
+            <asp:ListView ID="CurrentPOListView" runat="server" OnItemCommand="CurrentPOListView_ItemCommand">
                 <AlternatingItemTemplate>
                     <tr style="background-color: #FFFFFF; color: #284775;">
                         <td>
@@ -65,11 +65,11 @@
                         <td>
                             <asp:Label Text='<%# Eval("ReorderLevel") %>' runat="server" ID="ReorderLevelLabel" /></td>
                         <td>
-                            <asp:TextBox Text='<%# Eval("Quantity") %>' runat="server" ID="QuantityLabel" /></td>
+                            <asp:TextBox Text='<%# Eval("Quantity") %>' runat="server" ID="QuantityLabel" Width="100px" /></td>
                         <td>
-                            <asp:TextBox Text='<%# Eval("PurchasePrice", "{0:F2}") %>' runat="server" ID="PurchasePriceLabel" /></td>
+                            <asp:TextBox Text='<%# Eval("PurchasePrice", "{0:F2}") %>' runat="server" ID="PurchasePriceLabel" Width="100px" /></td>
                         <td>
-                            <asp:Button runat="server" ID="RemoveFromPOButton" CommandArgument='<%# Eval("PartID") %>' Text="Remove" CssClass="btn btn-primary" /></td>
+                            <asp:Button runat="server" ID="RemoveFromPOButton" CommandArgument='<%# Eval("PartID") %>' Text="Remove" CssClass="btn btn-primary" Width="80px" /></td>
                     </tr>
                 </AlternatingItemTemplate>
                 <EditItemTemplate>
@@ -97,7 +97,7 @@
                 <EmptyDataTemplate>
                     <table runat="server" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px;">
                         <tr>
-                            <td>No vendor has been selected.</td>
+                            <td>Nothing else to show for this Vendor.</td>
                         </tr>
                     </table>
                 </EmptyDataTemplate>
@@ -136,11 +136,11 @@
                         <td>
                             <asp:Label Text='<%# Eval("ReorderLevel") %>' runat="server" ID="ReorderLevelLabel" /></td>
                         <td>
-                            <asp:TextBox Text='<%# Eval("Quantity") %>' runat="server" ID="QuantityLabel" /></td>
+                            <asp:TextBox Text='<%# Eval("Quantity") %>' runat="server" ID="QuantityLabel" Width="100px" /></td>
                         <td>
-                            <asp:TextBox Text='<%# Eval("PurchasePrice", "{0:F2}") %>' runat="server" ID="PurchasePriceLabel" /></td>
+                            <asp:TextBox Text='<%# Eval("PurchasePrice", "{0:F2}") %>' runat="server" ID="PurchasePriceLabel" Width="100px" /></td>
                         <td>
-                            <asp:Button runat="server" ID="RemoveFromPOButton" CommandArgument='<%# Eval("PartID") %>' Text="Remove" CssClass="btn btn-primary" /></td>
+                            <asp:Button runat="server" ID="RemoveFromPOButton" CommandArgument='<%# Eval("PartID") %>' Text="Remove" CssClass="btn btn-primary" Width="80px" /></td>
                     </tr>
                 </ItemTemplate>
                 <LayoutTemplate>
@@ -189,7 +189,7 @@
         </div>
         <div class="col-md-12">
             <h2><asp:Label ID="CurrentInventoryLabel" runat="server" Text="Current Inventory"></asp:Label></h2>
-            <asp:ListView ID="CurrentInventoryListView" runat="server" DataSourceID="CurrentInventoryODS" OnItemCommand="CurrentInventoryListView_ItemCommand">
+            <asp:ListView ID="CurrentInventoryListView" runat="server" OnItemCommand="CurrentInventoryListView_ItemCommand">
                 <AlternatingItemTemplate>
                     <tr style="background-color: #FFFFFF; color: #284775;">
                         <td>
@@ -207,7 +207,7 @@
                         <td>
                             <asp:Label Text='<%# Eval("PurchasePrice", "{0:F2}") %>' runat="server" ID="PurchasePriceLabel" /></td>
                         <td>
-                            <asp:Button runat="server" ID="AddToPOButton" CommandArgument='<%# Eval("PartID") %>' Text="Add" CssClass="btn btn-primary" /></td>
+                            <asp:Button runat="server" ID="AddToPOButton" CommandArgument='<%# Eval("PartID") %>' Text="Add" CssClass="btn btn-primary" Width="80px" /></td>
                     </tr>
                 </AlternatingItemTemplate>
                 <EditItemTemplate>
@@ -235,7 +235,7 @@
                 <EmptyDataTemplate>
                     <table runat="server" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px;">
                         <tr>
-                            <td>No vendor has been selected.</td>
+                            <td>Nothing else to show for this Vendor.</td>
                         </tr>
                     </table>
                 </EmptyDataTemplate>
@@ -278,7 +278,7 @@
                         <td>
                             <asp:Label Text='<%# Eval("PurchasePrice", "{0:F2}") %>' runat="server" ID="PurchasePriceLabel" /></td>
                         <td>
-                            <asp:Button runat="server" ID="AddToPOButton" CommandArgument='<%# Eval("PartID") %>' Text="Add" CssClass="btn btn-primary" /></td>
+                            <asp:Button runat="server" ID="AddToPOButton" CommandArgument='<%# Eval("PartID") %>' Text="Add" CssClass="btn btn-primary" Width="80px" /></td>
                     </tr>
                 </ItemTemplate>
                 <LayoutTemplate>

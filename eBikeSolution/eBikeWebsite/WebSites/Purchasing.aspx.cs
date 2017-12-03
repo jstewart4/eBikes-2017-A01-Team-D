@@ -37,7 +37,6 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
                 EmployeeNameLabel.Text = "Current user: " + employeename;
             }
         }
-        //Message.Text = "";
     }
 
     protected void CheckForException(object sender, ObjectDataSourceStatusEventArgs e)
@@ -47,19 +46,17 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
 
     protected void GetCreatePO_Click(object sender, EventArgs e)
     {
+
         VendorName.Text = VendorDDL.SelectedValue;
         VendorCity.Text = VendorDDL.SelectedValue;
         VendorPhone.Text = VendorDDL.SelectedValue;
 
+        CurrentPOListView.DataSourceID = "CurrentPOODS";
         CurrentPOListView.DataBind();
+
+        CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
         CurrentInventoryListView.DataBind();
 
-        //MessageUserControl.TryRun(() =>
-        //{
-        //    PurchasingController sysmgr = new PurchasingController();
-        //    sysmgr.;
-
-        //}, "Success", "Purchase Order retrieved.");
     }
 
     protected void CurrentPOListView_ItemCommand(object sender, ListViewCommandEventArgs e)

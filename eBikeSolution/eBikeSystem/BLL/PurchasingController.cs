@@ -39,17 +39,9 @@ namespace eBikeSystem.BLL
                                    where x.VendorID == vendorid && x.PurchaseOrderNumber == null && x.OrderDate == null
                                    select x.PurchaseOrderID).FirstOrDefault();
 
-                var activeorderparts = from x in context.PurchaseOrderDetails
-                                   where x.PurchaseOrderID == activeorder
-                                   select x.PartID;
-
-                var quantity = from x in context.PurchaseOrderDetails
-                               where x.PurchaseOrderID == activeorder
-                               select x.Quantity;
-
                 var results = (from x in context.PurchaseOrderDetails
-                               where activeorderparts.Contains(x.PartID)
-                              select new PurchaseOrderPartsPOCO
+                               where x.PurchaseOrderID == activeorder
+                               select new PurchaseOrderPartsPOCO
                               {
                                   PartID = x.PartID,
                                   Description = x.Part.Description,
@@ -58,7 +50,7 @@ namespace eBikeSystem.BLL
                                   ReorderLevel = x.Part.ReorderLevel,
                                   Quantity = x.Quantity,
                                   PurchasePrice = x.PurchasePrice
-                              }).Distinct().OrderBy(z => z.PartID);
+                              }).OrderBy(z => z.PartID);
                 return results.ToList();
             }
         }
@@ -87,7 +79,7 @@ namespace eBikeSystem.BLL
                                    ReorderLevel = x.ReorderLevel,
                                    Buffer = (x.QuantityOnHand + x.QuantityOnOrder) - x.ReorderLevel,
                                    PurchasePrice = x.PurchasePrice
-                               }).Distinct().OrderBy(z => z.PartID);
+                               }).OrderBy(z => z.PartID);
                 return results.ToList();
             }
         }
