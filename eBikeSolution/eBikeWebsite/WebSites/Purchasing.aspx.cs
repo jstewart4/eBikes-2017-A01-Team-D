@@ -51,11 +51,19 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
         VendorCity.Text = VendorDDL.SelectedValue;
         VendorPhone.Text = VendorDDL.SelectedValue;
 
+        CurrentPOListView.DataBind();
+        CurrentInventoryListView.DataBind();
+
         //MessageUserControl.TryRun(() =>
         //{
         //    PurchasingController sysmgr = new PurchasingController();
         //    sysmgr.;
 
         //}, "Success", "Purchase Order retrieved.");
+    }
+
+    protected void CurrentPOListView_ItemCommand(object sender, ListViewCommandEventArgs e)
+    {
+
     }
 }
