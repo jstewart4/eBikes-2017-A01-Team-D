@@ -15,6 +15,7 @@ namespace eBike.Data.POCOs
         public int QuantityOnOrder { get; set; }
         public int ReorderLevel { get; set; }
         public int Buffer { get; set; }
+        public int Quantity { get; set; }
         public decimal PurchasePrice { get; set; }
 
     }
