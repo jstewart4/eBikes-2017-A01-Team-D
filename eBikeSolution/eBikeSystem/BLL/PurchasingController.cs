@@ -18,15 +18,14 @@ namespace eBikeSystem.BLL
         {
             using (var context = new eBikeContext())
             {
-                var results = from x in context.Vendors
-                              orderby x.VendorName
+                var results = (from x in context.Vendors
                               select new VendorListPOCO
                               {
                                     VendorID = x.VendorID,
                                     VendorName = x.VendorName,
                                     City = x.City,
                                     Phone = x.Phone
-                              };
+                              }).OrderBy(z => z.VendorName);
                 return results.ToList();
             }
         }
@@ -46,7 +45,7 @@ namespace eBikeSystem.BLL
                                   ReorderLevel = x.ReorderLevel,
                                   Buffer = (x.QuantityOnHand + x.QuantityOnOrder) - x.ReorderLevel,
                                   PurchasePrice = x.PurchasePrice
-                              }).Distinct().OrderBy(z=> z.PartID);
+                              }).Distinct().OrderBy(z => z.PartID);
                 return results.ToList();
             }
         }
@@ -60,7 +59,7 @@ namespace eBikeSystem.BLL
                                    select x).FirstOrDefault();
 
 
-            }
+        }
         }
     }
 }
