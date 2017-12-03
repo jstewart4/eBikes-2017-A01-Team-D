@@ -83,6 +83,7 @@
     <Compile Include="Entities\StandardJobPart.cs" />
     <Compile Include="Entities\UnorderedPurchaseItemCart.cs" />
     <Compile Include="Entities\Vendor.cs" />
+    <Compile Include="POCOs\OutstandingOrdersPOCO.cs" />
     <Compile Include="POCOs\PurchaseOrderPartsPOCO.cs" />
     <Compile Include="POCOs\VendorListPOCO.cs" />
     <Compile Include="POCOs\CategoryListPOCO.cs" />
