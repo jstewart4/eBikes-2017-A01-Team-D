@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using eBikeSystem.BLL;
 
 public partial class WebSites_Receiving : System.Web.UI.Page
 {
@@ -42,5 +43,12 @@ public partial class WebSites_Receiving : System.Web.UI.Page
     protected void CheckForException(object sender, ObjectDataSourceStatusEventArgs e)
     {
         MessageUserControl.HandleDataBoundException(e);
+    }
+
+    protected void ViewOrder_Click(object sender, EventArgs e)
+    {
+        int poID = 451;
+        ReceivingController sysmng = new ReceivingController();
+        sysmng.GetPODetails(poID);
     }
 }

@@ -30,6 +30,27 @@ namespace eBikeSystem.BLL
                               };
                 return results.ToList();
             }
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+
+        public List<PurchaseOrderDetailsPOCO>GetPODetails(int poID)
+        {
+            using (var context = new eBikeContext())
+            {
+                var results = from pod in context.PurchaseOrderDetails
+                              orderby pod.PartID ascending
+                              where pod.PurchaseOrderID == poID
+                              select new PurchaseOrderDetailsPOCO
+                              {
+                                  PurchaseOrderID = pod.PurchaseOrderID,
+                                  PartID = pod.PartID,
+                                  Description = pod.Part.Description,
+                                  QuantityOnOrder = pod.Part.QuantityOnOrder,
+                                  QuantityOutstanding = pod.Quantity,                                
+                              };
+                return results.ToList();
+            }
         } 
 
 

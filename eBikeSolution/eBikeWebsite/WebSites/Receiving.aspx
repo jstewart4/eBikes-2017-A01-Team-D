@@ -38,6 +38,8 @@
                             <asp:Label Text='<%# Eval("Vendor") %>' runat="server" ID="VendorLabel" /></td>
                         <td>
                             <asp:Label Text='<%# Eval("Phone") %>' runat="server" ID="PhoneLabel" /></td>
+                        <td>
+                            <asp:LinkButton ID="ViewOrder" runat="server">View Order</asp:LinkButton></td>
                     </tr>
                 </AlternatingItemTemplate>
                 <EditItemTemplate>
@@ -56,6 +58,8 @@
                             <asp:TextBox Text='<%# Bind("Vendor") %>' runat="server" ID="VendorTextBox" /></td>
                         <td>
                             <asp:TextBox Text='<%# Bind("Phone") %>' runat="server" ID="PhoneTextBox" /></td>
+                         <td>
+                            <asp:LinkButton ID="ViewOrder" runat="server">View Order</asp:LinkButton></td>
                     </tr>
                 </EditItemTemplate>
                 <EmptyDataTemplate>
@@ -81,6 +85,8 @@
                             <asp:TextBox Text='<%# Bind("Vendor") %>' runat="server" ID="VendorTextBox" /></td>
                         <td>
                             <asp:TextBox Text='<%# Bind("Phone") %>' runat="server" ID="PhoneTextBox" /></td>
+                        <td>
+                            <asp:LinkButton ID="ViewOrder" runat="server">View Order</asp:LinkButton></td>
                     </tr>
                 </InsertItemTemplate>
                 <ItemTemplate>
@@ -95,6 +101,8 @@
                             <asp:Label Text='<%# Eval("Vendor") %>' runat="server" ID="VendorLabel" /></td>
                         <td>
                             <asp:Label Text='<%# Eval("Phone") %>' runat="server" ID="PhoneLabel" /></td>
+                        <td>
+                            <asp:LinkButton ID="ViewOrder" runat="server" OnClick="ViewOrder_Click">View Order</asp:LinkButton></td>
                     </tr>
                 </ItemTemplate>
                 <LayoutTemplate>
@@ -108,6 +116,7 @@
                                         <th runat="server">Order Date</th>
                                         <th runat="server">Vendor</th>
                                         <th runat="server">Contact</th>
+                                        <th runat="server"></th>
                                     </tr>
                                     <tr runat="server" id="itemPlaceholder"></tr>
                                 </table>
@@ -130,18 +139,42 @@
                             <asp:Label Text='<%# Eval("Vendor") %>' runat="server" ID="VendorLabel" /></td>
                         <td>
                             <asp:Label Text='<%# Eval("Phone") %>' runat="server" ID="PhoneLabel" /></td>
+                        <td>
+                            <asp:LinkButton ID="ViewOrder" runat="server">View Order</asp:LinkButton></td>
                     </tr>
                 </SelectedItemTemplate>
             </asp:ListView>
         </div>
     </div>
+    </br>    
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li><a href="#receiving" data-toggle="tab">Receiving</a></li>
+                <li><a href="#unorderedParts" data-toggle="tab">Unordered Parts</a></li>
+            </ul>
 
+            <div class="tab-content">
+                <div class="tab-pane fade" id="receiving">
+                    <asp:UpdatePanel ID="UpdatePanelReceiving" runat="server">
+
+                    </asp:UpdatePanel>
+                </div> <%--end of pane--%> 
+                
+                <div class="tab-pane fade" id="unorderedParts">
+                    <asp:UpdatePanel ID="UpdatePanelUnorderedParts" runat="server">
+
+                    </asp:UpdatePanel>
+                </div> <%--end of pane--%>          
+
+            </div> <%--end of tab-content--%>
+        </div> <%--end of col-md-12--%>
+    </div> <%--end of row--%>
 
     <asp:ObjectDataSource ID="OutstandingOrdersODS" runat="server" 
         OldValuesParameterFormatString="original_{0}" 
         SelectMethod="GetOutstandingPO" 
         TypeName="eBikeSystem.BLL.ReceivingController">
-
     </asp:ObjectDataSource>
 
 
