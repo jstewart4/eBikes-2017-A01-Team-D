@@ -60,6 +60,7 @@
     <Compile Include="BLL\EmployeeController.cs" />
     <Compile Include="BLL\JobController.cs" />
     <Compile Include="BLL\OnlineUsersController.cs" />
+    <Compile Include="BLL\PurchasingController.cs" />
     <Compile Include="BLL\SalesController.cs" />
     <Compile Include="BLL\Security\RoleManager.cs" />
     <Compile Include="BLL\Security\UserManager.cs" />

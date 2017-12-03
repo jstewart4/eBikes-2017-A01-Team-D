@@ -1,4 +1,5 @@
 ﻿using eBike.Data.Entities.Security;
+using eBikeSystem.BLL;
 using eBikeSystem.BLL.Security;
 using System;
 using System.Collections.Generic;
@@ -42,5 +43,19 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
     protected void CheckForException(object sender, ObjectDataSourceStatusEventArgs e)
     {
         MessageUserControl.HandleDataBoundException(e);
+    }
+
+    protected void GetCreatePO_Click(object sender, EventArgs e)
+    {
+        VendorName.Text = VendorDDL.SelectedValue;
+        VendorCity.Text = VendorDDL.SelectedValue;
+        VendorPhone.Text = VendorDDL.SelectedValue;
+
+        //MessageUserControl.TryRun(() =>
+        //{
+        //    PurchasingController sysmgr = new PurchasingController();
+        //    sysmgr.;
+
+        //}, "Success", "Purchase Order retrieved.");
     }
 }
