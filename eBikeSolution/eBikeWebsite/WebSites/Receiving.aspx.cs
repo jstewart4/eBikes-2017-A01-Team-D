@@ -47,7 +47,7 @@ public partial class WebSites_Receiving : System.Web.UI.Page
 
     protected void ViewOrder_Click(object sender, EventArgs e)
     {
-        int poID = 451;
+        int poID = 458;
         ReceivingController sysmng = new ReceivingController();
         sysmng.GetPODetails(poID);
     }
