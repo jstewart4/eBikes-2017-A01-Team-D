@@ -83,53 +83,5 @@ namespace eBikeSystem.BLL
                 return results.ToList();
             }
         }
-
-        public void GetOrCreatePO(int vendorid)
-        {
-            using (var context = new eBikeContext())
-            {
-                var activeorder = (from x in context.PurchaseOrders
-                                where x.PurchaseOrderNumber == null && x.OrderDate == null
-                                   select x).FirstOrDefault();
-
-            //    int customerid = customer.OnlineCustomerID;
-
-            //    var shoppingcart = (from x in context.ShoppingCarts
-            //                        where x.OnlineCustomerID.Equals(customerid)
-            //                        select x).FirstOrDefault();
-
-            //    ShoppingCartItem newitem = null;
-
-            //    if (shoppingcart == null)
-            //    {
-            //        //create a new cart
-            //        shoppingcart = new ShoppingCart();
-            //        shoppingcart.OnlineCustomerID = customerid;
-            //        shoppingcart.CreatedOn = DateTime.Now;
-            //        shoppingcart = context.ShoppingCarts.Add(shoppingcart);
-            //    }
-            //    else
-            //    {
-            //        //check existing cart for the item
-
-            //        newitem = shoppingcart.ShoppingCartItems.SingleOrDefault(x => x.PartID == partid);
-            //        //this will be null if the item is NOT in the cart
-            //        if (newitem != null)
-            //        {
-            //            throw new Exception("That item is already in your shopping cart.");
-            //        }
-            //    }
-            //    int shoppingcartid = shoppingcart.ShoppingCartID;
-            //    newitem = new ShoppingCartItem();
-            //    newitem.ShoppingCartID = shoppingcartid;
-            //    newitem.PartID = partid;
-            //    newitem.Quantity = 1;
-
-            //    context.ShoppingCartItems.Add(newitem);
-            //    context.SaveChanges();
-            //}
-
-        }
-        }
     }
 }

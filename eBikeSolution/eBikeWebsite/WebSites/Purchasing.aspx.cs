@@ -46,7 +46,6 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
 
     protected void GetCreatePO_Click(object sender, EventArgs e)
     {
-
         VendorName.Text = VendorDDL.SelectedValue;
         VendorCity.Text = VendorDDL.SelectedValue;
         VendorPhone.Text = VendorDDL.SelectedValue;
@@ -56,6 +55,11 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
 
         CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
         CurrentInventoryListView.DataBind();
+
+        if (CurrentPOListView.Items.Count == 0)
+        {
+            // DO LOGIC TO CREATE SUGGESTED PURCHASE ORDER HERE, THEN BIND CurrentPOListView AGAIN
+        }
 
     }
 
