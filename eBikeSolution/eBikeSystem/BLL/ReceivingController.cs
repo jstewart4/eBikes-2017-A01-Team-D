@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using eBike.Data.POCOs;
 using eBikeSystem.DAL;
+using eBike.Data.DTOs;
 
 namespace eBikeSystem.BLL
 {
@@ -34,13 +35,16 @@ namespace eBikeSystem.BLL
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
 
-        public List<PurchaseOrderDetailsPOCO>GetPODetails(int poID)
-        {
+        public VendorPurchaseOrderDetailsDTO GetPODetails(int poID)
+        {        
             using (var context = new eBikeContext())
             {
-                var results = from pod in context.PurchaseOrderDetails
+                VendorPurchaseOrderDetailsDTO vendorPODetails = new VendorPurchaseOrderDetailsDTO();
+                List<PurchaseOrderDetailsPOCO> poDetails = new List<PurchaseOrderDetailsPOCO>();
+
+                var poResults = from pod in context.PurchaseOrderDetails
                               orderby pod.PartID ascending
-                              where pod.PurchaseOrderID == poID
+                              where pod.PurchaseOrderID.Equals(poID)
                               select new PurchaseOrderDetailsPOCO
                               {
                                   PurchaseOrderID = pod.PurchaseOrderID,
@@ -49,7 +53,24 @@ namespace eBikeSystem.BLL
                                   QuantityOnOrder = pod.Part.QuantityOnOrder,
                                   QuantityOutstanding = pod.Quantity,                                
                               };
-                return results.ToList();
+                poDetails = poResults.ToList();
+
+                var vendorResults = (from po in context.PurchaseOrders
+                                    where po.PurchaseOrderID.Equals(poID)
+                                    select new
+                                    {
+                                        poNum = po.PurchaseOrderNumber,
+                                        Phone = po.Vendor.Phone,
+                                        Name = po.Vendor.VendorName
+                                    }).FirstOrDefault();  //return first record from return result(using it when ) 
+
+                vendorPODetails.PurchaseOrderNumber = vendorResults.poNum;
+                vendorPODetails.VendorPhone = vendorResults.Phone;
+                vendorPODetails.VendorName = vendorResults.Name;
+
+                vendorPODetails.PODetails = poDetails;
+
+                return vendorPODetails;
             }
         } 
 

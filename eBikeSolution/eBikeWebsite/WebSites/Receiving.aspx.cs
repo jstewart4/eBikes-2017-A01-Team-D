@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using eBikeSystem.BLL;
+using eBike.Data.DTOs;
 
 public partial class WebSites_Receiving : System.Web.UI.Page
 {
@@ -47,8 +48,21 @@ public partial class WebSites_Receiving : System.Web.UI.Page
 
     protected void ViewOrder_Click(object sender, EventArgs e)
     {
-        int poID = 458;
+        int  poID = 0;
+
+        GridViewRow item = (GridViewRow)((LinkButton)sender).NamingContainer; // gets info from one row.
+        poID = int.Parse(((Label)item.FindControl("PurchaseOrderId")).Text);
+
         ReceivingController sysmng = new ReceivingController();
-        sysmng.GetPODetails(poID);
+        VendorPurchaseOrderDetailsDTO vendorPODetails = sysmng.GetPODetails(poID);
+
+        lblPONumber.Text = vendorPODetails.PurchaseOrderNumber.ToString();
+        lblVendorName.Text = vendorPODetails.VendorName;
+        lblVendorPhone.Text = vendorPODetails.VendorPhone;
+
+
+        PODetailsGV.DataSource = vendorPODetails.PODetails;
+        PODetailsGV.DataBind();
+        
     }
 }
