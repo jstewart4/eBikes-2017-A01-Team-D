@@ -57,6 +57,8 @@
                                         CommandArgument='<%# Eval("PartID") %>'
                                         Text="Add"
                                         CssClass="btn btn-primary" />
+                                </td>
+                                <td>
                                     <asp:TextBox runat="server" ID="QuantityOrdered" MaxLength="3" Width="50px" TextMode="Number" Text="1">
                                     </asp:TextBox>
                                 </td>
@@ -68,22 +70,7 @@
                                     <asp:Label Text='<%# Eval("Price", "{0:C}") %>' runat="server" ID="PriceLabel" /></td>
                             </tr>
                         </AlternatingItemTemplate>
-                        <EditItemTemplate>
-                            <tr style="background-color: #999999;">
-                                <td>
-                                    <asp:Button runat="server" CommandName="Update" Text="Update" ID="UpdateButton" />
-                                    <asp:Button runat="server" CommandName="Cancel" Text="Cancel" ID="CancelButton" />
-                                </td>
-                                <td>
-                                    <asp:TextBox Text='<%# Bind("PartID") %>' runat="server" ID="PartIDTextBox" /></td>
-                                <td>
-                                    <asp:TextBox Text='<%# Bind("Description") %>' runat="server" ID="DescriptionTextBox" /></td>
-                                <td>
-                                    <asp:TextBox Text='<%# Bind("InStock") %>' runat="server" ID="InStockTextBox" /></td>
-                                <td>
-                                    <asp:TextBox Text='<%# Bind("Price") %>' runat="server" ID="PriceTextBox" /></td>
-                            </tr>
-                        </EditItemTemplate>
+                        
                         <EmptyDataTemplate>
                             <table runat="server" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px;">
                                 <tr>
@@ -91,22 +78,7 @@
                                 </tr>
                             </table>
                         </EmptyDataTemplate>
-                        <InsertItemTemplate>
-                            <tr style="">
-                                <td>
-                                    <asp:Button runat="server" CommandName="Insert" Text="Insert" ID="InsertButton" />
-                                    <asp:Button runat="server" CommandName="Cancel" Text="Clear" ID="CancelButton" />
-                                </td>
-                                <td>
-                                    <asp:TextBox Text='<%# Bind("PartID") %>' runat="server" ID="PartIDTextBox" /></td>
-                                <td>
-                                    <asp:TextBox Text='<%# Bind("Description") %>' runat="server" ID="DescriptionTextBox" /></td>
-                                <td>
-                                    <asp:TextBox Text='<%# Bind("InStock") %>' runat="server" ID="InStockTextBox" /></td>
-                                <td>
-                                    <asp:TextBox Text='<%# Bind("Price") %>' runat="server" ID="PriceTextBox" /></td>
-                            </tr>
-                        </InsertItemTemplate>
+                       
                         <ItemTemplate>
                             <tr style="background-color: #E0FFFF; color: #333333;">
                                 <td style="width: 150px;">
@@ -115,7 +87,9 @@
                                         CommandArgument='<%# Eval("PartID") %>'
                                         Text="Add"
                                         CssClass="btn btn-primary" />
-                                    <asp:TextBox runat="server" ID="QuanitityOrdered" MaxLength="3" Width="50px" TextMode="Number" Text="1"></asp:TextBox>
+                                </td>
+                                <td>
+                                    <asp:TextBox runat="server" ID="QuantityOrdered" MaxLength="3" Width="50px" TextMode="Number" Text="1"></asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:Label Text='<%# Eval("Description") %>' runat="server" ID="DescriptionLabel" /></td>
@@ -131,6 +105,7 @@
                                     <td runat="server">
                                         <table runat="server" id="itemPlaceholderContainer" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px; font-family: Verdana, Arial, Helvetica, sans-serif;" border="1">
                                             <tr runat="server" style="background-color: #E0FFFF; color: #333333;">
+                                                <th runat="server"></th>
                                                 <th runat="server"></th>
                                                 <th runat="server">Part Name</th>
                                                 <th runat="server">In Stock</th>

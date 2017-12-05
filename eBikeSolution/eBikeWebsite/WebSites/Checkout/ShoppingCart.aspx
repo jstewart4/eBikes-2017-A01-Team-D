@@ -70,23 +70,7 @@
                         </td>
                     </tr>
                 </AlternatingItemTemplate>
-                <EditItemTemplate>
-                    <tr style="background-color: #999999;">
-                        <td>
-                            <asp:Button runat="server" CommandName="Update" Text="Update" ID="UpdateButton" />
-                            <asp:Button runat="server" CommandName="Cancel" Text="Cancel" ID="CancelButton" />
-                        </td>
-                       
-                        <td>
-                            <asp:TextBox Text='<%# Bind("Description") %>' runat="server" ID="DescriptionTextBox" /></td>
-                        <td>
-                            <asp:TextBox Text='<%# Bind("Quantity") %>' runat="server" ID="QuantityTextBox" /></td>
-                        <td>
-                            <asp:TextBox Text='<%# Bind("UnitPrice") %>' runat="server" ID="UnitPriceTextBox" /></td>
-                        <td>
-                            <asp:TextBox Text='<%# Bind("TotalPrice") %>' runat="server" ID="TotalPriceTextBox" /></td>
-                    </tr>
-                </EditItemTemplate>
+               
                 <EmptyDataTemplate>
                     <table runat="server" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px;">
                         <tr>
@@ -94,23 +78,7 @@
                         </tr>
                     </table>
                 </EmptyDataTemplate>
-                <InsertItemTemplate>
-                    <tr style="">
-                        <td>
-                            <asp:Button runat="server" CommandName="Insert" Text="Insert" ID="InsertButton" />
-                            <asp:Button runat="server" CommandName="Cancel" Text="Clear" ID="CancelButton" />
-                        </td>
-                        
-                        <td>
-                            <asp:TextBox Text='<%# Bind("Description") %>' runat="server" ID="DescriptionTextBox" /></td>
-                        <td>
-                            <asp:TextBox Text='<%# Bind("Quantity") %>' runat="server" ID="QuantityTextBox" /></td>
-                        <td>
-                            <asp:TextBox Text='<%# Bind("UnitPrice") %>' runat="server" ID="UnitPriceTextBox" /></td>
-                        <td>
-                            <asp:TextBox Text='<%# Bind("TotalPrice") %>' runat="server" ID="TotalPriceTextBox" /></td>
-                    </tr>
-                </InsertItemTemplate>
+                
                 <ItemTemplate>
                     <tr style="background-color: #E0FFFF; color: #333333;">
                         
@@ -177,13 +145,14 @@
     <div class="row">
         <div class="col-md-7"></div>
         <div class="col-md-3">
-            <div class="totals">
-                <asp:Label ID="SubTotalLabel" runat="server" Text="Sub-Total:"></asp:Label>
-                <asp:Label ID="SubTotal" runat="server" Text="$919.95"></asp:Label><br />
-                <asp:Label ID="GSTLabel" runat="server" Text="GST:"></asp:Label>
-                <asp:Label ID="GST" runat="server" Text="$46.00"></asp:Label><br />
-                <asp:Label ID="TotalLabel" runat="server" Text="Total:"></asp:Label>
-                <asp:Label ID="Total" runat="server" Text="$965.95"></asp:Label><br />
+            <div class="totals">             
+                <asp:GridView ID="TotalsGridView" runat="server" AutoGenerateColumns="False" DataSourceID="TotalsODS">
+                    <Columns>
+                        <asp:BoundField DataField="SubTotal" HeaderText="SubTotal" SortExpression="SubTotal" DataFormatString="{0:C}"></asp:BoundField>
+                        <asp:BoundField DataField="GST" HeaderText="GST" SortExpression="GST" DataFormatString="{0:C}"></asp:BoundField>
+                        <asp:BoundField DataField="Total" HeaderText="Total" SortExpression="Total" DataFormatString="{0:C}"></asp:BoundField>
+                    </Columns>
+                </asp:GridView>
             </div>
         </div>
     </div>
@@ -201,6 +170,11 @@
         <SelectParameters>
             <asp:ControlParameter ControlID="UserLabel" PropertyName="Text" DefaultValue="" Name="username" Type="String"></asp:ControlParameter>
 
+        </SelectParameters>
+    </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="TotalsODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ShoppingCart_Totals" TypeName="eBikeSystem.BLL.SalesController">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="UserLabel" PropertyName="Text" Name="username" Type="String"></asp:ControlParameter>
         </SelectParameters>
     </asp:ObjectDataSource>
 </asp:Content>

@@ -10,6 +10,7 @@ namespace eBike.Data.POCOs
     {
         public decimal SubTotal { get; set; }
         public decimal GST { get; set; }
+        public decimal Discount { get; set; }
         public decimal Total { get; set; }
     }
 }

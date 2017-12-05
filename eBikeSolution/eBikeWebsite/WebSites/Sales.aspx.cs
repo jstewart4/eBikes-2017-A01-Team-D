@@ -48,14 +48,18 @@ public partial class WebSites_Sales : System.Web.UI.Page
     {
         if (User.IsInRole(SecurityRoles.RegisteredUsers))
         {
+            ListViewDataItem row = e.Item as ListViewDataItem;
+
             string username = User.Identity.Name;
 
             int partid = int.Parse(e.CommandArgument.ToString());
 
+            int quantity = int.Parse((row.FindControl("QuantityOrdered") as TextBox).Text.ToString());
+
             MessageUserControl.TryRun(() =>
             {
                 SalesController sysmgr = new SalesController();
-                sysmgr.Add_ItemToCart(username, partid);
+                sysmgr.Add_ItemToCart(username, partid, quantity);
             //List<UserPlaylistTrack> refreshresults = sysmgr.Add_TrackToPLaylist(PlaylistName.Text, userName, trackid);
             //PlayList.DataSource = refreshresults;
             //PlayList.DataBind();
