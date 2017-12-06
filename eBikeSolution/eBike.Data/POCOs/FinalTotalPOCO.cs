@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace eBike.Data.POCOs
 {
-    public class TotalPricePOCO
+    public class FinalTotalPOCO
     {
         public decimal SubTotal { get; set; }
+        public decimal Discount { get; set; }
         public decimal GST { get; set; }
         public decimal Total { get; set; }
     }

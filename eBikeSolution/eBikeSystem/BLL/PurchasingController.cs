@@ -56,6 +56,35 @@ namespace eBikeSystem.BLL
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<PurchaseOrderPartsPOCO> SuggestedPurchaseOrder_ByVendor(int vendorid)
+        {
+            using (var context = new eBikeContext())
+            {
+                //var suggestedorder = (from x in context.PurchaseOrders
+                //                   where x.VendorID == vendorid
+                //                   select x.PurchaseOrderID).FirstOrDefault();
+
+                var buffer = (from x in context.Parts
+                             where x.VendorID == vendorid && x.ReorderLevel - (x.QuantityOnHand + x.QuantityOnOrder) > 0
+                             select x.PartID).ToList();
+
+                var results = (from x in context.PurchaseOrderDetails
+                               where x.Part.VendorID == vendorid && buffer.Contains(x.Part.PartID)
+                               select new PurchaseOrderPartsPOCO
+                               {
+                                   PartID = x.Part.PartID,
+                                   Description = x.Part.Description,
+                                   QuantityOnHand = x.Part.QuantityOnHand,
+                                   QuantityOnOrder = x.Part.QuantityOnOrder,
+                                   ReorderLevel = x.Part.ReorderLevel,
+                                   Quantity = x.Quantity,
+                                   PurchasePrice = x.PurchasePrice
+                               }).OrderBy(z => z.PartID);
+                return results.ToList();
+            }
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<PurchaseOrderPartsPOCO> PartsInventory_ByVendor(int vendorid)
         {
             using (var context = new eBikeContext())
@@ -77,7 +106,7 @@ namespace eBikeSystem.BLL
                                    QuantityOnHand = x.QuantityOnHand,
                                    QuantityOnOrder = x.QuantityOnOrder,
                                    ReorderLevel = x.ReorderLevel,
-                                   Buffer = (x.QuantityOnHand + x.QuantityOnOrder) - x.ReorderLevel,
+                                   Buffer = x.ReorderLevel - (x.QuantityOnHand + x.QuantityOnOrder),
                                    PurchasePrice = x.PurchasePrice
                                }).OrderBy(z => z.PartID);
                 return results.ToList();
