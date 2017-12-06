@@ -53,6 +53,16 @@ namespace eBikeSystem.BLL
                 var customer = (from x in context.OnlineCustomers
                                 where x.UserName.Equals(username)
                                 select x).FirstOrDefault();
+                if (customer == null)
+                {
+                    var sysmgr = new OnlineUsersController();
+                    sysmgr.Add_OnlineCustomer(username);
+
+                    customer = (from x in context.OnlineCustomers
+                                    where x.UserName.Equals(username)
+                                    select x).FirstOrDefault();
+                }
+
                 int customerid = customer.OnlineCustomerID;
 
                 var shoppingcart = (from x in context.ShoppingCarts

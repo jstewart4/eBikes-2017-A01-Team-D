@@ -41,4 +41,16 @@ public partial class WebSites_Checkout_ShoppingCart : System.Web.UI.Page
             }
         }
     }
+
+    protected void ShoppingCartList_ItemCommand(object sender, ListViewCommandEventArgs e)
+    {
+        if (e.CommandName == "Update")
+        {
+            throw new Exception("Update pressed");
+        }
+        else
+        {
+            throw new Exception("Remove pressed");
+        }
+    }
 }

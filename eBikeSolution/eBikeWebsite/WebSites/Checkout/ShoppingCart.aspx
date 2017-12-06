@@ -44,7 +44,7 @@
     </div>
     <div class="row">
         <div class="col-md-10">
-            <asp:ListView ID="ShoppingCartList" runat="server" DataSourceID="ShoppingCartListODS">
+            <asp:ListView ID="ShoppingCartList" runat="server" DataSourceID="ShoppingCartListODS" OnItemCommand="ShoppingCartList_ItemCommand">
                 <AlternatingItemTemplate>
                     <tr style="background-color: #FFFFFF; color: #284775;">
                         <td>
@@ -56,17 +56,21 @@
                             <asp:Label Text='<%# Eval("UnitPrice", "{0:C}") %>' runat="server" ID="UnitPriceLabel" /></td>
                         <td style="width: 100px; text-align: right;">
                             <asp:Label Text='<%# Eval("TotalPrice", "{0:C}") %>' runat="server" ID="TotalPriceLabel" /></td>
-                        <td style="width: 100px; text-align: center;"> 
-                            <asp:LinkButton ID="UpdateCartBtn" runat="server"
-                                CssClass="btn btn-primary" >
-                                Update
-                            </asp:LinkButton>
+                         <td style="width: 100px; text-align: center;">
+                                    <asp:Button runat="server"
+                                        ID="UpdateCartBtn"
+                                        CommandArgument='<%# Eval("PartID") %>'
+                                        CommandName="Update"
+                                        Text="Update"
+                                        CssClass="btn btn-primary" />
                         </td>
-                        <td style="width: 100px; text-align: center;">
-                            <asp:LinkButton ID="RemoveItemBtn" runat="server"
-                                CssClass="btn btn-danger" >
-                                Remove
-                            </asp:LinkButton>
+                         <td style="width: 100px; text-align: center;">
+                                    <asp:Button runat="server"
+                                        ID="RemoveItemButton"
+                                        CommandArgument='<%# Eval("PartID") %>'
+                                        CommandName="Remove"
+                                        Text="Remove"
+                                        CssClass="btn btn-danger" />
                         </td>
                     </tr>
                 </AlternatingItemTemplate>
@@ -91,16 +95,20 @@
                         <td style="width: 100px; text-align: right;">
                             <asp:Label Text='<%# Eval("TotalPrice", "{0:C}") %>' runat="server" ID="TotalPriceLabel" /></td>
                         <td style="width: 100px; text-align: center;">
-                            <asp:LinkButton ID="UpdateCartBtn" runat="server"
-                                CssClass="btn btn-primary" >
-                                Update
-                            </asp:LinkButton>
-                        </td>
+                                    <asp:Button runat="server"
+                                        ID="UpdateCartBtn"
+                                        CommandArgument='<%# Eval("PartID") %>'
+                                        CommandName="Update"
+                                        Text="Update"
+                                        CssClass="btn btn-primary" />
+                        </td>                      
                         <td style="width: 100px; text-align: center;">
-                            <asp:LinkButton ID="RemoveItemBtn" runat="server"
-                                CssClass="btn btn-danger" >
-                                Remove
-                            </asp:LinkButton>
+                                    <asp:Button runat="server"
+                                        ID="RemoveItemButton"
+                                        CommandArgument='<%# Eval("PartID") %>'
+                                        CommandName="Remove"
+                                        Text="Remove"
+                                        CssClass="btn btn-danger" />
                         </td>
                     </tr>
                 </ItemTemplate>

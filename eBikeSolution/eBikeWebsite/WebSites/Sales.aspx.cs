@@ -46,7 +46,7 @@ public partial class WebSites_Sales : System.Web.UI.Page
 
     protected void PartsbyCategoryList_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
-        if (User.IsInRole(SecurityRoles.RegisteredUsers))
+        if (User.IsInRole(SecurityRoles.RegisteredUsers) || User.IsInRole(SecurityRoles.Staff))
         {
             ListViewDataItem row = e.Item as ListViewDataItem;
 
