@@ -22,17 +22,32 @@ namespace eBikeSystem.BLL
                               where x.JobDateOut == null
                               select new JobListPoco
                               {
-                                 JobID = x.JobID,
-                                 JobDateIn = x.JobDateIn,
-                                 JobDateStarted = x.JobDateStarted,
-                                 JobDateDone = x.JobDateDone,
-                                 Name = x.Customer.LastName + ", " + x.Customer.FirstName,
-                                 ContactPhone = x.Customer.ContactPhone
-                                 
+                                  JobID = x.JobID,
+                                  JobDateIn = x.JobDateIn,
+                                  JobDateStarted = x.JobDateStarted,
+                                  JobDateDone = x.JobDateDone,
+                                  Name = x.Customer.LastName + ", " + x.Customer.FirstName,
+                                  ContactPhone = x.Customer.ContactPhone
+
                               };
                 return results.ToList();
             }
         }//eom
 
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<Customer> customerList()
+        {
+            using (var context = new eBikeContext())
+            {
+                var results = from x in context.Customers
+                              select x;
+
+
+
+                return results.ToList();
+
+            }
+
+        }
     }
 }

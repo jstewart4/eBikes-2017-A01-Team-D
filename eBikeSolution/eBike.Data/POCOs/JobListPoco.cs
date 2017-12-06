@@ -8,6 +8,8 @@ namespace eBike.Data.POCOs
 {
     public class JobListPoco
     {
+        public int customerID { get; set; }
+
         public int JobID { get; set; }
 
         public DateTime JobDateIn { get; set; }

@@ -43,4 +43,10 @@ public partial class WebSites_Jobing : System.Web.UI.Page
     {
         MessageUserControl.HandleDataBoundException(e);
     }
+
+    protected void NewJob_Click(object sender, EventArgs e)
+    {
+        CurrentJobsListView.Visible = false;
+        NewJob.Visible = false;
+    }
 }

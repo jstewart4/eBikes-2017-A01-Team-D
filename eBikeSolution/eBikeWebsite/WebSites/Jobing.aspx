@@ -9,6 +9,9 @@
             margin-top: 20px;
             font-size: 18px;
         }
+
+
+
     </style>
     <asp:Label ID="EmployeeNameLabel" runat="server" CssClass="displayemployeename"></asp:Label>
     <div>
@@ -17,12 +20,15 @@
     <uc1:MessageUserControl runat="server" ID="MessageUserControl" />
 
     <div class="row">
-        <div class="col-md-3">
+         
+        <div class="col-md-5">
             
                 <h2><asp:Label ID="CurrentJobs" runat="server" Text="Current Jobs"></asp:Label></h2>
-                    
+
+            
             <asp:ListView ID="CurrentJobsListView" runat="server" 
-                DataSourceID="CurrentJobsListViewODS">
+                DataSourceID="CurrentJobsListViewODS"
+                Visible ="true">
 
                 <AlternatingItemTemplate>
                     <tr style="background-color: #FFFFFF; color: #284775;">
@@ -161,11 +167,25 @@
                 </SelectedItemTemplate>
             </asp:ListView>
         </div>
+        <div class="col-md-3">
+             <asp:Button ID="NewJob" runat="server" Text="New Job" OnClick="NewJob_Click" Visible ="true"/>
+        </div>
+        <div class="col-md-3">
+            <asp:DropDownList ID="CustomerDDL" runat="server" DataSourceID="customerDDLODS" DataTextField="FirstName" DataValueField="CustomerID">
+
+            </asp:DropDownList> 
+        </div>
+
     </div>
     <%--ODS AREA BELOW--%>
     <asp:ObjectDataSource ID="CurrentJobsListViewODS" runat="server" 
         OldValuesParameterFormatString="original_{0}"
         SelectMethod="JobList" 
         TypeName="eBikeSystem.BLL.JobController"></asp:ObjectDataSource>
+
+    <asp:ObjectDataSource ID="customerDDLODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="customerList" TypeName="eBikeSystem.BLL.JobController">
+
+    </asp:ObjectDataSource>
+
 </asp:Content>
 
