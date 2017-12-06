@@ -1,14 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Purchasing.aspx.cs" Inherits="WebSites_Purchasing" %>
 
 <%@ Register Src="~/UserControls/MessageUserControl.ascx" TagPrefix="uc1" TagName="MessageUserControl" %>
-<script runat="server">
-
-    protected void CurrentInventoryListView_ItemCommand(object sender, ListViewCommandEventArgs e)
-    {
-
-    }
-</script>
-
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <style>
@@ -41,16 +33,16 @@
                 <asp:Button ID="GetCreatePOButton" runat="server" Text="Get / Create PO" OnClick="GetCreatePO_Click"/>
             </div>
             <div class="form-group">
-                Vendor Name: 
-                <asp:Label ID="VendorName" runat="server" ></asp:Label><br />
-                Vendor City: 
-                <asp:Label ID="VendorCity" runat="server" ></asp:Label><br />
-                Vendor Phone: 
-                <asp:Label ID="VendorPhone" runat="server" ></asp:Label><br />
+                
+                <asp:Label ID="VendorName" runat="server" Visible="false">Vendor Name:</asp:Label><br />
+                
+                <asp:Label ID="VendorCity" runat="server" Visible="false">Vendor City:</asp:Label><br />
+                
+                <asp:Label ID="VendorPhone" runat="server" Visible="false">Vendor Phone:</asp:Label><br />
             </div>
         </div>
         <div class="col-md-12">
-            <h2><asp:Label ID="CurrentPOLabel" runat="server" Text="Current Purchase Order"></asp:Label></h2>
+            <h2><asp:Label ID="CurrentPOLabel" runat="server" Text="Current Purchase Order" Visible="false"></asp:Label></h2>
             <asp:ListView ID="CurrentPOListView" runat="server" OnItemCommand="CurrentPOListView_ItemCommand">
                 <AlternatingItemTemplate>
                     <tr style="background-color: #FFFFFF; color: #284775;">
@@ -188,7 +180,7 @@
             </asp:ListView>
         </div>
         <div class="col-md-12">
-            <h2><asp:Label ID="CurrentInventoryLabel" runat="server" Text="Current Inventory"></asp:Label></h2>
+            <h2><asp:Label ID="CurrentInventoryLabel" runat="server" Text="Current Inventory" Visible="false"></asp:Label></h2>
             <asp:ListView ID="CurrentInventoryListView" runat="server" OnItemCommand="CurrentInventoryListView_ItemCommand">
                 <AlternatingItemTemplate>
                     <tr style="background-color: #FFFFFF; color: #284775;">
@@ -332,11 +324,17 @@
             <asp:ControlParameter ControlID="VendorDDL" PropertyName="SelectedValue" Name="vendorid" Type="Int32"></asp:ControlParameter>
         </SelectParameters>
     </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="SuggestedPOODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="SuggestedPurchaseOrder_ByVendor" TypeName="eBikeSystem.BLL.PurchasingController">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="VendorDDL" PropertyName="SelectedValue" Name="vendorid" Type="Int32"></asp:ControlParameter>
+        </SelectParameters>
+    </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="CurrentInventoryODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="PartsInventory_ByVendor" TypeName="eBikeSystem.BLL.PurchasingController">
         <SelectParameters>
             <asp:ControlParameter ControlID="VendorDDL" PropertyName="SelectedValue" Name="vendorid" Type="Int32"></asp:ControlParameter>
         </SelectParameters>
     </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="SuggestedCurrentInventoryODS" runat="server"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="VendorListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="VendorList" TypeName="eBikeSystem.BLL.PurchasingController"></asp:ObjectDataSource>
 </asp:Content>
 
