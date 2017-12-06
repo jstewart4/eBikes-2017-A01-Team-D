@@ -1,6 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="ShoppingCart.aspx.cs" Inherits="WebSites_Checkout_ShoppingCart" %>
 
+<%@ Register Src="~/UserControls/MessageUserControl.ascx" TagPrefix="uc1" TagName="MessageUserControl" %>
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
+    <uc1:MessageUserControl runat="server" ID="MessageUserControl" />
     <style>
         .displayemployeename{
             float: right;
@@ -174,11 +178,16 @@
             </div>
         </div>
     </div>
-    <asp:ObjectDataSource ID="ShoppingCartListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ShoppingCartList" TypeName="eBikeSystem.BLL.SalesController">
+    <asp:ObjectDataSource ID="ShoppingCartListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ShoppingCartList" TypeName="eBikeSystem.BLL.SalesController" UpdateMethod="Update_CartItem" OnSelected="CheckForException" OnUpdated="CheckForException">
         <SelectParameters>
             <asp:ControlParameter ControlID="UserLabel" PropertyName="Text" DefaultValue="" Name="username" Type="String"></asp:ControlParameter>
 
         </SelectParameters>
+        <UpdateParameters>
+            <asp:Parameter Name="username" Type="String"></asp:Parameter>
+            <asp:Parameter Name="partid" Type="Int32"></asp:Parameter>
+            <asp:Parameter Name="quantity" Type="Int32"></asp:Parameter>
+        </UpdateParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="TotalsODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ShoppingCart_Totals" TypeName="eBikeSystem.BLL.SalesController">
         <SelectParameters>

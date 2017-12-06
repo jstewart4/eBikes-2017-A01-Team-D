@@ -26,7 +26,7 @@ namespace eBikeSystem.BLL
                               };
                 return results.ToList();
             }
-        }
+        }//CategoryList
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<PartsListPOCO> Parts_byCategoryList(int categoryid)
@@ -44,7 +44,7 @@ namespace eBikeSystem.BLL
                               };
                 return results.ToList();
             }
-        }
+        }//Parts_byCategoryList
 
         public void Add_ItemToCart(string username, int partid, int quantity)
         {
@@ -99,7 +99,7 @@ namespace eBikeSystem.BLL
                 context.ShoppingCartItems.Add(newitem);
                 context.SaveChanges();
             }
-        }
+        }//Add_ItemToCart
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<ShoppingCartListPOCO> ShoppingCartList(string username)
@@ -130,7 +130,7 @@ namespace eBikeSystem.BLL
                     return results.ToList();
                 }
             }
-        }
+        }//ShoppingCartList
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<Coupon> SalesCouponList()
@@ -142,7 +142,7 @@ namespace eBikeSystem.BLL
                               select x;
                 return results.ToList();
             }
-        }
+        }//SalesCouponList
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public TotalPricePOCO ShoppingCart_Totals(string username)
@@ -184,8 +184,61 @@ namespace eBikeSystem.BLL
             }
 
                     
-        }
+        }//ShoppingCartTotals
 
+        public void Update_CartItem(string username, int partid, int quantity)
+        {
+            using (var context = new eBikeContext())
+            {
+                int customerid = (from x in context.OnlineCustomers
+                                where x.UserName.Equals(username)
+                                select x.OnlineCustomerID).FirstOrDefault();
+
+
+                int shoppingcartid = (from x in context.ShoppingCarts
+                                    where x.OnlineCustomerID.Equals(customerid)
+                                    select x.ShoppingCartID).FirstOrDefault();
+
+
+                int updateItemID =  (from x in context.ShoppingCartItems
+                                  where x.ShoppingCartID.Equals(shoppingcartid) && x.PartID.Equals(partid)
+                                  select x.ShoppingCartItemID).FirstOrDefault();
+
+                var updateItem = context.ShoppingCartItems.Find(updateItemID);
+
+                updateItem.Quantity = quantity;
+
+                context.Entry(updateItem).Property(y => y.Quantity).IsModified = true;
+
+                context.SaveChanges();
+            }
+        }//Update_CartItem
+
+        public void Remove_CartItem(string username, int partid)
+        {
+            using (var context = new eBikeContext())
+            {
+                int customerid = (from x in context.OnlineCustomers
+                                  where x.UserName.Equals(username)
+                                  select x.OnlineCustomerID).FirstOrDefault();
+
+
+                int shoppingcartid = (from x in context.ShoppingCarts
+                                      where x.OnlineCustomerID.Equals(customerid)
+                                      select x.ShoppingCartID).FirstOrDefault();
+
+                int shoppingcartitemid = (from x in context.ShoppingCartItems
+                              where x.ShoppingCartID.Equals(shoppingcartid) && x.PartID.Equals(partid)
+                              select x.ShoppingCartItemID).FirstOrDefault();
+
+                var existingItem = context.ShoppingCartItems.Find(shoppingcartitemid);
+
+                context.ShoppingCartItems.Remove(existingItem);
+
+                context.SaveChanges();
+
+            }
+        }//Remove_CartItem
 
     }
 }

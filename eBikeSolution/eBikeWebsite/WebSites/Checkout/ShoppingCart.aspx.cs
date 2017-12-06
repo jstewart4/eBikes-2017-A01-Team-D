@@ -1,4 +1,5 @@
 ﻿using eBike.Data.Entities.Security;
+using eBikeSystem.BLL;
 using eBikeSystem.BLL.Security;
 using System;
 using System.Collections.Generic;
@@ -42,15 +43,42 @@ public partial class WebSites_Checkout_ShoppingCart : System.Web.UI.Page
         }
     }
 
+    protected void CheckForException(object sender, ObjectDataSourceStatusEventArgs e)
+    {
+        MessageUserControl.HandleDataBoundException(e);
+    }
+
     protected void ShoppingCartList_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
+        ListViewDataItem row = e.Item as ListViewDataItem;
+
+        string username = User.Identity.Name;
+
+        int partid = int.Parse(e.CommandArgument.ToString());
+
+        SalesController sysmgr = new SalesController();
+
         if (e.CommandName == "Update")
         {
-            throw new Exception("Update pressed");
+            int quantity = int.Parse((row.FindControl("QuantityTextBox") as TextBox).Text.ToString());
+
+            MessageUserControl.TryRun(() =>
+            {
+
+                sysmgr.Update_CartItem(username, partid, quantity);
+
+            }, "Success", "Item quantity updated");
         }
         else
         {
-            throw new Exception("Remove pressed");
+            MessageUserControl.TryRun(() =>
+            {
+
+                sysmgr.Remove_CartItem(username, partid);
+
+            }, "Success", "Item removed");
         }
+
+        ShoppingCartList.DataBind();
     }
 }

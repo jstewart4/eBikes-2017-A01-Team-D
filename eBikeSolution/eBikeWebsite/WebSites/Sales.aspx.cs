@@ -60,9 +60,7 @@ public partial class WebSites_Sales : System.Web.UI.Page
             {
                 SalesController sysmgr = new SalesController();
                 sysmgr.Add_ItemToCart(username, partid, quantity);
-            //List<UserPlaylistTrack> refreshresults = sysmgr.Add_TrackToPLaylist(PlaylistName.Text, userName, trackid);
-            //PlayList.DataSource = refreshresults;
-            //PlayList.DataBind();
+
             }, "Success", "Item added to cart");
         }
         else
