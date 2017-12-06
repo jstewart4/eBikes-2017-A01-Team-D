@@ -84,11 +84,8 @@
     <Compile Include="Entities\StandardJobPart.cs" />
     <Compile Include="Entities\UnorderedPurchaseItemCart.cs" />
     <Compile Include="Entities\Vendor.cs" />
-<<<<<<< HEAD
     <Compile Include="POCOs\customerPOCO.cs" />
-=======
     <Compile Include="POCOs\FinalTotalPOCO.cs" />
->>>>>>> origin/master
     <Compile Include="POCOs\OutstandingOrdersPOCO.cs" />
     <Compile Include="POCOs\PurchaseOrderDetailsPOCO.cs" />
     <Compile Include="POCOs\PurchaseOrderPartsPOCO.cs" />
