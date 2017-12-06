@@ -73,8 +73,11 @@
                 <div class="tab-pane fade" id="receiving" role="tabpanel">
                     <asp:UpdatePanel ID="UpdatePanelReceiving" runat="server">
                       <ContentTemplate>
-                          <asp:Label ID="lblPONumber" runat="server"></asp:Label>    
+                          <asp:Label ID="Label6" runat="server" Text="Label"><b>PO: </b></asp:Label>
+                          <asp:Label ID="lblPONumber" runat="server"></asp:Label>
+                          <asp:Label ID="Label7" runat="server" Text="Label"><b>Vendor: </b></asp:Label>    
                           <asp:Label ID="lblVendorName" runat="server"></asp:Label>
+                          <asp:Label ID="Label8" runat="server" Text="Label"><b>Contact: </b></asp:Label>
                           <asp:Label ID="lblVendorPhone" runat="server"></asp:Label>
                                          
                           <asp:GridView ID="PODetailsGV" runat="server" CssClass="table table-bordered table-striped table-hover" AutoGenerateColumns="False">
@@ -99,7 +102,7 @@
                                           <asp:Label runat="server" Text='<%# Bind("QuantityOnOrder") %>' ID="Label4"></asp:Label>
                                       </ItemTemplate>
                                   </asp:TemplateField>
-                                  <asp:TemplateField HeaderText="QuantityOutstanding" SortExpression="QuantityOutstanding">                                   
+                                  <asp:TemplateField HeaderText="Outstanding" SortExpression="QuantityOutstanding">                                   
                                       <ItemTemplate>
                                           <asp:Label runat="server" Text='<%# Bind("QuantityOutstanding") %>' ID="Label5"></asp:Label>
                                       </ItemTemplate>
@@ -111,7 +114,7 @@
                                   </asp:TemplateField>
                                   <asp:TemplateField HeaderText="Returning" SortExpression="QuantityOutstanding">                                   
                                       <ItemTemplate>
-                                          <asp:TextBox ID="txtReceiving" runat="server" Width="30px"></asp:TextBox>
+                                          <asp:TextBox ID="txtReturning" runat="server" Width="30px"></asp:TextBox>
                                       </ItemTemplate>
                                   </asp:TemplateField>
                                   <asp:TemplateField HeaderText="Reason" SortExpression="Reason">                                   
@@ -121,9 +124,8 @@
                                   </asp:TemplateField>
                               </Columns>
                           </asp:GridView>
-
                           <asp:Button ID="btnReceive" runat="server" Text="Receive" CssClass="btn btn-success" />
-                          <asp:Button ID="btnForceCloser" runat="server" Text="Force Closer" CssClass="btn btn-danger" />
+                          <asp:Button ID="btnForceCloser" runat="server" Text="Force Closer" CssClass="btn btn-danger" OnClick="ForceCloser_Click" />
                           
                           <asp:TextBox ID="txtReasonFC" runat="server" Text="Reason for forced closer"></asp:TextBox>
 
@@ -135,7 +137,9 @@
                 
                 <div class="tab-pane fade" id="unorderedParts">
                     <asp:UpdatePanel ID="UpdatePanelUnorderedParts" runat="server">
-
+                        <ContentTemplate>
+                            
+                        </ContentTemplate>
                     </asp:UpdatePanel>
                 </div> <%--end of pane--%>          
 
@@ -150,5 +154,7 @@
         SelectMethod="GetOutstandingPO" 
         TypeName="eBikeSystem.BLL.ReceivingController">
     </asp:ObjectDataSource>
+
+  
 
 </asp:Content>

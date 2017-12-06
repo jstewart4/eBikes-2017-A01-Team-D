@@ -65,4 +65,10 @@ public partial class WebSites_Receiving : System.Web.UI.Page
         PODetailsGV.DataBind();
         
     }
+
+    protected void ForceCloser_Click(object sender, EventArgs e)
+    {
+        
+    }
+
 }
