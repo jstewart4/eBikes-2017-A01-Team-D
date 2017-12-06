@@ -75,6 +75,29 @@ namespace eBikeSystem.BLL
             }
         }
 
+        [DataObjectMethod(DataObjectMethodType.Update, false)]
+        public void ForceCloser_Update(int poID, string notes)
+        {
+            using (var context = new eBikeContext())
+            {
+                var result = context.PurchaseOrders.SingleOrDefault(po => po.PurchaseOrderID == poID);
+             
+                if (result != null)
+                {
+                    result.Notes = notes;
+                    result.Closed = true; 
+                    context.SaveChanges();
+                }
+
+
+            }
+        }
+
+
+
+
+
+        //Needs update later
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<UnorderedPurchaseItemCart>GetUnorderedVendorParts()
         {

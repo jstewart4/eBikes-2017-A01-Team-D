@@ -84,7 +84,7 @@
                               <Columns>
                                   <asp:TemplateField HeaderText="PurchaseOrderID" SortExpression="PurchaseOrderID" Visible="False">                                   
                                       <ItemTemplate>
-                                          <asp:Label runat="server" Text='<%# Bind("PurchaseOrderID") %>' ID="Label1"></asp:Label>
+                                          <asp:Label runat="server" Text='<%# Bind("PurchaseOrderID") %>' ID="PurchaseOrderID"></asp:Label>
                                       </ItemTemplate>
                                   </asp:TemplateField>
                                   <asp:TemplateField HeaderText="Part#" SortExpression="PartID">                                     

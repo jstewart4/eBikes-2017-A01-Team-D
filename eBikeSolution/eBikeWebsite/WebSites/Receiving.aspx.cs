@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using eBikeSystem.BLL;
 using eBike.Data.DTOs;
+using eBike.Data.Entities;
 
 public partial class WebSites_Receiving : System.Web.UI.Page
 {
@@ -68,7 +69,24 @@ public partial class WebSites_Receiving : System.Web.UI.Page
 
     protected void ForceCloser_Click(object sender, EventArgs e)
     {
-        
+        if(string.IsNullOrEmpty(txtReasonFC.Text))
+        {
+            MessageUserControl.ShowInfo("Warning", "Please provide reason for closing the purchase order.");
+        }
+        else
+        {
+
+            int poID = 0;
+            PurchaseOrder poData = new PurchaseOrder();
+            string notes = txtReasonFC.Text;
+            
+            //value from row is hardCoded. Must change later.
+            poID = int.Parse(((Label)PODetailsGV.Rows[1].FindControl("PurchaseOrderID")).Text);
+
+            ReceivingController sysmng = new ReceivingController();
+            sysmng.ForceCloser_Update(poID, notes);
+           
+        }
     }
 
 }
