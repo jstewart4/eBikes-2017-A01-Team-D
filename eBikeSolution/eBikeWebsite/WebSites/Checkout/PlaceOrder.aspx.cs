@@ -41,4 +41,9 @@ public partial class WebSites_Checkout_PlaceOrder : System.Web.UI.Page
             }
         }
     }
+
+    protected void CheckForException(object sender, ObjectDataSourceStatusEventArgs e)
+    {
+        MessageUserControl.HandleDataBoundException(e);
+    }
 }

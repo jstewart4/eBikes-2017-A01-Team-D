@@ -1,6 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="PlaceOrder.aspx.cs" Inherits="WebSites_Checkout_PlaceOrder" %>
 
+<%@ Register Src="~/UserControls/MessageUserControl.ascx" TagPrefix="uc1" TagName="MessageUserControl" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
+    <uc1:MessageUserControl runat="server" ID="MessageUserControl" />
     <style>
         .displayemployeename{
             float: right;
@@ -149,21 +152,21 @@
             <div class="well paymethod">
                 <asp:Label ID="PaymentMethodLabel" runat="server" Text="Payment Method" CssClass="payment-title"></asp:Label>
                 <asp:RadioButtonList ID="PaymentMethodRB" runat="server">
-                    <asp:ListItem Value="1" Selected="True" >Credit</asp:ListItem>
-                    <asp:ListItem Value="2">Debit</asp:ListItem>
+                    <asp:ListItem Value="C" Selected="True" >Credit</asp:ListItem>
+                    <asp:ListItem Value="D">Debit</asp:ListItem>
                 </asp:RadioButtonList>
             </div>
         </div>
         <div class="col-md-3">
             <div class="totals">
-                <asp:Label ID="SubTotalLabel" runat="server" Text="Sub-Total:"></asp:Label>
-                <asp:Label ID="SubTotal" runat="server" Text="$919.95"></asp:Label><br />
-                <asp:Label ID="DiscountLabel" runat="server" Text="Discount:"></asp:Label>
-                <asp:Label ID="Discount" runat="server" Text="$0.00"></asp:Label><br />
-                <asp:Label ID="GSTLabel" runat="server" Text="GST:"></asp:Label>
-                <asp:Label ID="GST" runat="server" Text="$46.00"></asp:Label><br />
-                <asp:Label ID="TotalLabel" runat="server" Text="Total:"></asp:Label>
-                <asp:Label ID="Total" runat="server" Text="$965.95"></asp:Label><br />
+                <asp:GridView ID="TotalsGridView" runat="server" AutoGenerateColumns="False" DataSourceID="FinalTotalODS" >
+                    <Columns>
+                        <asp:BoundField DataField="SubTotal" HeaderText="SubTotal" SortExpression="SubTotal" DataFormatString="{0:C}"></asp:BoundField>
+                        <asp:BoundField DataField="Discount" HeaderText="Discount" SortExpression="Discount" DataFormatString="{0:C}"></asp:BoundField>
+                        <asp:BoundField DataField="GST" HeaderText="GST" SortExpression="GST" DataFormatString="{0:C}"></asp:BoundField>
+                        <asp:BoundField DataField="Total" HeaderText="Total" SortExpression="Total" DataFormatString="{0:C}"></asp:BoundField>
+                    </Columns>
+                </asp:GridView>
             </div>
         </div>
     </div>
@@ -189,5 +192,11 @@
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="CouponListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="SalesCouponList" TypeName="eBikeSystem.BLL.SalesController"></asp:ObjectDataSource>
+
+    <asp:ObjectDataSource ID="FinalTotalODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ShoppingCart_FinalTotals" TypeName="eBikeSystem.BLL.SalesController">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="UserLabel" PropertyName="Text" Name="username" Type="String"></asp:ControlParameter>
+        </SelectParameters>
+    </asp:ObjectDataSource>
 </asp:Content>
 

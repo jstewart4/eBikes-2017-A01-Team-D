@@ -158,6 +158,46 @@ namespace eBikeSystem.BLL
                 if (customer == null)
                 {
                     totals.SubTotal = 0;
+                    totals.GST = 0;
+                    totals.Total = 0;
+                }
+                else
+                {
+                    int customerid = customer.OnlineCustomerID;
+
+                    var shoppingcart = (from x in context.ShoppingCarts
+                                        where x.OnlineCustomerID.Equals(customerid)
+                                        select x).FirstOrDefault();
+
+                    var sum = (from x in context.ShoppingCartItems
+                               where x.ShoppingCartID == shoppingcart.ShoppingCartID
+                               select (x.Quantity * x.Part.SellingPrice)).Sum();
+
+                    totals.SubTotal = sum;
+                    totals.GST = Decimal.Multiply(sum, decimal.Parse("0.05"));
+                    totals.Total = totals.SubTotal + totals.GST;
+                }
+
+                return totals;
+            }
+
+                    
+        }//ShoppingCartTotals
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public FinalTotalPOCO ShoppingCart_FinalTotals(string username)
+        {
+            using (var context = new eBikeContext())
+            {
+                var totals = new FinalTotalPOCO();
+
+                var customer = (from x in context.OnlineCustomers
+                                where x.UserName.Equals(username)
+                                select x).FirstOrDefault();
+
+                if (customer == null)
+                {
+                    totals.SubTotal = 0;
                     totals.Discount = 0;
                     totals.GST = 0;
                     totals.Total = 0;
@@ -182,9 +222,7 @@ namespace eBikeSystem.BLL
 
                 return totals;
             }
-
-                    
-        }//ShoppingCartTotals
+        }//ShoppingCart_FinalTotals
 
         public void Update_CartItem(string username, int partid, int quantity)
         {
@@ -205,7 +243,10 @@ namespace eBikeSystem.BLL
                                   select x.ShoppingCartItemID).FirstOrDefault();
 
                 var updateItem = context.ShoppingCartItems.Find(updateItemID);
-
+                if (updateItem == null)
+                {
+                    throw new Exception("Item is nullll");
+                }
                 updateItem.Quantity = quantity;
 
                 context.Entry(updateItem).Property(y => y.Quantity).IsModified = true;

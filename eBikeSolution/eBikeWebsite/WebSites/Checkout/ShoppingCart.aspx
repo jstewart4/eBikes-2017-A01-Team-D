@@ -64,7 +64,7 @@
                                     <asp:Button runat="server"
                                         ID="UpdateCartBtn"
                                         CommandArgument='<%# Eval("PartID") %>'
-                                        CommandName="Update"
+                                        CommandName="Change"
                                         Text="Update"
                                         CssClass="btn btn-primary" />
                         </td>
@@ -102,7 +102,7 @@
                                     <asp:Button runat="server"
                                         ID="UpdateCartBtn"
                                         CommandArgument='<%# Eval("PartID") %>'
-                                        CommandName="Update"
+                                        CommandName="Change"
                                         Text="Update"
                                         CssClass="btn btn-primary" />
                         </td>                      
@@ -178,16 +178,12 @@
             </div>
         </div>
     </div>
-    <asp:ObjectDataSource ID="ShoppingCartListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ShoppingCartList" TypeName="eBikeSystem.BLL.SalesController" UpdateMethod="Update_CartItem" OnSelected="CheckForException" OnUpdated="CheckForException">
+    <asp:ObjectDataSource ID="ShoppingCartListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ShoppingCartList" TypeName="eBikeSystem.BLL.SalesController"  OnSelected="CheckForException">
         <SelectParameters>
             <asp:ControlParameter ControlID="UserLabel" PropertyName="Text" DefaultValue="" Name="username" Type="String"></asp:ControlParameter>
 
         </SelectParameters>
-        <UpdateParameters>
-            <asp:Parameter Name="username" Type="String"></asp:Parameter>
-            <asp:Parameter Name="partid" Type="Int32"></asp:Parameter>
-            <asp:Parameter Name="quantity" Type="Int32"></asp:Parameter>
-        </UpdateParameters>
+
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="TotalsODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ShoppingCart_Totals" TypeName="eBikeSystem.BLL.SalesController">
         <SelectParameters>

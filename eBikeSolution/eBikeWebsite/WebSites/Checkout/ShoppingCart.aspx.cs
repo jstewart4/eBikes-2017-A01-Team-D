@@ -58,7 +58,7 @@ public partial class WebSites_Checkout_ShoppingCart : System.Web.UI.Page
 
         SalesController sysmgr = new SalesController();
 
-        if (e.CommandName == "Update")
+        if (e.CommandName == "Change")
         {
             int quantity = int.Parse((row.FindControl("QuantityTextBox") as TextBox).Text.ToString());
 
@@ -80,5 +80,7 @@ public partial class WebSites_Checkout_ShoppingCart : System.Web.UI.Page
         }
 
         ShoppingCartList.DataBind();
+
+        TotalsGridView.DataBind();
     }
 }
