@@ -76,26 +76,42 @@ namespace eBikeSystem.BLL
         }
 
         [DataObjectMethod(DataObjectMethodType.Update, false)]
-        public void ForceCloser_Update(int poID, string notes)
+        public void ForceCloser_Update(PurchaseOrder closePOData, List<PurchaseOrderDetailsPOCO> closingPODetailsData)
         {
             using (var context = new eBikeContext())
             {
-                var result = context.PurchaseOrders.SingleOrDefault(po => po.PurchaseOrderID == poID);
+                var result = context.PurchaseOrders.SingleOrDefault(po => po.PurchaseOrderID == closePOData.PurchaseOrderID);
              
                 if (result != null)
                 {
-                    result.Notes = notes;
-                    result.Closed = true; 
+                    result.Notes = closePOData.Notes;
+                    result.Closed = closePOData.Closed;
+                    //get data from listing for future update
+                    foreach (PurchaseOrderDetailsPOCO item in closingPODetailsData)
+                    {
+                        Part checkPartExists = (from p in context.Parts
+                                                where p.PartID == item.PartID
+                                                select p).SingleOrDefault(); 
+                        if(checkPartExists != null)
+                        {   //make sure that qnt on order is not negative number
+                            if (checkPartExists.QuantityOnOrder >= item.QuantityOutstanding)
+                            {
+                                checkPartExists.QuantityOnHand -= item.QuantityOutstanding;
+                            } 
+                            else
+                            {
+                                throw new Exception("The quantity on order is less than outstanding             quantity.");
+                            }                         
+                        }
+                        else
+                        {
+                            throw new Exception("Sorry there is no such part number in database.");
+                        }
+                    }
                     context.SaveChanges();
-                }
-
-
+                }                
             }
         }
-
-
-
-
 
         //Needs update later
         [DataObjectMethod(DataObjectMethodType.Select, false)]

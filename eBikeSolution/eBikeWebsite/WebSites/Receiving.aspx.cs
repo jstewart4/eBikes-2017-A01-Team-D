@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using eBikeSystem.BLL;
 using eBike.Data.DTOs;
 using eBike.Data.Entities;
+using eBike.Data.POCOs;
 
 public partial class WebSites_Receiving : System.Web.UI.Page
 {
@@ -75,18 +76,36 @@ public partial class WebSites_Receiving : System.Web.UI.Page
         }
         else
         {
-
-            int poID = 0;
-            PurchaseOrder poData = new PurchaseOrder();
-            string notes = txtReasonFC.Text;
-            
-            //value from row is hardCoded. Must change later.
-            poID = int.Parse(((Label)PODetailsGV.Rows[1].FindControl("PurchaseOrderID")).Text);
-
             ReceivingController sysmng = new ReceivingController();
-            sysmng.ForceCloser_Update(poID, notes);
-           
+
+            PurchaseOrder poData = new PurchaseOrder();
+            //get value to update PO table
+            poData.PurchaseOrderID = int.Parse(((Label)PODetailsGV.Rows[0].FindControl("PurchaseOrderID")).Text);
+            poData.Notes = txtReasonFC.Text;
+            poData.Closed = true;
+
+            List<PurchaseOrderDetailsPOCO> poDetailsList = new List<PurchaseOrderDetailsPOCO>();
+            foreach (GridViewRow row in PODetailsGV.Rows)
+            {
+                PurchaseOrderDetailsPOCO data = new PurchaseOrderDetailsPOCO();
+                data.PurchaseOrderID = int.Parse(((Label)row.FindControl("PurchaseOrderID")).Text);
+                data.PartID = int.Parse(((Label)row.FindControl("PartID")).Text);
+                data.QuantityOutstanding = int.Parse(((Label)row.FindControl("QuantityOutstanding")).Text);
+                //add single item to the list
+                poDetailsList.Add(data);
+            }
+            sysmng.ForceCloser_Update(poData, poDetailsList);
+            RefreshPage();
         }
+    }
+
+    private void RefreshPage()
+    {
+        PODetailsGV.DataSource = null;
+        PODetailsGV.DataBind();
+        lblPONumber.Text = "";
+        lblVendorName.Text = "";
+        lblVendorPhone.Text = "";
     }
 
 }
