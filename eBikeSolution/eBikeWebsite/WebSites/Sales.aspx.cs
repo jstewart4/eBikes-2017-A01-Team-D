@@ -56,12 +56,20 @@ public partial class WebSites_Sales : System.Web.UI.Page
 
             int quantity = int.Parse((row.FindControl("QuantityOrdered") as TextBox).Text.ToString());
 
-            MessageUserControl.TryRun(() =>
+            if (quantity < 1)
             {
-                SalesController sysmgr = new SalesController();
-                sysmgr.Add_ItemToCart(username, partid, quantity);
+                MessageUserControl.ShowInfo("Warning", "Quantity must be at least 1");
+            }
+            else
+            {
+                MessageUserControl.TryRun(() =>
+                {
+                    SalesController sysmgr = new SalesController();
+                    sysmgr.Add_ItemToCart(username, partid, quantity);
 
-            }, "Success", "Item added to cart");
+                }, "Success", "Item added to cart");
+            }
+            
         }
         else
         {

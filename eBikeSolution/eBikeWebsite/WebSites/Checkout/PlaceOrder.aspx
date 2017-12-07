@@ -117,7 +117,7 @@
                             </td>
                         </tr>
                         <tr runat="server">
-                            <td runat="server" style="text-align: center; background-color: #5D7B9D; font-family: Verdana, Arial, Helvetica, sans-serif; color: #FFFFFF"></td>
+                            <td runat="server" style="text-align: center; background-color: #FFFFFF; font-family: Verdana, Arial, Helvetica, sans-serif; color: #FFFFFF"></td>
                         </tr>
                     </table>
                 </LayoutTemplate>
@@ -141,6 +141,7 @@
             <div class="well coupon-cont clearfix">
                 <asp:DropDownList ID="CouponListDD" runat="server" DataSourceID="CouponListODS" DataTextField="CouponIDValue" DataValueField="CouponDiscount" CssClass="form-control coupon" AppendDataBoundItems="true" >
                     <asp:ListItem Text="Select a coupon code..." Value=0></asp:ListItem>
+                    <asp:ListItem Text="AppDev10" Value=10></asp:ListItem>
                 </asp:DropDownList>
                 <asp:LinkButton ID="CouponRefreshBtn" runat="server"
                                  CssClass="btn btn-primary" OnClick="CouponRefreshBtn_Click" >
@@ -148,7 +149,7 @@
                     </asp:LinkButton>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="well paymethod">
                 <asp:Label ID="PaymentMethodLabel" runat="server" Text="Payment Method" CssClass="payment-title"></asp:Label>
                 <asp:RadioButtonList ID="PaymentMethodRB" runat="server">

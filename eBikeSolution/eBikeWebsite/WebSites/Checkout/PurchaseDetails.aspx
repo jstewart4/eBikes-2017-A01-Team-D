@@ -36,7 +36,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-5">
             <h3>Billing Details</h3>
             <fieldset>
                 <div class="form-group">             
@@ -57,9 +57,8 @@
                 </div>
             </fieldset>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-7">
+
+        <div class="col-md-5">
             <h3>Shipping Details</h3>
             <fieldset>
                 <div class="form-group">             
@@ -82,7 +81,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-10">
             <div class="continuebutton">
                 <asp:LinkButton ID="NextButton" runat="server"
                                  CssClass="btn btn-primary" PostBackUrl="~/WebSites/Checkout/PlaceOrder.aspx" >

@@ -116,10 +116,12 @@
                                     </td>
                                 </tr>
                                 <tr runat="server">
-                                    <td runat="server" style="text-align: center; background-color: #5D7B9D; font-family: Verdana, Arial, Helvetica, sans-serif; color: #000000">
-                                        <asp:DataPager runat="server" ID="DataPager1">
+                                    <td runat="server" style="text-align: center; background-color: #F5F5F5; font-family: Verdana, Arial, Helvetica, sans-serif; color: #000000">
+                                        <asp:DataPager runat="server" ID="DataPager2">
                                             <Fields>
-                                                <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowLastPageButton="True"></asp:NextPreviousPagerField>
+                                                <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False"></asp:NextPreviousPagerField>
+                                                <asp:NumericPagerField></asp:NumericPagerField>
+                                                <asp:NextPreviousPagerField ButtonType="Button" ShowLastPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False"></asp:NextPreviousPagerField>
                                             </Fields>
                                         </asp:DataPager>
                                     </td>
