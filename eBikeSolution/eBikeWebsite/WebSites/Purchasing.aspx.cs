@@ -48,10 +48,15 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
 
     protected void GetCreatePO_Click(object sender, EventArgs e)
     {
-        // only show the GridView and Listviews on click
+        // only show the GridViews, Listviews and buttons on click
         VendorDetailGridView.Visible = true;
         CurrentPOLabel.Visible = true;
         CurrentInventoryLabel.Visible = true;
+        UpdateButton.Visible = true;
+        PlaceButton.Visible = true;
+        DeleteButton.Visible = true;
+        ClearButton.Visible = true;
+        TotalsGridView.Visible = true;
 
         // set the current active order ODS to the listview
         CurrentPOListView.DataSourceID = "CurrentPOODS";
@@ -121,5 +126,25 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
     protected void CurrentInventoryListView_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
         // !*!*! ADD THE ADD BUTTON LOGIC HERE
+    }
+
+    protected void UpdateButton_Click(object sender, EventArgs e)
+    {
+        // !*!*! ADD THE UPDATE BUTTON LOGIC HERE
+    }
+
+    protected void PlaceButton_Click(object sender, EventArgs e)
+    {
+        // !*!*! ADD THE PLACE ORDER BUTTON LOGIC HERE
+    }
+
+    protected void DeleteButton_Click(object sender, EventArgs e)
+    {
+        // !*!*! ADD THE DELETE BUTTON LOGIC HERE
+    }
+
+    protected void ClearButton_Click(object sender, EventArgs e)
+    {
+        // !*!*! ADD THE CLEAR BUTTON LOGIC HERE
     }
 }

@@ -12,12 +12,30 @@
         td{
             padding: 10px;
         }
+
+        h2 {
+            font-weight:bold;
+        }
+
+        .purchaseorder td:first-child {
+            width: 1016px;
+        }
+
+        .currentinventory td:first-child {
+            width: 1016px;
+        }
+
         th{
             padding: 10px;
             text-align: center;
         }
-        .purchaseorder {
+                        
+        .purchaseorder, .currentinventory {
             margin-top: -50px;
+        }
+
+        input {
+            margin-right: 15px;
         }
 
     </style>
@@ -34,7 +52,7 @@
             <asp:Label ID="VendorListLabel" runat="server" Text="Vendor"></asp:Label>&nbsp;&nbsp;&nbsp;
                 <asp:DropDownList ID="VendorDDL" runat="server" DataSourceID="VendorListODS" DataTextField="VendorName"
                     DataValueField="VendorID" CssClass="form-control" AutoPostBack="false" AppendDataBoundItems="true" />&nbsp;&nbsp;&nbsp;
-                <asp:Button ID="GetCreatePOButton" CssClass="btn btn-primary" runat="server" Text="Get / Create PO" OnClick="GetCreatePO_Click"/>
+                <asp:Button ID="GetCreatePOButton" CssClass="btn btn-info" runat="server" Text="Get / Create PO" OnClick="GetCreatePO_Click"/>
             </div>
             <div class="col-md-4">
                 <asp:GridView ID="VendorDetailGridView" runat="server" AutoGenerateColumns="False" DataSourceID="VendorDetailsODS" Visible="false">
@@ -119,7 +137,24 @@
                 </LayoutTemplate>
             </asp:ListView>
         </div>
-        <div class="col-md-12">
+        <div class="form-inline col-md-12">
+        <div class="col-md-6">
+        <asp:Button ID="UpdateButton" CssClass="btn btn-primary" runat="server" Text="Update" OnClick="UpdateButton_Click" Visible="false"/>
+        <asp:Button ID="PlaceButton" CssClass="btn btn-success" runat="server" Text="Place" OnClick="PlaceButton_Click" Visible="false"/>
+        <asp:Button ID="DeleteButton" CssClass="btn btn-danger" runat="server" Text="Delete" OnClick="DeleteButton_Click" Visible="false"/>
+        <asp:Button ID="ClearButton" CssClass="btn btn-default" runat="server" Text="Clear" OnClick="ClearButton_Click" Visible="false"/>
+            </div>
+        <div class="col-md-6">
+        <asp:GridView ID="TotalsGridView" runat="server" Visible="false" AutoGenerateColumns="False" DataSourceID="TotalsODS">
+            <Columns>
+                <asp:BoundField DataField="SubTotal" HeaderText="SubTotal" SortExpression="SubTotal" DataFormatString="{0:C}"></asp:BoundField>
+                <asp:BoundField DataField="GST" HeaderText="GST" SortExpression="GST" DataFormatString="{0:C}"></asp:BoundField>
+                <asp:BoundField DataField="Total" HeaderText="Total" SortExpression="Total" DataFormatString="{0:C}"></asp:BoundField>
+            </Columns>
+        </asp:GridView>
+            </div>
+            </div>
+        <div class="col-md-12 currentinventory">
             <h2><asp:Label ID="CurrentInventoryLabel" runat="server" Text="Current Inventory" Visible="false"></asp:Label></h2>
             <asp:ListView ID="CurrentInventoryListView" runat="server" OnItemCommand="CurrentInventoryListView_ItemCommand">
                 <AlternatingItemTemplate>
@@ -214,6 +249,11 @@
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="VendorListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="VendorList" TypeName="eBikeSystem.BLL.PurchasingController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="VendorDetailsODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="VendorDetails" TypeName="eBikeSystem.BLL.PurchasingController">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="VendorDDL" PropertyName="SelectedValue" Name="vendorid" Type="Int32"></asp:ControlParameter>
+        </SelectParameters>
+    </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="TotalsODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="PurchaseOrderTotals" TypeName="eBikeSystem.BLL.PurchasingController">
         <SelectParameters>
             <asp:ControlParameter ControlID="VendorDDL" PropertyName="SelectedValue" Name="vendorid" Type="Int32"></asp:ControlParameter>
         </SelectParameters>

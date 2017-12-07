@@ -150,5 +150,25 @@ namespace eBikeSystem.BLL
                 return results.ToList();
             }
         }
+
+        // query to find the subtotal, tax and total of the current purchase order 
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public PurchaseOrderTotalsPOCO PurchaseOrderTotals(int vendorid)
+        {
+            using (var context = new eBikeContext())
+            {
+                var ordertotals = new PurchaseOrderTotalsPOCO();
+
+                var results = (from x in context.PurchaseOrderDetails
+                               where x.PurchaseOrder.VendorID == vendorid && x.PurchaseOrder.PurchaseOrderNumber == null && x.PurchaseOrder.OrderDate == null
+                               select (x.Quantity * x.Part.SellingPrice)).Sum();
+
+                               ordertotals.SubTotal = results;
+                               ordertotals.GST = Decimal.Multiply(results, decimal.Parse("0.05"));
+                               ordertotals.Total = ordertotals.SubTotal + ordertotals.GST;
+
+                return ordertotals;
+            }
+        }
     }
 }
