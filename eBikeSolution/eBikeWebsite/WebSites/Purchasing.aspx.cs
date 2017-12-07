@@ -1,4 +1,5 @@
-﻿using eBike.Data.Entities.Security;
+﻿using eBike.Data.Entities;
+using eBike.Data.Entities.Security;
 using eBikeSystem.BLL;
 using eBikeSystem.BLL.Security;
 using System;
@@ -28,6 +29,7 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
                 }
             }
 
+            // this is to show the currently logged in users name on the page
             if (User.IsInRole(SecurityRoles.Staff))
             {
                 var sysmgr = new UserManager();
@@ -46,43 +48,78 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
 
     protected void GetCreatePO_Click(object sender, EventArgs e)
     {
-        VendorName.Text = "Vendor Name: " + VendorDDL.SelectedValue;
-        VendorCity.Text = "Vendor City: " + VendorDDL.SelectedValue;
-        VendorPhone.Text = "Vendor Phone: " + VendorDDL.SelectedValue;
-
-        VendorName.Visible = true;
-        VendorCity.Visible = true;
-        VendorPhone.Visible = true;
+        // only show the GridView and Listviews on click
+        VendorDetailGridView.Visible = true;
         CurrentPOLabel.Visible = true;
         CurrentInventoryLabel.Visible = true;
 
-
+        // set the current active order ODS to the listview
         CurrentPOListView.DataSourceID = "CurrentPOODS";
         CurrentPOListView.DataBind();
 
-        CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
-        CurrentInventoryListView.DataBind();
-
         if (CurrentPOListView.Items.Count == 0)
         {
-            // DO LOGIC TO CREATE SUGGESTED PURCHASE ORDER HERE, THEN BIND CurrentPOListView AGAIN
-            MessageUserControl.ShowInfo("No active purchase order found. Suggested Purchase Order Generated.");
-
-
+            // set the suggested order ODS to the listview and bind it
             CurrentPOListView.DataSourceID = "SuggestedPOODS";
             CurrentPOListView.DataBind();
 
-        }
+            PurchaseOrder purchaseorder = new PurchaseOrder();
 
+            // get the vendorID from the DDL and set it into purchaseorder
+            purchaseorder.VendorID = int.Parse(VendorDDL.SelectedValue);
+
+            // !*!*! TODO !*!*! pass the subtotal, taxamount to purchaseorder here
+
+            // create new list to store the purchase order details
+            List<PurchaseOrderDetail> purchaseorderdetails = new List<PurchaseOrderDetail>();
+
+            // go through the needed rows of the listview to get the data needed for suggested order and add it to the purchaseorderdetails list
+            foreach (ListViewItem item in CurrentPOListView.Items)
+            {
+                PurchaseOrderDetail purchaseorderdetail = new PurchaseOrderDetail();
+
+                purchaseorderdetail.PartID = int.Parse((item.FindControl("PartIDLabel2") as Label).Text.ToString());
+                purchaseorderdetail.Quantity = int.Parse((item.FindControl("QuantityTextBox2") as TextBox).Text.ToString());
+                purchaseorderdetail.PurchasePrice = decimal.Parse((item.FindControl("PurchasePriceTextBox2") as TextBox).Text.ToString());
+
+                purchaseorderdetails.Add(purchaseorderdetail);
+            }
+
+            // pass the data to the controller to create the suggested order
+            var sysmgr = new PurchasingController();
+            sysmgr.NewSuggestedOrder(purchaseorder, purchaseorderdetails);
+
+            // Bind the new current inventory for the suggested order
+            CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
+            CurrentInventoryListView.DataBind();
+
+            // this is for if the vendor has no parts available to be automatically put on the suggested purchase order
+            if (CurrentPOListView.Items.Count == 0)
+            {
+                MessageUserControl.ShowInfo("Information", "No active purchase order found. A suggested purchase order has been created, however, no parts from this vendor are eligible for the suggested purchase order.");
+            }
+            else // else, the suggested parts will be shown on the suggested order
+            {
+                MessageUserControl.ShowInfo("Information", "No active purchase order found. A suggested purchase order has been created.");
+            }
+        }
+        else
+        {
+            // Bind the new current inventory for the current active order
+            CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
+            CurrentInventoryListView.DataBind();
+
+            MessageUserControl.ShowInfo("Information", "Current active order found.");
+        }
     }
 
     protected void CurrentPOListView_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
-
+        // !*!*! ADD THE REMOVE BUTTON LOGIC HERE
     }
 
     protected void CurrentInventoryListView_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
-
+        // !*!*! ADD THE ADD BUTTON LOGIC HERE
     }
 }

@@ -13,6 +13,7 @@ namespace eBikeSystem.BLL
     [DataObject]
     public class PurchasingController
     {
+        // Query to populate the drop down list with vendors to select
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<VendorListPOCO> VendorList()
         {
@@ -30,6 +31,25 @@ namespace eBikeSystem.BLL
             }
         }
 
+        // Query to show the vendor details for the selected vendor
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<VendorListPOCO> VendorDetails(int vendorid)
+        {
+            using (var context = new eBikeContext())
+            {
+                var results = (from x in context.Vendors
+                               where x.VendorID == vendorid
+                               select new VendorListPOCO
+                               {
+                                   VendorName = x.VendorName,
+                                   City = x.City,
+                                   Phone = x.Phone
+                               }).OrderBy(z => z.VendorName);
+                return results.ToList();
+            }
+        }
+
+        // Query to find the current active purchase order for the vendor
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<PurchaseOrderPartsPOCO> ActivePurchaseOrder_ByVendor(int vendorid)
         {
@@ -55,35 +75,7 @@ namespace eBikeSystem.BLL
             }
         }
 
-        [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public List<PurchaseOrderPartsPOCO> SuggestedPurchaseOrder_ByVendor(int vendorid)
-        {
-            using (var context = new eBikeContext())
-            {
-                //var suggestedorder = (from x in context.PurchaseOrders
-                //                   where x.VendorID == vendorid
-                //                   select x.PurchaseOrderID).FirstOrDefault();
-
-                var buffer = (from x in context.Parts
-                             where x.VendorID == vendorid && x.ReorderLevel - (x.QuantityOnHand + x.QuantityOnOrder) > 0
-                             select x.PartID).ToList();
-
-                var results = (from x in context.PurchaseOrderDetails
-                               where x.Part.VendorID == vendorid && buffer.Contains(x.Part.PartID)
-                               select new PurchaseOrderPartsPOCO
-                               {
-                                   PartID = x.Part.PartID,
-                                   Description = x.Part.Description,
-                                   QuantityOnHand = x.Part.QuantityOnHand,
-                                   QuantityOnOrder = x.Part.QuantityOnOrder,
-                                   ReorderLevel = x.Part.ReorderLevel,
-                                   Quantity = x.Quantity,
-                                   PurchasePrice = x.PurchasePrice
-                               }).OrderBy(z => z.PartID);
-                return results.ToList();
-            }
-        }
-
+        // Query to display the current inventory not on the vendor purchase order
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<PurchaseOrderPartsPOCO> PartsInventory_ByVendor(int vendorid)
         {
@@ -107,6 +99,52 @@ namespace eBikeSystem.BLL
                                    QuantityOnOrder = x.QuantityOnOrder,
                                    ReorderLevel = x.ReorderLevel,
                                    Buffer = x.ReorderLevel - (x.QuantityOnHand + x.QuantityOnOrder),
+                                   PurchasePrice = x.PurchasePrice
+                               }).OrderBy(z => z.PartID);
+                return results.ToList();
+            }
+        }
+
+        // this is to create the suggested order in the database
+        public void NewSuggestedOrder(PurchaseOrder purchaseorder, List<PurchaseOrderDetail> purchaseorderdetails)
+        {
+            using (var context = new eBikeContext()) // start transaction
+            {
+                // MUST CHANGE THIS TO REFLECT CURRENT LOGGED IN EMPLOYEE //
+                purchaseorder.EmployeeID = 1;
+                ////////////////////////////////////////////////////////////
+
+                // add the created suggested purchase order to the database
+                purchaseorder = context.PurchaseOrders.Add(purchaseorder);    //staging
+
+                // add the created suggested purchase order details to the database
+                foreach (PurchaseOrderDetail detail in purchaseorderdetails)
+                {
+                    detail.PurchaseOrderID = purchaseorder.PurchaseOrderID;
+                    context.PurchaseOrderDetails.Add(detail);
+                }
+
+                // save the changes to database and end transaction
+                context.SaveChanges();
+            }
+        }
+
+        // query to find parts for and display the suggested order 
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<PurchaseOrderPartsPOCO> SuggestedPurchaseOrder_ByVendor(int vendorid)
+        {
+            using (var context = new eBikeContext())
+            {
+                var results = (from x in context.Parts
+                               where x.VendorID == vendorid && x.ReorderLevel - (x.QuantityOnHand + x.QuantityOnOrder) > 0
+                               select new PurchaseOrderPartsPOCO
+                               {
+                                   PartID = x.PartID,
+                                   Description = x.Description,
+                                   QuantityOnHand = x.QuantityOnHand,
+                                   QuantityOnOrder = x.QuantityOnOrder,
+                                   ReorderLevel = x.ReorderLevel,
+                                   Quantity = x.ReorderLevel - (x.QuantityOnHand + x.QuantityOnOrder),
                                    PurchasePrice = x.PurchasePrice
                                }).OrderBy(z => z.PartID);
                 return results.ToList();
