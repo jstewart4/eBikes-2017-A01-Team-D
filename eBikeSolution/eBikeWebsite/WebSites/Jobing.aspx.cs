@@ -46,7 +46,7 @@ public partial class WebSites_Jobing : System.Web.UI.Page
 
     protected void NewJob_Click(object sender, EventArgs e)
     {
-        CurrentJobsListView.Visible = false;
+        CurrentJobsList.Visible = false;
         NewJob.Visible = false;
     }
 }
