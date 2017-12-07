@@ -168,14 +168,38 @@ namespace eBikeSystem.BLL
                     var shoppingcart = (from x in context.ShoppingCarts
                                         where x.OnlineCustomerID.Equals(customerid)
                                         select x).FirstOrDefault();
+                    if (shoppingcart == null)
+                    {
+                        totals.SubTotal = 0;
+                        totals.GST = 0;
+                        totals.Total = 0;
+                    }
+                    else
+                    {
+                        var items = (from x in context.ShoppingCartItems
+                                    where x.ShoppingCartID == shoppingcart.ShoppingCartID
+                                    select x).FirstOrDefault();
+                        if (items == null)
+                        {
+                            totals.SubTotal = 0;
+                            totals.GST = 0;
+                            totals.Total = 0;
+                        }
+                        else
+                        {
+                            var sum = (from x in context.ShoppingCartItems
+                                       where x.ShoppingCartID == shoppingcart.ShoppingCartID
+                                       select (x.Quantity * x.Part.SellingPrice)).Sum();
 
-                    var sum = (from x in context.ShoppingCartItems
-                               where x.ShoppingCartID == shoppingcart.ShoppingCartID
-                               select (x.Quantity * x.Part.SellingPrice)).Sum();
+                            totals.SubTotal = sum;
+                            totals.GST = Decimal.Multiply(sum, decimal.Parse("0.05"));
+                            totals.Total = totals.SubTotal + totals.GST;
+                        }
 
-                    totals.SubTotal = sum;
-                    totals.GST = Decimal.Multiply(sum, decimal.Parse("0.05"));
-                    totals.Total = totals.SubTotal + totals.GST;
+                        
+                    }
+
+                    
                 }
 
                 return totals;
@@ -208,20 +232,48 @@ namespace eBikeSystem.BLL
 
                     int customerid = customer.OnlineCustomerID;
 
-                    double coupondiscount = couponid;
+                    double coupondiscount = (from x in context.Coupons
+                                            where x.CouponID == couponid
+                                            select x.CouponDiscount).FirstOrDefault();
 
                     var shoppingcart = (from x in context.ShoppingCarts
                                         where x.OnlineCustomerID.Equals(customerid)
                                         select x).FirstOrDefault();
+                    if (shoppingcart == null)
+                    {
+                        totals.SubTotal = 0;
+                        totals.Discount = 0;
+                        totals.GST = 0;
+                        totals.Total = 0;
+                    }
+                    else
+                    {
+                        var items = (from x in context.ShoppingCartItems
+                                     where x.ShoppingCartID == shoppingcart.ShoppingCartID
+                                     select x).FirstOrDefault();
+                        if (items == null)
+                        {
+                            totals.SubTotal = 0;
+                            totals.Discount = 0;
+                            totals.GST = 0;
+                            totals.Total = 0;
+                        }
+                        else
+                        {
+                            var sum = (from x in context.ShoppingCartItems
+                                       where x.ShoppingCartID == shoppingcart.ShoppingCartID
+                                       select (x.Quantity * x.Part.SellingPrice)).Sum();
 
-                    var sum = (from x in context.ShoppingCartItems
-                               where x.ShoppingCartID == shoppingcart.ShoppingCartID
-                               select (x.Quantity * x.Part.SellingPrice)).Sum();
+                            totals.SubTotal = sum;
+                            totals.Discount = Decimal.Multiply(sum, decimal.Parse((coupondiscount / 100).ToString()));
+                            totals.GST = Decimal.Multiply((sum - totals.Discount), decimal.Parse("0.05"));
+                            totals.Total = totals.SubTotal - totals.Discount + totals.GST;
+                        }
 
-                    totals.SubTotal = sum;
-                    totals.Discount = Decimal.Multiply(sum, decimal.Parse((coupondiscount / 100).ToString()));
-                    totals.GST = Decimal.Multiply((sum - totals.Discount), decimal.Parse("0.05"));
-                    totals.Total = totals.SubTotal - totals.Discount + totals.GST;
+                        
+                    }
+
+                    
                 }
 
                 return totals;
@@ -281,6 +333,123 @@ namespace eBikeSystem.BLL
 
             }
         }//Remove_CartItem
+
+        public List<Part> Place_Order(string username, int couponid, FinalTotalPOCO totals, string paymethod)
+        {
+            using (var context = new eBikeContext())
+            {
+                //Get the customers id
+                int customerid = (from x in context.OnlineCustomers
+                                  where x.UserName.Equals(username)
+                                  select x.OnlineCustomerID).FirstOrDefault();
+                if (customerid == 0)
+                {
+                    throw new Exception("You do not have a shopping cart, please add items to place an order");
+                }
+                else
+                {
+                    //Create and populate a new Sale
+                    Sale newsale = new Sale();
+                    newsale.SaleDate = DateTime.Now;
+                    newsale.UserName = username;
+                    newsale.EmployeeID = 301;
+                    newsale.TaxAmount = totals.GST;
+                    newsale.SubTotal = totals.SubTotal;
+                    //Check if a coupon has been selected (FK constraint)
+                    if (couponid == 0)
+                    {
+                        newsale.CouponID = null;
+                    }
+                    else
+                    {
+                        newsale.CouponID = couponid;
+                    }                   
+                    newsale.PaymentType = paymethod;
+                    newsale.PaymentToken = Guid.NewGuid();
+
+                    //Add the new Sale to database
+                    newsale = context.Sales.Add(newsale);
+
+                    //Get the customers shopping cart id
+                    int shoppingcartid = (from x in context.ShoppingCarts
+                                          where x.OnlineCustomerID.Equals(customerid)
+                                          select x.ShoppingCartID).FirstOrDefault();
+
+                    //Get a list of all items in the customers shopping cart
+                    List<ShoppingCartItem> useritems = (from x in context.ShoppingCartItems
+                                                        where x.ShoppingCart.ShoppingCartID.Equals(shoppingcartid)
+                                                        select x).ToList();
+
+                    //Create a list of parts to be filled with backordered parts
+                    List<Part> backorderedparts = new List<Part>();
+
+                    //Create a Sale Detail for each item
+                    foreach (ShoppingCartItem item in useritems)
+                    {
+                        //Get the corresponding part info
+                        Part part = (from x in context.Parts
+                                    where x.PartID.Equals(item.PartID)
+                                    select x).FirstOrDefault();
+
+                        //Check the remaining quantity of the part
+                        if (item.Quantity > part.QuantityOnHand)
+                        {
+                            //Create a backordered sale detail
+                            SaleDetail boitem = new SaleDetail();
+                            boitem.SaleID = newsale.SaleID;
+                            boitem.PartID = part.PartID;
+                            boitem.Quantity = item.Quantity;
+                            boitem.SellingPrice = part.SellingPrice;
+                            boitem.Backordered = true;
+                            boitem.ShippedDate = null;
+
+                            //Add the backordered part to return list
+                            backorderedparts.Add(part);
+
+                            //Add the backordered sale detail to database
+                            context.SaleDetails.Add(boitem);
+
+                        }
+                        else
+                        {
+                            //Create a regular sale detail
+                            SaleDetail saleitem = new SaleDetail();
+                            saleitem.SaleID = newsale.SaleID;
+                            saleitem.PartID = part.PartID;
+                            saleitem.Quantity = item.Quantity;
+                            saleitem.SellingPrice = part.SellingPrice;
+                            saleitem.Backordered = false;
+                            saleitem.ShippedDate = DateTime.Now;
+
+                            //Update QuantityOnHand for the part
+                            part.QuantityOnHand = part.QuantityOnHand - item.Quantity;
+
+                            //Make change to QOH in the database
+                            context.Entry(part).Property(y => y.QuantityOnHand).IsModified = true;
+
+                            //Add the new sale detail
+                            context.SaleDetails.Add(saleitem);
+
+                        }
+
+                        //Delete the ShoppingCartItem from users ShoppingCart
+                        context.ShoppingCartItems.Remove(item);
+
+                    }//foreach item in useritems
+
+                    //Find and delete the users ShoppingCart
+                    var existingItem = context.ShoppingCarts.Find(shoppingcartid);
+                    context.ShoppingCarts.Remove(existingItem);
+
+                    //Save changes
+                    context.SaveChanges();
+
+                    //Return any backordered parts for display to user
+                    return backorderedparts;
+                }
+                
+            }
+        }//Place_Order
 
     }
 }

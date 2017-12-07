@@ -139,9 +139,8 @@
     <div class="row">
         <div class="col-md-4">
             <div class="well coupon-cont clearfix">
-                <asp:DropDownList ID="CouponListDD" runat="server" DataSourceID="CouponListODS" DataTextField="CouponIDValue" DataValueField="CouponDiscount" CssClass="form-control coupon" AppendDataBoundItems="true" >
+                <asp:DropDownList ID="CouponListDD" runat="server" DataSourceID="CouponListODS" DataTextField="CouponIDValue" DataValueField="CouponID" CssClass="form-control coupon" AppendDataBoundItems="true" >
                     <asp:ListItem Text="Select a coupon code..." Value=0></asp:ListItem>
-                    <asp:ListItem Text="AppDev10" Value=10></asp:ListItem>
                 </asp:DropDownList>
                 <asp:LinkButton ID="CouponRefreshBtn" runat="server"
                                  CssClass="btn btn-primary" OnClick="CouponRefreshBtn_Click" >
@@ -160,7 +159,7 @@
         </div>
         <div class="col-md-3">
             <div class="totals">
-                <asp:GridView ID="TotalsGridView" runat="server" AutoGenerateColumns="False" DataSourceID="FinalTotalODS" >
+                <asp:GridView ID="TotalsGridView" runat="server" AutoGenerateColumns="False" DataSourceID="FinalTotalODS" DataKeyNames="SubTotal, Discount, GST, Total" >
                     <Columns>
                         <asp:BoundField DataField="SubTotal" HeaderText="SubTotal" SortExpression="SubTotal" DataFormatString="{0:C}"></asp:BoundField>
                         <asp:BoundField DataField="Discount" HeaderText="Discount" SortExpression="Discount" DataFormatString="{0:C}"></asp:BoundField>
@@ -174,8 +173,8 @@
     <div class="row">
         <div class="col-md-10">
             <div class="continuebutton">
-                <asp:LinkButton ID="NextButton" runat="server"
-                    CssClass="btn btn-success" PostBackUrl="~/WebSites/Checkout/PlaceOrder.aspx">
+                <asp:LinkButton ID="PlaceOrderBtn" runat="server"
+                    CssClass="btn btn-success" OnClick="PlaceOrderBtn_Click">
                                 Place Order
                 </asp:LinkButton>
             </div>

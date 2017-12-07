@@ -1,4 +1,6 @@
 ﻿using eBike.Data.Entities.Security;
+using eBike.Data.POCOs;
+using eBikeSystem.BLL;
 using eBikeSystem.BLL.Security;
 using System;
 using System.Collections.Generic;
@@ -52,5 +54,30 @@ public partial class WebSites_Checkout_PlaceOrder : System.Web.UI.Page
     {
         CouponListDD.SelectedIndex = CouponListDD.SelectedIndex;
         FinalTotalODS.DataBind();
+    }
+
+    protected void PlaceOrderBtn_Click(object sender, EventArgs e)
+    {
+        string username = User.Identity.Name;
+
+        int couponid = int.Parse(CouponListDD.SelectedValue);
+
+        FinalTotalPOCO totals = new FinalTotalPOCO();
+
+        totals.SubTotal = decimal.Parse(TotalsGridView.DataKeys[0].Values[0].ToString());
+        totals.Discount = decimal.Parse(TotalsGridView.DataKeys[0].Values[1].ToString());
+        totals.GST = decimal.Parse(TotalsGridView.DataKeys[0].Values[2].ToString());
+        totals.Total = decimal.Parse(TotalsGridView.DataKeys[0].Values[3].ToString());
+
+        string paymethod = PaymentMethodRB.SelectedValue;
+
+        MessageUserControl.TryRun(() =>
+        {
+            SalesController sysmgr = new SalesController();
+            sysmgr.Place_Order(username, couponid, totals, paymethod);
+
+        }, "Success", "Your order has been processed.");
+
+        
     }
 }
