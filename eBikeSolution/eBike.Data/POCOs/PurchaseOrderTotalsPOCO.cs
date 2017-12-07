@@ -9,7 +9,7 @@ namespace eBike.Data.POCOs
     public class PurchaseOrderTotalsPOCO
     {
         public decimal SubTotal { get; set; }
-        public decimal GST { get; set; }
+        public decimal TaxAmount { get; set; }
         public decimal Total { get; set; }
     }
 }

@@ -64,16 +64,10 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
 
         if (CurrentPOListView.Items.Count == 0)
         {
-            // set the suggested order ODS to the listview and bind it
-            CurrentPOListView.DataSourceID = "SuggestedPOODS";
-            CurrentPOListView.DataBind();
-
             PurchaseOrder purchaseorder = new PurchaseOrder();
 
             // get the vendorID from the DDL and set it into purchaseorder
             purchaseorder.VendorID = int.Parse(VendorDDL.SelectedValue);
-
-            // !*!*! TODO !*!*! pass the subtotal, taxamount to purchaseorder here
 
             // create new list to store the purchase order details
             List<PurchaseOrderDetail> purchaseorderdetails = new List<PurchaseOrderDetail>();
@@ -93,6 +87,25 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
             // pass the data to the controller to create the suggested order
             var sysmgr = new PurchasingController();
             sysmgr.NewSuggestedOrder(purchaseorder, purchaseorderdetails);
+
+            // set the suggested order ODS to the listview and bind it
+            CurrentPOListView.DataSourceID = "SuggestedPOODS";
+            CurrentPOListView.DataBind();
+
+            //////////////////////////////////////////////////////////////
+            // !~!~! NEED TO CHANGE THE FOLLOWING CODE SO IT UPDATED THE CURRENT PO WITH THE TOTALS
+            TotalsGridView.DataSourceID = "TotalsODS";
+            TotalsGridView.DataBind();
+
+            PurchaseOrder purchaseordertotals = new PurchaseOrder();
+
+            // pass the subtotal, taxamount to purchaseorder here
+            purchaseordertotals.SubTotal = decimal.Parse(TotalsGridView.DataKeys[0].Values[0].ToString());
+            purchaseordertotals.TaxAmount = decimal.Parse(TotalsGridView.DataKeys[0].Values[1].ToString());
+
+            var newsysmgr = new PurchasingController();
+            newsysmgr.NewTotalsSuggestedOrder(purchaseordertotals);
+            ///////////////////////////////////////////////////////////////
 
             // Bind the new current inventory for the suggested order
             CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";

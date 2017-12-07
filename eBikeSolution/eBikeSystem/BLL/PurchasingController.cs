@@ -105,6 +105,18 @@ namespace eBikeSystem.BLL
             }
         }
 
+        public void NewTotalsSuggestedOrder(PurchaseOrder purchaseordertotals)
+        {
+            using (var context = new eBikeContext()) // start transaction
+            {
+                // add the created suggested purchase order to the database
+                purchaseordertotals = context.PurchaseOrders.Add(purchaseordertotals);    //staging
+
+                // save the changes to database and end transaction
+                context.SaveChanges();
+            }
+        }
+
         // this is to create the suggested order in the database
         public void NewSuggestedOrder(PurchaseOrder purchaseorder, List<PurchaseOrderDetail> purchaseorderdetails)
         {
@@ -159,25 +171,27 @@ namespace eBikeSystem.BLL
             {
                 var ordertotals = new PurchaseOrderTotalsPOCO();
 
-                var otherresults = from x in context.PurchaseOrderDetails
+                var otherresults = (from x in context.PurchaseOrderDetails
                                where x.PurchaseOrder.VendorID == vendorid && x.PurchaseOrder.PurchaseOrderNumber == null && x.PurchaseOrder.OrderDate == null
-                               select x;
+                               select x).FirstOrDefault();
 
                 if (otherresults == null)
                 {
                     ordertotals.SubTotal = 0;
-                    ordertotals.GST = 0;
+                    ordertotals.TaxAmount = 0;
                     ordertotals.Total = 0;
                 }
+                else
+                {
 
-                var results = (from x in context.PurchaseOrderDetails
-                               where x.PurchaseOrder.VendorID == vendorid && x.PurchaseOrder.PurchaseOrderNumber == null && x.PurchaseOrder.OrderDate == null
-                               select (x.Quantity * x.Part.PurchasePrice)).Sum();
+                    var results = (from x in context.PurchaseOrderDetails
+                                   where x.PurchaseOrder.VendorID == vendorid && x.PurchaseOrder.PurchaseOrderNumber == null && x.PurchaseOrder.OrderDate == null
+                                   select (x.Quantity * x.Part.PurchasePrice)).Sum();
 
-                               ordertotals.SubTotal = results;
-                               ordertotals.GST = Decimal.Multiply(results, 0.05m);
-                               ordertotals.Total = ordertotals.SubTotal + ordertotals.GST;
-
+                    ordertotals.SubTotal = results;
+                    ordertotals.TaxAmount = Decimal.Multiply(results, 0.05m);
+                    ordertotals.Total = ordertotals.SubTotal + ordertotals.TaxAmount;
+                }
                 return ordertotals;
             }
         }

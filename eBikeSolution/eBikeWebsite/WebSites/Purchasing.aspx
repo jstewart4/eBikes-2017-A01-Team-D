@@ -138,22 +138,22 @@
             </asp:ListView>
         </div>
         <div class="form-inline col-md-12">
-        <div class="col-md-6">
-        <asp:Button ID="UpdateButton" CssClass="btn btn-primary" runat="server" Text="Update" OnClick="UpdateButton_Click" Visible="false"/>
-        <asp:Button ID="PlaceButton" CssClass="btn btn-success" runat="server" Text="Place" OnClick="PlaceButton_Click" Visible="false"/>
-        <asp:Button ID="DeleteButton" CssClass="btn btn-danger" runat="server" Text="Delete" OnClick="DeleteButton_Click" Visible="false"/>
-        <asp:Button ID="ClearButton" CssClass="btn btn-default" runat="server" Text="Clear" OnClick="ClearButton_Click" Visible="false"/>
+            <div class="col-md-6">
+            <asp:Button ID="UpdateButton" CssClass="btn btn-primary" runat="server" Text="Update" OnClick="UpdateButton_Click" Visible="false"/>
+            <asp:Button ID="PlaceButton" CssClass="btn btn-success" runat="server" Text="Place" OnClick="PlaceButton_Click" Visible="false"/>
+            <asp:Button ID="DeleteButton" CssClass="btn btn-danger" runat="server" Text="Delete" OnClick="DeleteButton_Click" Visible="false"/>
+            <asp:Button ID="ClearButton" CssClass="btn btn-default" runat="server" Text="Clear" OnClick="ClearButton_Click" Visible="false"/>
             </div>
-        <div class="col-md-6">
-        <asp:GridView ID="TotalsGridView" runat="server" Visible="false" AutoGenerateColumns="False" DataSourceID="TotalsODS">
-            <Columns>
-                <asp:BoundField DataField="SubTotal" HeaderText="SubTotal" SortExpression="SubTotal" DataFormatString="{0:C}"></asp:BoundField>
-                <asp:BoundField DataField="GST" HeaderText="GST" SortExpression="GST" DataFormatString="{0:C}"></asp:BoundField>
-                <asp:BoundField DataField="Total" HeaderText="Total" SortExpression="Total" DataFormatString="{0:C}"></asp:BoundField>
-            </Columns>
-        </asp:GridView>
+            <div class="col-md-6">
+                <asp:GridView ID="TotalsGridView" runat="server" Visible="false" AutoGenerateColumns="False" DataKeyNames="SubTotal, TaxAmount, Total">
+                    <Columns>
+                        <asp:BoundField DataField="SubTotal" HeaderText="SubTotal" SortExpression="SubTotal" DataFormatString="{0:C}"></asp:BoundField>
+                        <asp:BoundField DataField="TaxAmount" HeaderText="GST" SortExpression="TaxAmount" DataFormatString="{0:C}"></asp:BoundField>
+                        <asp:BoundField DataField="Total" HeaderText="Total" SortExpression="Total" DataFormatString="{0:C}"></asp:BoundField>
+                    </Columns>
+                </asp:GridView>
             </div>
-            </div>
+        </div>
         <div class="col-md-12 currentinventory">
             <h2><asp:Label ID="CurrentInventoryLabel" runat="server" Text="Current Inventory" Visible="false"></asp:Label></h2>
             <asp:ListView ID="CurrentInventoryListView" runat="server" OnItemCommand="CurrentInventoryListView_ItemCommand">
