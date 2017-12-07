@@ -185,7 +185,7 @@ namespace eBikeSystem.BLL
         }//ShoppingCartTotals
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public FinalTotalPOCO ShoppingCart_FinalTotals(string username)
+        public FinalTotalPOCO ShoppingCart_FinalTotals(string username, int couponid)
         {
             using (var context = new eBikeContext())
             {
@@ -204,7 +204,11 @@ namespace eBikeSystem.BLL
                 }
                 else
                 {
+                    
+
                     int customerid = customer.OnlineCustomerID;
+
+                    double coupondiscount = couponid;
 
                     var shoppingcart = (from x in context.ShoppingCarts
                                         where x.OnlineCustomerID.Equals(customerid)
@@ -215,9 +219,9 @@ namespace eBikeSystem.BLL
                                select (x.Quantity * x.Part.SellingPrice)).Sum();
 
                     totals.SubTotal = sum;
-                    totals.Discount = 0;
-                    totals.GST = Decimal.Multiply(sum, decimal.Parse("0.05"));
-                    totals.Total = totals.SubTotal + totals.GST;
+                    totals.Discount = Decimal.Multiply(sum, decimal.Parse((coupondiscount / 100).ToString()));
+                    totals.GST = Decimal.Multiply((sum - totals.Discount), decimal.Parse("0.05"));
+                    totals.Total = totals.SubTotal - totals.Discount + totals.GST;
                 }
 
                 return totals;
@@ -243,10 +247,7 @@ namespace eBikeSystem.BLL
                                   select x.ShoppingCartItemID).FirstOrDefault();
 
                 var updateItem = context.ShoppingCartItems.Find(updateItemID);
-                if (updateItem == null)
-                {
-                    throw new Exception("Item is nullll");
-                }
+
                 updateItem.Quantity = quantity;
 
                 context.Entry(updateItem).Property(y => y.Quantity).IsModified = true;

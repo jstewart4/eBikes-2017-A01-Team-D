@@ -28,6 +28,7 @@ public partial class WebSites_Checkout_PlaceOrder : System.Web.UI.Page
                 else
                 {
                     UserLabel.Text = User.Identity.Name;
+                    
                 }
             }
 
@@ -45,5 +46,11 @@ public partial class WebSites_Checkout_PlaceOrder : System.Web.UI.Page
     protected void CheckForException(object sender, ObjectDataSourceStatusEventArgs e)
     {
         MessageUserControl.HandleDataBoundException(e);
+    }
+
+    protected void CouponRefreshBtn_Click(object sender, EventArgs e)
+    {
+        CouponListDD.SelectedIndex = CouponListDD.SelectedIndex;
+        FinalTotalODS.DataBind();
     }
 }

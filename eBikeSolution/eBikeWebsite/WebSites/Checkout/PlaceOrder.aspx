@@ -139,11 +139,11 @@
     <div class="row">
         <div class="col-md-4">
             <div class="well coupon-cont clearfix">
-                <asp:DropDownList ID="CouponListDD" runat="server" DataSourceID="CouponListODS" DataTextField="CouponIDValue" DataValueField="CouponID" CssClass="form-control coupon" AppendDataBoundItems="true">
+                <asp:DropDownList ID="CouponListDD" runat="server" DataSourceID="CouponListODS" DataTextField="CouponIDValue" DataValueField="CouponDiscount" CssClass="form-control coupon" AppendDataBoundItems="true" >
                     <asp:ListItem Text="Select a coupon code..." Value=0></asp:ListItem>
                 </asp:DropDownList>
                 <asp:LinkButton ID="CouponRefreshBtn" runat="server"
-                                 CssClass="btn btn-primary" PostBackUrl="~/WebSites/Checkout/PlaceOrder.aspx" >
+                                 CssClass="btn btn-primary" OnClick="CouponRefreshBtn_Click" >
                                  <span aria-hidden="true" class="glyphicon glyphicon-refresh"></span>
                     </asp:LinkButton>
             </div>
@@ -174,13 +174,13 @@
         <div class="col-md-10">
             <div class="continuebutton">
                 <asp:LinkButton ID="NextButton" runat="server"
-                                 CssClass="btn btn-success" PostBackUrl="~/WebSites/Checkout/PlaceOrder.aspx" >
+                    CssClass="btn btn-success" PostBackUrl="~/WebSites/Checkout/PlaceOrder.aspx">
                                 Place Order
                 </asp:LinkButton>
             </div>
             <div class="backbutton">
                 <asp:LinkButton ID="BackButton" runat="server"
-                                 CssClass="btn btn-primary" PostBackUrl="~/WebSites/Checkout/PurchaseDetails.aspx" >
+                    CssClass="btn btn-primary" PostBackUrl="~/WebSites/Checkout/PurchaseDetails.aspx">
                                 <span aria-hidden="true" class="glyphicon glyphicon-menu-left"></span> Back
                 </asp:LinkButton>
             </div>
@@ -196,6 +196,7 @@
     <asp:ObjectDataSource ID="FinalTotalODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ShoppingCart_FinalTotals" TypeName="eBikeSystem.BLL.SalesController">
         <SelectParameters>
             <asp:ControlParameter ControlID="UserLabel" PropertyName="Text" Name="username" Type="String"></asp:ControlParameter>
+            <asp:ControlParameter ControlID="CouponListDD" PropertyName="SelectedValue" Name="couponid" Type="Int32"></asp:ControlParameter>
         </SelectParameters>
     </asp:ObjectDataSource>
 </asp:Content>
