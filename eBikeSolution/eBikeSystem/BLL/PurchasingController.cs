@@ -159,12 +159,23 @@ namespace eBikeSystem.BLL
             {
                 var ordertotals = new PurchaseOrderTotalsPOCO();
 
+                var otherresults = from x in context.PurchaseOrderDetails
+                               where x.PurchaseOrder.VendorID == vendorid && x.PurchaseOrder.PurchaseOrderNumber == null && x.PurchaseOrder.OrderDate == null
+                               select x;
+
+                if (otherresults == null)
+                {
+                    ordertotals.SubTotal = 0;
+                    ordertotals.GST = 0;
+                    ordertotals.Total = 0;
+                }
+
                 var results = (from x in context.PurchaseOrderDetails
                                where x.PurchaseOrder.VendorID == vendorid && x.PurchaseOrder.PurchaseOrderNumber == null && x.PurchaseOrder.OrderDate == null
-                               select (x.Quantity * x.Part.SellingPrice)).Sum();
+                               select (x.Quantity * x.Part.PurchasePrice)).Sum();
 
                                ordertotals.SubTotal = results;
-                               ordertotals.GST = Decimal.Multiply(results, decimal.Parse("0.05"));
+                               ordertotals.GST = Decimal.Multiply(results, 0.05m);
                                ordertotals.Total = ordertotals.SubTotal + ordertotals.GST;
 
                 return ordertotals;
