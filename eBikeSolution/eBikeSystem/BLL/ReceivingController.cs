@@ -119,7 +119,7 @@ namespace eBikeSystem.BLL
 
         }
 
-        //Needs update later
+        
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<UnorderedPurchaseItemCart> GetUnorderedVendorParts(int poNumber)
         {
@@ -133,6 +133,28 @@ namespace eBikeSystem.BLL
                              
                 return results.ToList();
             }
-        } 
+        }
+        //Insert for UnorderedPurchaseItemCart
+        [DataObjectMethod(DataObjectMethodType.Insert,false)]
+         public int Add_UnorderedVendorPart(UnorderedPurchaseItemCart cartID)
+        {
+            using (var context = new eBikeContext())
+            {
+                cartID = context.UnorderedPurchaseItemCarts.Add(cartID);
+                context.SaveChanges();
+
+                return cartID.CartID;
+            }
+        }
+        //Update for UnorderedPurchaseItemCart
+        [DataObjectMethod(DataObjectMethodType.Delete, false)]
+        public int Remove_UnorderedVendorPart()
+        {
+            using (var context = new eBikeContext())
+            {
+
+                return context.SaveChanges();
+            }
+        }
     }
 }
