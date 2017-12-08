@@ -82,19 +82,25 @@
                                          
                           <asp:GridView ID="PODetailsGV" runat="server" CssClass="table table-bordered table-striped table-hover" AutoGenerateColumns="False">
                               <Columns>
-                                  <asp:TemplateField HeaderText="PurchaseOrderID" SortExpression="PurchaseOrderID" Visible="False">                                   
+                                  <asp:TemplateField HeaderText="PurchaseOrderID" SortExpression="PurchaseOrderID" Visible="False">                                  
                                       <ItemTemplate>
                                           <asp:Label runat="server" Text='<%# Bind("PurchaseOrderID") %>' ID="PurchaseOrderID"></asp:Label>
                                       </ItemTemplate>
                                   </asp:TemplateField>
+                                  <%-- will need these for update of the Receive order details table--%>
+                                  <asp:TemplateField HeaderText="PurchaseOrderDetailID" SortExpression="PurchaseOrderDetailID" Visible="False">                                 
+                                      <ItemTemplate>
+                                          <asp:Label runat="server" Text='<%# Bind("PurchaseOrderDetailID") %>' ID="PurchaseOrderDetailID"></asp:Label>
+                                      </ItemTemplate>
+                                  </asp:TemplateField>
                                   <asp:TemplateField HeaderText="Part#" SortExpression="PartID">                                     
                                       <ItemTemplate>
-                                          <asp:Label runat="server" Text='<%# Bind("PartID") %>' ID="Label2"></asp:Label>
+                                          <asp:Label runat="server" Text='<%# Bind("PartID") %>' ID="PartID"></asp:Label>
                                       </ItemTemplate>
                                   </asp:TemplateField>
                                   <asp:TemplateField HeaderText="Description" SortExpression="Description">                                 
                                       <ItemTemplate>
-                                          <asp:Label runat="server" Text='<%# Bind("Description") %>' ID="Label3"></asp:Label>
+                                          <asp:Label runat="server" Text='<%# Bind("Description") %>' ID="Description"></asp:Label>
                                       </ItemTemplate>
                                   </asp:TemplateField>
                                   <asp:TemplateField HeaderText="Ordered" SortExpression="QuantityOnOrder">                                  
@@ -104,7 +110,7 @@
                                   </asp:TemplateField>
                                   <asp:TemplateField HeaderText="Outstanding" SortExpression="QuantityOutstanding">                                   
                                       <ItemTemplate>
-                                          <asp:Label runat="server" Text='<%# Bind("QuantityOutstanding") %>' ID="Label5"></asp:Label>
+                                          <asp:Label runat="server" Text='<%# Bind("QuantityOutstanding") %>' ID="QuantityOutstanding"></asp:Label>
                                       </ItemTemplate>
                                   </asp:TemplateField>
                                   <asp:TemplateField HeaderText="Receiving" SortExpression="Receiving">                                   
@@ -112,11 +118,13 @@
                                           <asp:TextBox ID="txtReceiving" runat="server" Width="30px" ></asp:TextBox>
                                       </ItemTemplate>
                                   </asp:TemplateField>
-                                  <asp:TemplateField HeaderText="Returning" SortExpression="QuantityOutstanding">                                   
+
+                                  <asp:TemplateField HeaderText="Returning" SortExpression="Returning">                                   
                                       <ItemTemplate>
                                           <asp:TextBox ID="txtReturning" runat="server" Width="30px"></asp:TextBox>
                                       </ItemTemplate>
                                   </asp:TemplateField>
+
                                   <asp:TemplateField HeaderText="Reason" SortExpression="Reason">                                   
                                       <ItemTemplate>
                                          <asp:TextBox ID="txtReason" runat="server"></asp:TextBox>

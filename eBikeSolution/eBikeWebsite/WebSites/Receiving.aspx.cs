@@ -120,11 +120,11 @@ public partial class WebSites_Receiving : System.Web.UI.Page
             NewReceiveOrderPOCO newOrder = new NewReceiveOrderPOCO();
             newOrder.PurchaseOrderID = int.Parse(((Label)row.FindControl("PurchaseOrderID")).Text);
             newOrder.PurchaseOrderDetailID = int.Parse(((Label)row.FindControl("PurchaseOrderDetailID")).Text);
-            newOrder.PartID = int.Parse(((TextBox)row.FindControl("PartID")).Text);
-            newOrder.PartDescription = (((TextBox)row.FindControl("Description")).Text);
-            newOrder.Outstanding = int.Parse(((TextBox)row.FindControl("QuantityOutstanding")).Text);
-            newOrder.QuantityReceived = int.Parse(((TextBox)row.FindControl("txtReceiving")).Text);
-            newOrder.QuantityReturned = int.Parse(((TextBox)row.FindControl("txtRetruning")).Text);
+            newOrder.PartID = int.Parse(((Label)row.FindControl("PartID")).Text);
+            newOrder.PartDescription = (((Label)row.FindControl("Description")).Text);
+            newOrder.Outstanding = int.Parse(((Label)row.FindControl("QuantityOutstanding")).Text);
+            newOrder.QuantityReceived = (((TextBox)row.FindControl("txtReceiving")).Text) == "" ? 0 : int.Parse(((TextBox)row.FindControl("txtReceiving")).Text);
+            newOrder.QuantityReturned = (((TextBox)row.FindControl("txtReturning")).Text) == "" ? 0 : int.Parse(((TextBox)row.FindControl("txtReturning")).Text);
             newOrder.Notes = (((TextBox)row.FindControl("txtReason")).Text);
 
             receiveNewOrders.Add(newOrder);
