@@ -15,7 +15,6 @@ namespace eBike.Data.Entities
             ReceiveOrders = new HashSet<ReceiveOrder>();
         }
 
-        [Key]
         public int PurchaseOrderID { get; set; }
 
         public int? PurchaseOrderNumber { get; set; }
