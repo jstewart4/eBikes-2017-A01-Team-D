@@ -86,6 +86,7 @@
     <Compile Include="Entities\Vendor.cs" />
     <Compile Include="POCOs\customerPOCO.cs" />
     <Compile Include="POCOs\FinalTotalPOCO.cs" />
+    <Compile Include="POCOs\NewReceiveOrderPOCO.cs" />
     <Compile Include="POCOs\OutstandingOrdersPOCO.cs" />
     <Compile Include="POCOs\PurchaseOrderDetailsPOCO.cs" />
     <Compile Include="POCOs\PurchaseOrderTotalsPOCO.cs" />

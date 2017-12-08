@@ -124,13 +124,10 @@
                                   </asp:TemplateField>
                               </Columns>
                           </asp:GridView>
-                          <asp:Button ID="btnReceive" runat="server" Text="Receive" CssClass="btn btn-success" />
+                          <asp:Button ID="btnReceive" runat="server" Text="Receive" CssClass="btn btn-success" OnClick="Receive_Click" />
                           <asp:Button ID="btnForceCloser" runat="server" Text="Force Closer" CssClass="btn btn-danger" OnClick="ForceCloser_Click" />
                           
                           <asp:TextBox ID="txtReasonFC" runat="server" Text="Reason for forced closer"></asp:TextBox>
-
-
-
                       </ContentTemplate>
                     </asp:UpdatePanel>
                 </div> <%--end of pane--%> 

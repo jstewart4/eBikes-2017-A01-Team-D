@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace eBike.Data.POCOs
 {
-    public class PurchaseOrderDetailsPOCO
+    public class NewReceiveOrderPOCO
     {
         public int PurchaseOrderID { get; set; }
         public int PurchaseOrderDetailID { get; set; }
         public int PartID { get; set; }
-        public string Description { get; set; }
-        public int QuantityOnOrder { get; set; }
-        public int QuantityOutstanding { get; set; } //MIGHT be changed 
+        public string PartDescription { get; set; }
+        public int QuantityReceived { get; set; }
+        public int QuantityReturned { get; set; }
+        public int Outstanding { get; set; }
+        public string Notes { get; set; }
     }
 }

@@ -16,10 +16,10 @@ namespace eBikeSystem.BLL
     {
         [DataObjectMethod(DataObjectMethodType.Select, false)]
 
-        public List<OutstandingOrdersPOCO>GetOutstandingPO()
+        public List<OutstandingOrdersPOCO> GetOutstandingPO()
         {
             using (var context = new eBikeContext())
-            { 
+            {
                 var results = from po in context.PurchaseOrders
                               where po.Closed == false && po.OrderDate.HasValue && po.PurchaseOrderNumber.HasValue
                               select new OutstandingOrdersPOCO
@@ -37,11 +37,11 @@ namespace eBikeSystem.BLL
         [DataObjectMethod(DataObjectMethodType.Select, false)]
 
         public VendorPurchaseOrderDetailsDTO GetPODetails(int poID)
-        {        
+        {
             using (var context = new eBikeContext())
             {
                 VendorPurchaseOrderDetailsDTO vendorPODetails = new VendorPurchaseOrderDetailsDTO();
-                List<PurchaseOrderDetailsPOCO> poDetails = new List<PurchaseOrderDetailsPOCO>();              
+                List<PurchaseOrderDetailsPOCO> poDetails = new List<PurchaseOrderDetailsPOCO>();
 
                 var poResults = from pod in context.PurchaseOrderDetails
                                 orderby pod.PartID ascending
@@ -49,6 +49,7 @@ namespace eBikeSystem.BLL
                                 select new PurchaseOrderDetailsPOCO
                                 {
                                     PurchaseOrderID = pod.PurchaseOrderID,
+                                    PurchaseOrderDetailID = pod.PurchaseOrderDetailID,
                                     PartID = pod.PartID,
                                     Description = pod.Part.Description,
                                     QuantityOnOrder = pod.Part.QuantityOnOrder,
@@ -57,13 +58,13 @@ namespace eBikeSystem.BLL
                 poDetails = poResults.ToList();
 
                 var vendorResults = (from po in context.PurchaseOrders
-                                    where po.PurchaseOrderID.Equals(poID)
-                                    select new
-                                    {
-                                        poNum = po.PurchaseOrderNumber,
-                                        Phone = po.Vendor.Phone,
-                                        Name = po.Vendor.VendorName
-                                    }).FirstOrDefault();  //return first record from return result(using it when have only one item to return) 
+                                     where po.PurchaseOrderID.Equals(poID)
+                                     select new
+                                     {
+                                         poNum = po.PurchaseOrderNumber,
+                                         Phone = po.Vendor.Phone,
+                                         Name = po.Vendor.VendorName
+                                     }).FirstOrDefault();  //return first record from return result(using it when have only one item to return) 
 
                 vendorPODetails.PurchaseOrderNumber = vendorResults.poNum;
                 vendorPODetails.VendorPhone = vendorResults.Phone;
@@ -81,7 +82,7 @@ namespace eBikeSystem.BLL
             using (var context = new eBikeContext())
             {
                 var result = context.PurchaseOrders.SingleOrDefault(po => po.PurchaseOrderID == closePOData.PurchaseOrderID);
-             
+
                 if (result != null)
                 {
                     result.Notes = closePOData.Notes;
@@ -89,19 +90,19 @@ namespace eBikeSystem.BLL
                     //get data from listing for future update
                     foreach (PurchaseOrderDetailsPOCO item in closingPODetailsData)
                     {
-                        Part checkPartExists = (from p in context.Parts
-                                                where p.PartID == item.PartID
-                                                select p).SingleOrDefault(); 
-                        if(checkPartExists != null)
+                        var checkPartExists = (from p in context.Parts
+                                               where p.PartID == item.PartID
+                                               select p).SingleOrDefault();
+                        if (checkPartExists != null)
                         {   //make sure that qnt on order is not negative number
                             if (checkPartExists.QuantityOnOrder >= item.QuantityOutstanding)
                             {
                                 checkPartExists.QuantityOnHand -= item.QuantityOutstanding;
-                            } 
+                            }
                             else
                             {
-                                throw new Exception("The quantity on order is less than outstanding             quantity.");
-                            }                         
+                                throw new Exception("The quantity on order is less than outstanding quantity.");
+                            }
                         }
                         else
                         {
@@ -109,8 +110,13 @@ namespace eBikeSystem.BLL
                         }
                     }
                     context.SaveChanges();
-                }                
+                }
             }
+        }
+
+        public void Add_ReceivedOrders(List<NewReceiveOrderPOCO> receiveNewOrders)
+        {
+
         }
 
         //Needs update later

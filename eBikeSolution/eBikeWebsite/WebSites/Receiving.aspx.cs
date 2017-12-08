@@ -108,4 +108,27 @@ public partial class WebSites_Receiving : System.Web.UI.Page
         lblVendorPhone.Text = "";
     }
 
+
+    protected void Receive_Click(object sender, EventArgs e)
+    {
+        ReceivingController sysmng = new ReceivingController();
+
+        List<NewReceiveOrderPOCO> receiveNewOrders = new List<NewReceiveOrderPOCO>();
+
+        foreach (GridViewRow row in PODetailsGV.Rows)
+        {
+            NewReceiveOrderPOCO newOrder = new NewReceiveOrderPOCO();
+            newOrder.PurchaseOrderID = int.Parse(((Label)row.FindControl("PurchaseOrderID")).Text);
+            newOrder.PurchaseOrderDetailID = int.Parse(((Label)row.FindControl("PurchaseOrderDetailID")).Text);
+            newOrder.PartID = int.Parse(((TextBox)row.FindControl("PartID")).Text);
+            newOrder.PartDescription = (((TextBox)row.FindControl("Description")).Text);
+            newOrder.Outstanding = int.Parse(((TextBox)row.FindControl("QuantityOutstanding")).Text);
+            newOrder.QuantityReceived = int.Parse(((TextBox)row.FindControl("txtReceiving")).Text);
+            newOrder.QuantityReturned = int.Parse(((TextBox)row.FindControl("txtRetruning")).Text);
+            newOrder.Notes = (((TextBox)row.FindControl("txtReason")).Text);
+
+            receiveNewOrders.Add(newOrder);
+        }
+        sysmng.Add_ReceivedOrders(receiveNewOrders);
+    }
 }
