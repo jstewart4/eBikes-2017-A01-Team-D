@@ -143,7 +143,82 @@
                 <div class="tab-pane fade" id="unorderedParts">
                     <asp:UpdatePanel ID="UpdatePanelUnorderedParts" runat="server">
                         <ContentTemplate>
-                            
+                            <asp:ListView ID="UnorderedVendorPartsList" runat="server">
+                                <AlternatingItemTemplate>
+                                    <tr style="">
+                                        <td>
+                                            <asp:Label Text='<%# Eval("CartID") %>' runat="server" ID="CartIDLabel" Visible="false"/></td>
+                                        <td>
+                                            <asp:Label Text='<%# Eval("PurchaseOrderNumber") %>' runat="server" ID="PurchaseOrderNumberLabel" Visible="false"/></td>
+                                        <td>
+                                            <asp:Label Text='<%# Eval("Description") %>' runat="server" ID="DescriptionLabel" /></td>
+                                        <td>
+                                            <asp:Label Text='<%# Eval("VendorPartNumber") %>' runat="server" ID="VendorPartNumberLabel" /></td>
+                                        <td>
+                                            <asp:Label Text='<%# Eval("Quantity") %>' runat="server" ID="QuantityLabel" /></td>
+                                    </tr>
+                                </AlternatingItemTemplate>                              
+                                <EmptyDataTemplate>
+                                    <table runat="server" style="">
+                                        <tr>
+                                            <td>No data was returned.</td>
+                                        </tr>
+                                    </table>
+                                </EmptyDataTemplate>
+                                <InsertItemTemplate>
+                                    <tr style="">
+                                        <td>
+                                            <asp:Button runat="server" CommandName="Insert" Text="Insert" ID="InsertButton" />
+                                            <asp:Button runat="server" CommandName="Cancel" Text="Clear" ID="CancelButton" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox Text='<%# Bind("CartID") %>' runat="server" ID="CartIDTextBox" Visible="false" /></td>
+                                        <td>
+                                            <asp:TextBox Text='<%# Bind("PurchaseOrderNumber") %>' runat="server" ID="PurchaseOrderNumberTextBox" Visible="false"/></td>
+                                        <td>
+                                            <asp:TextBox Text='<%# Bind("Description") %>' runat="server" ID="DescriptionTextBox" /></td>
+                                        <td>
+                                            <asp:TextBox Text='<%# Bind("VendorPartNumber") %>' runat="server" ID="VendorPartNumberTextBox" /></td>
+                                        <td>
+                                            <asp:TextBox Text='<%# Bind("Quantity") %>' runat="server" ID="QuantityTextBox" /></td>
+                                    </tr>
+                                </InsertItemTemplate>
+                                <ItemTemplate>
+                                    <tr style="">
+                                        <td>
+                                            <asp:Label Text='<%# Eval("CartID") %>' runat="server" ID="CartIDLabel" Visible="false"/></td>
+                                        <td>
+                                            <asp:Label Text='<%# Eval("PurchaseOrderNumber") %>' runat="server" ID="PurchaseOrderNumberLabel" Visible="false"/></td>
+                                        <td>
+                                            <asp:Label Text='<%# Eval("Description") %>' runat="server" ID="DescriptionLabel" /></td>
+                                        <td>
+                                            <asp:Label Text='<%# Eval("VendorPartNumber") %>' runat="server" ID="VendorPartNumberLabel" /></td>
+                                        <td>
+                                            <asp:Label Text='<%# Eval("Quantity") %>' runat="server" ID="QuantityLabel" /></td>
+                                    </tr>
+                                </ItemTemplate>
+                                <LayoutTemplate>
+                                    <table runat="server">
+                                        <tr runat="server">
+                                            <td runat="server">
+                                                <table runat="server" id="itemPlaceholderContainer" style="" border="0">
+                                                    <tr runat="server" style="">
+                                                        <th runat="server">CartID</th>
+                                                        <th runat="server">PurchaseOrderNumber</th>
+                                                        <th runat="server">Description</th>
+                                                        <th runat="server">VendorPartNumber</th>
+                                                        <th runat="server">Quantity</th>
+                                                    </tr>
+                                                    <tr runat="server" id="itemPlaceholder"></tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr runat="server">
+                                            <td runat="server" style=""></td>
+                                        </tr>
+                                    </table>
+                                </LayoutTemplate>
+                            </asp:ListView>
                         </ContentTemplate>
                     </asp:UpdatePanel>
                 </div> <%--end of pane--%>          
@@ -159,7 +234,4 @@
         SelectMethod="GetOutstandingPO" 
         TypeName="eBikeSystem.BLL.ReceivingController">
     </asp:ObjectDataSource>
-
-  
-
 </asp:Content>

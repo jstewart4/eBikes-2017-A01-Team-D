@@ -51,6 +51,7 @@ public partial class WebSites_Receiving : System.Web.UI.Page
     protected void ViewOrder_Click(object sender, EventArgs e)
     {
         int  poID = 0;
+        int poNumber = 0;
 
         GridViewRow item = (GridViewRow)((LinkButton)sender).NamingContainer; // gets info from one row.
         poID = int.Parse(((Label)item.FindControl("PurchaseOrderId")).Text);
@@ -62,9 +63,14 @@ public partial class WebSites_Receiving : System.Web.UI.Page
         lblVendorName.Text = vendorPODetails.VendorName;
         lblVendorPhone.Text = vendorPODetails.VendorPhone;
 
-
+        poNumber = int.Parse(lblPONumber.Text);
+        List<UnorderedPurchaseItemCart> vendorUnorderedParts = sysmng.GetUnorderedVendorParts(poNumber);
+        //DataSource for the GridView
         PODetailsGV.DataSource = vendorPODetails.PODetails;
         PODetailsGV.DataBind();
+        //DataSouce for the List 
+        UnorderedVendorPartsList.DataSource = vendorUnorderedParts;
+        UnorderedVendorPartsList.DataBind();
         
     }
 

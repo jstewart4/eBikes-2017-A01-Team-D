@@ -121,19 +121,16 @@ namespace eBikeSystem.BLL
 
         //Needs update later
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public List<UnorderedPurchaseItemCart>GetUnorderedVendorParts()
+        public List<UnorderedPurchaseItemCart> GetUnorderedVendorParts(int poNumber)
         {
             using (var context = new eBikeContext())
             {
+                //UnorderedPurchaseItemCart unorderedVendorParts = new UnorderedPurchaseItemCart();
+
                 var results = from upic in context.UnorderedPurchaseItemCarts
-                              select new UnorderedPurchaseItemCart
-                              {
-                                  CartID = upic.CartID,
-                                  PurchaseOrderNumber = upic.PurchaseOrderNumber,
-                                  VendorPartNumber = upic.VendorPartNumber,
-                                  Description = upic.Description,
-                                  Quantity = upic.Quantity
-                              };
+                               where upic.PurchaseOrderNumber == poNumber
+                               select upic;
+                             
                 return results.ToList();
             }
         } 
