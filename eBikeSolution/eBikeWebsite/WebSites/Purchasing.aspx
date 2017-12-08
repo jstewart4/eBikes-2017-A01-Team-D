@@ -66,9 +66,11 @@
         </div>
         <div class="col-md-12 purchaseorder">
             <h2><asp:Label ID="CurrentPOLabel" runat="server" Text="Current Purchase Order" Visible="false"></asp:Label></h2>
-            <asp:ListView ID="CurrentPOListView" runat="server" OnItemCommand="CurrentPOListView_ItemCommand">
+            <asp:ListView ID="CurrentPOListView" runat="server" OnItemCommand="CurrentPOListView_ItemCommand" Visible="true">
                 <AlternatingItemTemplate>
                     <tr style="background-color: #FFFFFF; color: #284775;">
+                        <td style="display:none;">
+                             <asp:Label Text='<%# Eval("PurchaseOrderID") %>' runat="server" ID="PurchaseOrderIDLabel2" /></td>
                         <td>
                             <asp:Label Text='<%# Eval("PartID") %>' runat="server" ID="PartIDLabel2" /></td>
                         <td>
@@ -96,6 +98,8 @@
                 </EmptyDataTemplate>
                 <ItemTemplate>
                     <tr style="background-color: #E0FFFF; color: #333333;">
+                        <td style="display:none;">
+                             <asp:Label Text='<%# Eval("PurchaseOrderID") %>' runat="server" ID="PurchaseOrderIDLabel2" /></td>
                         <td>
                             <asp:Label Text='<%# Eval("PartID") %>' runat="server" ID="PartIDLabel2" /></td>
                         <td>
@@ -145,7 +149,7 @@
             <asp:Button ID="ClearButton" CssClass="btn btn-default" runat="server" Text="Clear" OnClick="ClearButton_Click" Visible="false"/>
             </div>
             <div class="col-md-6">
-                <asp:GridView ID="TotalsGridView" runat="server" Visible="false" AutoGenerateColumns="False" DataKeyNames="SubTotal, TaxAmount, Total">
+                <asp:GridView ID="TotalsGridView" runat="server" Visible="false" AutoGenerateColumns="False" DataSourceID="TotalsODS" DataKeyNames="SubTotal, TaxAmount, Total">
                     <Columns>
                         <asp:BoundField DataField="SubTotal" HeaderText="SubTotal" SortExpression="SubTotal" DataFormatString="{0:C}"></asp:BoundField>
                         <asp:BoundField DataField="TaxAmount" HeaderText="GST" SortExpression="TaxAmount" DataFormatString="{0:C}"></asp:BoundField>
@@ -156,7 +160,7 @@
         </div>
         <div class="col-md-12 currentinventory">
             <h2><asp:Label ID="CurrentInventoryLabel" runat="server" Text="Current Inventory" Visible="false"></asp:Label></h2>
-            <asp:ListView ID="CurrentInventoryListView" runat="server" OnItemCommand="CurrentInventoryListView_ItemCommand">
+            <asp:ListView ID="CurrentInventoryListView" runat="server" OnItemCommand="CurrentInventoryListView_ItemCommand" Visible="true">
                 <AlternatingItemTemplate>
                     <tr style="background-color: #FFFFFF; color: #284775;">
                         <td>

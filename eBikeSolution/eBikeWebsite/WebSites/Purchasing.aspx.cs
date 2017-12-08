@@ -58,12 +58,26 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
         ClearButton.Visible = true;
         TotalsGridView.Visible = true;
 
+
+        //TotalsGridView.DataSourceID = "TotalsODS";
+        //TotalsGridView.DataBind();
+
+        //PurchaseOrder purchaseordertotals = new PurchaseOrder();
+
+        //// pass the subtotal, taxamount to purchaseorder here
+        //purchaseordertotals.SubTotal = decimal.Parse(TotalsGridView.DataKeys[0].Values[0].ToString());
+        //purchaseordertotals.TaxAmount = decimal.Parse(TotalsGridView.DataKeys[0].Values[1].ToString());
+
         // set the current active order ODS to the listview
         CurrentPOListView.DataSourceID = "CurrentPOODS";
         CurrentPOListView.DataBind();
 
-        if (CurrentPOListView.Items.Count == 0)
+        if (CurrentPOListView.Items.Count == 0) // then create the suggested putchase order
         {
+            // set the suggested order ODS to the listview and bind it
+            CurrentPOListView.DataSourceID = "SuggestedPOODS";
+            CurrentPOListView.DataBind();
+
             PurchaseOrder purchaseorder = new PurchaseOrder();
 
             // get the vendorID from the DDL and set it into purchaseorder
@@ -88,24 +102,7 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
             var sysmgr = new PurchasingController();
             sysmgr.NewSuggestedOrder(purchaseorder, purchaseorderdetails);
 
-            // set the suggested order ODS to the listview and bind it
-            CurrentPOListView.DataSourceID = "SuggestedPOODS";
-            CurrentPOListView.DataBind();
-
-            //////////////////////////////////////////////////////////////
-            // !~!~! NEED TO CHANGE THE FOLLOWING CODE SO IT UPDATED THE CURRENT PO WITH THE TOTALS
-            TotalsGridView.DataSourceID = "TotalsODS";
             TotalsGridView.DataBind();
-
-            PurchaseOrder purchaseordertotals = new PurchaseOrder();
-
-            // pass the subtotal, taxamount to purchaseorder here
-            purchaseordertotals.SubTotal = decimal.Parse(TotalsGridView.DataKeys[0].Values[0].ToString());
-            purchaseordertotals.TaxAmount = decimal.Parse(TotalsGridView.DataKeys[0].Values[1].ToString());
-
-            var newsysmgr = new PurchasingController();
-            newsysmgr.NewTotalsSuggestedOrder(purchaseordertotals);
-            ///////////////////////////////////////////////////////////////
 
             // Bind the new current inventory for the suggested order
             CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
@@ -151,9 +148,35 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
         // !*!*! ADD THE PLACE ORDER BUTTON LOGIC HERE
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ~!~!~!~ DELETE CURRENT HITTING CONSTRAINT FOR table "dbo.PurchaseOrderDetails", column 'PurchaseOrderID'. ~!~!~!~
     protected void DeleteButton_Click(object sender, EventArgs e)
     {
-        // !*!*! ADD THE DELETE BUTTON LOGIC HERE
+        MessageUserControl.TryRun(() =>
+        {
+            int purchaseOrderID = 0;
+
+            foreach (ListViewItem item in CurrentPOListView.Items)
+            {
+                purchaseOrderID = int.Parse((item.FindControl("PurchaseOrderIDLabel2") as Label).Text.ToString());
+            }
+
+            PurchasingController sysmgr = new PurchasingController();
+            sysmgr.PurchaseOrder_Delete(purchaseOrderID);
+
+            CurrentPOListView.Visible = false;
+            CurrentInventoryListView.Visible = false;
+            VendorDetailGridView.Visible = false;
+            CurrentPOLabel.Visible = false;
+            CurrentInventoryLabel.Visible = false;
+            UpdateButton.Visible = false;
+            PlaceButton.Visible = false;
+            DeleteButton.Visible = false;
+            ClearButton.Visible = false;
+            TotalsGridView.Visible = false;
+
+        }, "Removed", "Purchase order has been removed.");
     }
 
     protected void ClearButton_Click(object sender, EventArgs e)

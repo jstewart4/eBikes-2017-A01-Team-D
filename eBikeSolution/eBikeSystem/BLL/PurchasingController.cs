@@ -63,6 +63,7 @@ namespace eBikeSystem.BLL
                                where x.PurchaseOrderID == activeorder
                                select new PurchaseOrderPartsPOCO
                               {
+                                  PurchaseOrderID = x.PurchaseOrderID,
                                   PartID = x.PartID,
                                   Description = x.Part.Description,
                                   QuantityOnHand = x.Part.QuantityOnHand,
@@ -105,17 +106,17 @@ namespace eBikeSystem.BLL
             }
         }
 
-        public void NewTotalsSuggestedOrder(PurchaseOrder purchaseordertotals)
-        {
-            using (var context = new eBikeContext()) // start transaction
-            {
-                // add the created suggested purchase order to the database
-                purchaseordertotals = context.PurchaseOrders.Add(purchaseordertotals);    //staging
+        //public void NewTotalsSuggestedOrder(PurchaseOrder purchaseordertotals)
+        //{
+        //    using (var context = new eBikeContext()) // start transaction
+        //    {
+        //        // add the created suggested purchase order to the database
+        //        purchaseordertotals = context.PurchaseOrders.Add(purchaseordertotals);    //staging
 
-                // save the changes to database and end transaction
-                context.SaveChanges();
-            }
-        }
+        //        // save the changes to database and end transaction
+        //        context.SaveChanges();
+        //    }
+        //}
 
         // this is to create the suggested order in the database
         public void NewSuggestedOrder(PurchaseOrder purchaseorder, List<PurchaseOrderDetail> purchaseorderdetails)
@@ -141,16 +142,42 @@ namespace eBikeSystem.BLL
             }
         }
 
+        public int PurchaseOrder_Delete(int purchaseOrderID)
+        {
+            using (var context = new eBikeContext())
+            {
+                var existingorderid = context.PurchaseOrders.Find(purchaseOrderID);
+                //var existingorderid = context.PurchaseOrderDetails.Find(purchaseOrderID);
+
+                context.PurchaseOrders.Remove(existingorderid);
+                //context.PurchaseOrderDetails.Remove(existingorderid);
+
+                return context.SaveChanges();
+
+            }
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete, false)]
+        public int PurchaseOrder_Delete(PurchaseOrder item)
+        {
+            return PurchaseOrder_Delete(item.PurchaseOrderID);
+        }
+
         // query to find parts for and display the suggested order 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<PurchaseOrderPartsPOCO> SuggestedPurchaseOrder_ByVendor(int vendorid)
         {
             using (var context = new eBikeContext())
             {
+                var purchaseorderid = (from x in context.PurchaseOrders
+                                   where x.VendorID == vendorid && x.PurchaseOrderNumber == null && x.OrderDate == null
+                                   select x.PurchaseOrderID).FirstOrDefault();
+
                 var results = (from x in context.Parts
                                where x.VendorID == vendorid && x.ReorderLevel - (x.QuantityOnHand + x.QuantityOnOrder) > 0
                                select new PurchaseOrderPartsPOCO
                                {
+                                   PurchaseOrderID = purchaseorderid,
                                    PartID = x.PartID,
                                    Description = x.Description,
                                    QuantityOnHand = x.QuantityOnHand,
