@@ -81,5 +81,22 @@ namespace eBikeSystem.BLL
 
             }
         }//eom
+
+
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<JobDetail> JobDetail()
+        {
+            using (var context = new eBikeContext())
+            {
+                var results = from x in context.JobDetails
+                              select x;
+
+                return results.ToList();
+
+            }
+        }//eom
+
+
     }
 }
