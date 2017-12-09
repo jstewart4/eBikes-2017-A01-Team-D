@@ -136,24 +136,26 @@ namespace eBikeSystem.BLL
         }
         //Insert for UnorderedPurchaseItemCart
         [DataObjectMethod(DataObjectMethodType.Insert,false)]
-         public int Add_UnorderedVendorPart(UnorderedPurchaseItemCart cartID)
+         public int Add_UnorderedVendorPart(UnorderedPurchaseItemCart itemAdd)
         {
             using (var context = new eBikeContext())
             {
-                cartID = context.UnorderedPurchaseItemCarts.Add(cartID);
+                //itemAdd.PurchaseOrderNumber = poNumber;
+                itemAdd = context.UnorderedPurchaseItemCarts.Add(itemAdd);
                 context.SaveChanges();
 
-                return cartID.CartID;
+                return itemAdd.CartID;
             }
         }
         //Update for UnorderedPurchaseItemCart
         [DataObjectMethod(DataObjectMethodType.Delete, false)]
-        public int Remove_UnorderedVendorPart()
+        public int Remove_UnorderedVendorPart(UnorderedPurchaseItemCart itemDelete)
         {
             using (var context = new eBikeContext())
             {
-
-                return context.SaveChanges();
+                var item = context.UnorderedPurchaseItemCarts.Find(itemDelete.CartID);
+                context.UnorderedPurchaseItemCarts.Remove(item);
+                return context.SaveChanges();              
             }
         }
     }
