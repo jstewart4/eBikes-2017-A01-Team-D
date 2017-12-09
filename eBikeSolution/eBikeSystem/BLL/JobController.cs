@@ -19,7 +19,7 @@ namespace eBikeSystem.BLL
             using (var context = new eBikeContext())
             {
                 var results = from x in context.Jobs
-                              where x.JobDateOut == null
+                              where string.IsNullOrEmpty(x.JobDateOut.ToString())
                               select new JobListPoco
                               {
                                   JobID = x.JobID,
@@ -34,20 +34,52 @@ namespace eBikeSystem.BLL
             }
         }//eom
 
+       
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public List<Customer> customerList()
+        public List<customerPOCO> customerList()
         {
             using (var context = new eBikeContext())
             {
                 var results = from x in context.Customers
-                              select x;
-
-
+                              select new customerPOCO
+                              {
+                                  CustomerID = x.CustomerID,
+                                  FirstName = x.FirstName,
+                                  LastName = x.LastName
+                              };
 
                 return results.ToList();
 
             }
 
-        }
+        }//eom
+
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<JobDetail> presets()
+        {
+            using (var context = new eBikeContext())
+            {
+                var results = from x in context.JobDetails
+                              select x;
+
+                return results.ToList();
+
+            }
+        }//eom
+
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<Coupon> coupon()
+        {
+            using (var context = new eBikeContext())
+            {
+                var results = from x in context.Coupons
+                              select x;
+
+                return results.ToList();
+
+            }
+        }//eom
     }
 }

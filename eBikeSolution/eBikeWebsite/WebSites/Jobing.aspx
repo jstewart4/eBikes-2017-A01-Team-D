@@ -62,7 +62,7 @@
                 </asp:TemplateField>
                 <asp:TemplateField ShowHeader="False">
                     <ItemTemplate>
-                        <asp:LinkButton runat="server" Text="View" CommandName=""  CausesValidation="false" ID="viewJob"></asp:LinkButton>
+                        <asp:LinkButton runat="server" Text="View" CommandName="" OnClick="ViewJob_Click" CausesValidation="false" ID="viewJob"></asp:LinkButton>
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>
@@ -73,7 +73,7 @@
              <asp:Button ID="NewJob" runat="server" Text="New Job" OnClick="NewJob_Click" Visible ="true"/>
         </div>
         <div class="col-md-3">
-            <asp:DropDownList ID="CustomerDDL" runat="server" DataSourceID="customerDDLODS" DataTextField="FirstName" DataValueField="CustomerID">
+            <asp:DropDownList ID="CustomerDDL" runat="server" DataSourceID="customerDDLODS" DataTextField="Name" DataValueField="CustomerID">
 
             </asp:DropDownList> 
         </div>
@@ -85,7 +85,10 @@
         SelectMethod="JobList" 
         TypeName="eBikeSystem.BLL.JobController"></asp:ObjectDataSource>
 
-    <asp:ObjectDataSource ID="customerDDLODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="customerList" TypeName="eBikeSystem.BLL.JobController">
+   <asp:ObjectDataSource ID="customerDDLODS" runat="server" 
+       OldValuesParameterFormatString="original_{0}" 
+       SelectMethod="customerList" 
+       TypeName="eBikeSystem.BLL.JobController">
 
     </asp:ObjectDataSource>
 

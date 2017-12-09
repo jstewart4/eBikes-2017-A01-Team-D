@@ -49,4 +49,14 @@ public partial class WebSites_Jobing : System.Web.UI.Page
         CurrentJobsList.Visible = false;
         NewJob.Visible = false;
     }
+
+
+    protected void ViewJob_Click(object sender, EventArgs e)
+    {
+        GridViewRow agvrow = (GridViewRow)((LinkButton)sender).NamingContainer;
+        int jobId = int.Parse(((Label)agvrow.FindControl("JobIDLabel")).Text);
+        string customerName = ((Label)agvrow.FindControl("NameLabel")).Text;
+        string contactNumber = ((Label)agvrow.FindControl("ContactPhoneLabel")).Text;
+        Response.Redirect(String.Format("CurrentJob.aspx?id={0}&name={1}&contact={2}", jobId, customerName, contactNumber), false);
+    }
 }

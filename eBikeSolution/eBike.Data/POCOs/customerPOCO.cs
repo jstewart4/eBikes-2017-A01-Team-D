@@ -6,7 +6,23 @@ using System.Threading.Tasks;
 
 namespace eBike.Data.POCOs
 {
-    class customerPOCO
+    public class customerPOCO
     {
+        public int CustomerID { get; set; }
+
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        private string name;
+
+        public string Name
+        {
+            get { return LastName + ", " + FirstName; }
+
+        }
+
     }
 }
+
