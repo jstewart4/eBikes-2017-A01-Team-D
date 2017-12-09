@@ -148,9 +148,6 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
         // !*!*! ADD THE PLACE ORDER BUTTON LOGIC HERE
     }
 
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ~!~!~!~ DELETE CURRENT HITTING CONSTRAINT FOR table "dbo.PurchaseOrderDetails", column 'PurchaseOrderID'. ~!~!~!~
     protected void DeleteButton_Click(object sender, EventArgs e)
     {
         MessageUserControl.TryRun(() =>

@@ -147,10 +147,11 @@ namespace eBikeSystem.BLL
             using (var context = new eBikeContext())
             {
                 var existingorderid = context.PurchaseOrders.Find(purchaseOrderID);
-                //var existingorderid = context.PurchaseOrderDetails.Find(purchaseOrderID);
+                //var existingdetailsorderid = context.PurchaseOrderDetails.Find(purchaseOrderID);
 
+                //context.PurchaseOrderDetails.Remove(existingdetailsorderid);
                 context.PurchaseOrders.Remove(existingorderid);
-                //context.PurchaseOrderDetails.Remove(existingorderid);
+                
 
                 return context.SaveChanges();
 
