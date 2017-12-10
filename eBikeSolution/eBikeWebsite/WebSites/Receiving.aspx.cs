@@ -69,33 +69,36 @@ public partial class WebSites_Receiving : System.Web.UI.Page
 
     protected void ForceCloser_Click(object sender, EventArgs e)
     {
-        if(string.IsNullOrEmpty(txtReasonFC.Text))
+        MessageUserControl.TryRun(() =>
         {
-            MessageUserControl.ShowInfo("Warning", "Please provide reason for closing the purchase order.");
-        }
-        else
-        {
-            ReceivingController sysmng = new ReceivingController();
-
-            PurchaseOrder poData = new PurchaseOrder();
-            //get value to update PO table
-            poData.PurchaseOrderID = int.Parse(((Label)PODetailsGV.Rows[0].FindControl("PurchaseOrderID")).Text);
-            poData.Notes = txtReasonFC.Text;
-            poData.Closed = true;
-
-            List<PurchaseOrderDetailsPOCO> poDetailsList = new List<PurchaseOrderDetailsPOCO>();
-            foreach (GridViewRow row in PODetailsGV.Rows)
+            if (string.IsNullOrEmpty(txtReasonFC.Text))
             {
-                PurchaseOrderDetailsPOCO data = new PurchaseOrderDetailsPOCO();
-                data.PurchaseOrderID = int.Parse(((Label)row.FindControl("PurchaseOrderID")).Text);
-                data.PartID = int.Parse(((Label)row.FindControl("PartID")).Text);
-                data.QuantityOutstanding = int.Parse(((Label)row.FindControl("QuantityOutstanding")).Text);
-                //add single item to the list
-                poDetailsList.Add(data);
+                MessageUserControl.ShowInfo("Warning", "Please provide reason for closing the purchase order.");
             }
-            sysmng.ForceCloser_Update(poData, poDetailsList);
-            RefreshPage();
-        }
+            else
+            {
+                ReceivingController sysmng = new ReceivingController();
+
+                PurchaseOrder poData = new PurchaseOrder();
+                //get value to update PO table
+                poData.PurchaseOrderID = int.Parse(((Label)PODetailsGV.Rows[0].FindControl("PurchaseOrderID")).Text);
+                poData.Notes = txtReasonFC.Text;
+                poData.Closed = true;
+
+                List<PurchaseOrderDetailsPOCO> poDetailsList = new List<PurchaseOrderDetailsPOCO>();
+                foreach (GridViewRow row in PODetailsGV.Rows)
+                {
+                    PurchaseOrderDetailsPOCO data = new PurchaseOrderDetailsPOCO();
+                    data.PurchaseOrderID = int.Parse(((Label)row.FindControl("PurchaseOrderID")).Text);
+                    data.PartID = int.Parse(((Label)row.FindControl("PartID")).Text);
+                    data.QuantityOutstanding = int.Parse(((Label)row.FindControl("QuantityOutstanding")).Text);
+                    //add single item to the list
+                    poDetailsList.Add(data);
+                }
+                sysmng.ForceCloser_Update(poData, poDetailsList);
+                RefreshPage();       
+            }
+        }, "Confirmation", "Order was successfully closed");
     }
 
     private void RefreshPage()
@@ -110,26 +113,28 @@ public partial class WebSites_Receiving : System.Web.UI.Page
 
     protected void Receive_Click(object sender, EventArgs e)
     {
-        ReceivingController sysmng = new ReceivingController();
-
-        List<NewReceiveOrderPOCO> receiveNewOrders = new List<NewReceiveOrderPOCO>();
-
-        foreach (GridViewRow row in PODetailsGV.Rows)
+        MessageUserControl.TryRun(()=>
         {
-            NewReceiveOrderPOCO newOrder = new NewReceiveOrderPOCO();
-            newOrder.PurchaseOrderID = int.Parse(((Label)row.FindControl("PurchaseOrderID")).Text);
-            newOrder.PurchaseOrderDetailID = int.Parse(((Label)row.FindControl("PurchaseOrderDetailID")).Text);
-            newOrder.PartID = int.Parse(((Label)row.FindControl("PartID")).Text);
-            newOrder.PartDescription = (((Label)row.FindControl("Description")).Text);
-            newOrder.Outstanding = int.Parse(((Label)row.FindControl("QuantityOutstanding")).Text);
-            newOrder.QuantityReceived = (((TextBox)row.FindControl("txtReceiving")).Text) == "" ? 0 : int.Parse(((TextBox)row.FindControl("txtReceiving")).Text);
-            newOrder.QuantityReturned = (((TextBox)row.FindControl("txtReturning")).Text) == "" ? 0 : int.Parse(((TextBox)row.FindControl("txtReturning")).Text);
-            newOrder.Notes = (((TextBox)row.FindControl("txtReason")).Text);
+            ReceivingController sysmng = new ReceivingController();
 
-            receiveNewOrders.Add(newOrder);
-        }
-        sysmng.Add_ReceivedOrders(receiveNewOrders);
+            List<NewReceiveOrderPOCO> receiveNewOrders = new List<NewReceiveOrderPOCO>();
+
+            foreach (GridViewRow row in PODetailsGV.Rows)
+            {
+                NewReceiveOrderPOCO newOrder = new NewReceiveOrderPOCO();
+                newOrder.PurchaseOrderID = int.Parse(((Label)row.FindControl("PurchaseOrderID")).Text);
+                newOrder.PurchaseOrderDetailID = int.Parse(((Label)row.FindControl("PurchaseOrderDetailID")).Text);
+                newOrder.PartID = int.Parse(((Label)row.FindControl("PartID")).Text);
+                newOrder.PartDescription = (((Label)row.FindControl("Description")).Text);
+                newOrder.Outstanding = int.Parse(((Label)row.FindControl("QuantityOutstanding")).Text);
+                newOrder.QuantityReceived = (((TextBox)row.FindControl("txtReceiving")).Text) == "" ? 0 : int.Parse(((TextBox)row.FindControl("txtReceiving")).Text);
+                newOrder.QuantityReturned = (((TextBox)row.FindControl("txtReturning")).Text) == "" ? 0 : int.Parse(((TextBox)row.FindControl("txtReturning")).Text);
+                newOrder.Notes = (((TextBox)row.FindControl("txtReason")).Text);
+
+                receiveNewOrders.Add(newOrder);
+            }
+            sysmng.Add_ReceivedOrders(receiveNewOrders);
+            PODetailsGV.DataBind();
+        }, "Confirmation", "Order was successfully received.");
     }
-
-
 }

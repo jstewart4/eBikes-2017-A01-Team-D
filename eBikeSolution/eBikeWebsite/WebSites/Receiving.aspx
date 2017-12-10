@@ -39,7 +39,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Order Date" SortExpression="OrderDate">
                         <ItemTemplate>
-                            <asp:Label runat="server" Text='<%# Bind("OrderDate") %>' ID="Label3"></asp:Label>
+                            <asp:Label runat="server" Text='<%# Bind("OrderDate", "{0:MMM/dd/yyyy}") %>' ID="Label3"></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Vendor" SortExpression="VendorName">

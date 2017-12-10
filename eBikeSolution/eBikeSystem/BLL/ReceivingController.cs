@@ -116,10 +116,86 @@ namespace eBikeSystem.BLL
 
         public void Add_ReceivedOrders(List<NewReceiveOrderPOCO> receiveNewOrders)
         {
+            using (var context = new eBikeContext())
+            {
+                int id = 0; //this int will hold future PK for update;
+                ReceiveOrder receivedOrdersData = new ReceiveOrder();
+                ReceiveOrderDetail receivedOrdersDetailsData = null;
+                ReturnedOrderDetail returnOrdersDetailsData = null;
 
+                receivedOrdersData.PurchaseOrderID = receiveNewOrders[0].PurchaseOrderID;
+                receivedOrdersData.ReceiveDate = DateTime.Now;
+                receivedOrdersData = context.ReceiveOrders.Add(receivedOrdersData);
+                id = receivedOrdersData.ReceiveOrderDetails.Count() + 1;
+
+                foreach (NewReceiveOrderPOCO item in receiveNewOrders)
+                {
+                    if (item.QuantityReceived != 0)
+                    {   //Part table
+                        if (item.QuantityReceived <= item.Outstanding)
+                        {
+                            receivedOrdersDetailsData = new ReceiveOrderDetail();
+                            receivedOrdersDetailsData.PurchaseOrderDetailID = item.PurchaseOrderDetailID;
+                            receivedOrdersDetailsData.ReceiveOrderID = id;
+                            receivedOrdersDetailsData.QuantityReceived = item.QuantityReceived;
+
+                            receivedOrdersData.ReceiveOrderDetails.Add(receivedOrdersDetailsData);
+
+                            var checkPartExists = (from p in context.Parts
+                                                   where p.PartID == item.PartID
+                                                   select p).SingleOrDefault();
+                            if (checkPartExists != null)
+                            {
+                                if (checkPartExists.QuantityOnOrder >= item.Outstanding)
+                                {
+                                    checkPartExists.QuantityOnHand += item.QuantityReceived;
+                                    checkPartExists.QuantityOnOrder -= item.QuantityReceived;
+                                }
+                                else
+                                {
+                                    throw new Exception("The quantity on order is less than outstanding quantity.");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Sorry there is no such part number in database.");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("The received quantity can't be more than outstanding.");
+                        }
+                    }
+                    //ReturnOrderDetails Table
+                    if (!string.IsNullOrEmpty(item.QuantityReturned.ToString()) && !string.IsNullOrEmpty(item.Notes))
+                    {
+                        returnOrdersDetailsData = new ReturnedOrderDetail();
+                        returnOrdersDetailsData.ReceiveOrderID = id;
+                        returnOrdersDetailsData.PurchaseOrderDetailID = item.PurchaseOrderDetailID;
+                        returnOrdersDetailsData.ItemDescription = item.PartDescription;
+                        returnOrdersDetailsData.Quantity = item.QuantityReturned;
+                        returnOrdersDetailsData.Reason = item.Notes;
+                        returnOrdersDetailsData.VendorPartNumber = item.PartID.ToString();
+
+                        receivedOrdersData.ReturnedOrderDetails.Add(returnOrdersDetailsData);
+                    }
+                }
+                int outstanding = receiveNewOrders.Sum(item => item.Outstanding);
+                int received = receiveNewOrders.Sum(item => item.QuantityReceived);
+
+                if ((outstanding - received) == 0)
+                {
+                    PurchaseOrder poData = context.PurchaseOrders.Find(receiveNewOrders[0].PurchaseOrderID);
+
+                    if (poData != null)
+                    {
+                        poData.Closed = true;
+                    }
+                }
+                context.SaveChanges();
+                
+            }
         }
-
-        
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<UnorderedPurchaseItemCart> GetUnorderedVendorParts(int poNumber)
         {
