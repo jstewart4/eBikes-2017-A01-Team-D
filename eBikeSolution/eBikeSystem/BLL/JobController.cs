@@ -85,11 +85,12 @@ namespace eBikeSystem.BLL
 
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public List<JobDetail> JobDetail()
+        public List<JobDetail> JobDetail(int jobid)
         {
             using (var context = new eBikeContext())
             {
                 var results = from x in context.JobDetails
+                              where x.JobID.Equals(jobid)
                               select x;
 
                 return results.ToList();

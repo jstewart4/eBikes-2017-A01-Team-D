@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using eBikeSystem.BLL;
 
 public partial class WebSites_CurrentJob : System.Web.UI.Page
 {
@@ -19,6 +20,14 @@ public partial class WebSites_CurrentJob : System.Web.UI.Page
             JobID.Text = Request.QueryString["id"];
             CustomerName.Text = Request.QueryString["name"];
             ContactNumber.Text = Request.QueryString["contact"];
+
+            JobController sysmgr = new JobController();
+            int jobId = int.Parse(JobID.Text);
+
+            JobServiceGridView.DataSource = sysmgr.JobDetail(jobId);
+            JobServiceGridView.DataBind();
+
+
         }
     }
 

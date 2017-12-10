@@ -7,7 +7,7 @@
     <div class="row col-md-12">
         <div class="form-group" style="padding-bottom: 2rem; padding-top: 2rem;">
 
-            <asp:Label CssClass="col-sm-1" runat="server" Text="User: " AssociatedControlID="UserFullName"></asp:Label>
+            <asp:Label CssClass="col-xs-1" runat="server" Text="User: " AssociatedControlID="UserFullName"></asp:Label>
 
             <asp:Label CssClass="col-sm-1" ID="UserFullName" runat="server"></asp:Label>
 
@@ -26,18 +26,22 @@
     </div>
     <div class="row col-md-12">
         <div class="form-group" style="padding-bottom: 2rem; padding-top: 2rem;">
-            <asp:Label CssClass="col-sm-1" runat="server" Text="Presets: " AssociatedControlID="PresetDDL"></asp:Label>
-            <asp:DropDownList CssClass="col-sm-1" ID="PresetDDL"
+           
+             <asp:Label CssClass="col-sm-1" runat="server" Text="Presets: " AssociatedControlID="PresetDDL"></asp:Label>
+            <asp:DropDownList CssClass="col-sm-2" ID="PresetDDL" AppendDataBoundItems="true"
                 runat="server" DataSourceID="PresetDDLODS" DataTextField="Description"
                 DataValueField="JobDetailID">
+                <asp:ListItem Value="0" Enabled="true" Selected="True">Select...</asp:ListItem>
             </asp:DropDownList>
             <asp:Button CssClass="col-sm-1" ID="PresetButton" runat="server" Text="Select" OnClick="PresetButton_Click" />
 
             <asp:Label CssClass="col-sm-1" runat="server" Text="Coupon: " AssociatedControlID="CouponDDL"></asp:Label>
-            <asp:DropDownList CssClass="col-sm-2" ID="CouponDDL" AppendDataBoundItems="true" runat="server" DataSourceID="CouponDDLODS" DataTextField="CouponIDValue" DataValueField="CouponID">
+            <asp:DropDownList CssClass="col-sm-2" ID="CouponDDL" AppendDataBoundItems="true" runat="server" DataSourceID="CouponDDLODS" 
+                DataTextField="CouponIDValue" DataValueField="CouponID">
                 <asp:ListItem Value="0" Enabled="true" Selected="True">Select...</asp:ListItem>
             </asp:DropDownList>
             <asp:Button CssClass="col-sm-1" ID="AddServiceButton" runat="server" Text="Add Service" OnClick="AddServiceButton_Click" />
+
         </div>
     </div>
     <div class="row col-md-12">
@@ -56,7 +60,7 @@
     </div>
 
     <div class="row col-md-12">
-        <asp:GridView ID="JobServiceGridView" runat="server" DataSourceID="JobServiceGridViewODS" AllowPaging="True">
+        <asp:GridView ID="JobServiceGridView" runat="server" AllowPaging="True">
 
            
         </asp:GridView>
