@@ -134,8 +134,8 @@
                           </asp:GridView>
                           <asp:Button ID="btnReceive" runat="server" Text="Receive" CssClass="btn btn-success" OnClick="Receive_Click" />
                           <asp:Button ID="btnForceCloser" runat="server" Text="Force Closer" CssClass="btn btn-danger" OnClick="ForceCloser_Click" />
-                          
-                          <asp:TextBox ID="txtReasonFC" runat="server" Text="Reason for forced closer"></asp:TextBox>
+                          <asp:Label ID="lblReasonFC" runat="server" Text="Label"><b>Reason: </b></asp:Label>
+                          <asp:TextBox ID="txtReasonFC" runat="server"></asp:TextBox>
                       </ContentTemplate>
                     </asp:UpdatePanel>
                 </div> <%--end of pane--%> 
@@ -251,4 +251,7 @@
             <asp:ControlParameter ControlID="lblPONumber" PropertyName="Text" DefaultValue="0" Name="poNumber" Type="Int32"></asp:ControlParameter>
         </SelectParameters>
     </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ObjectDataSource1" runat="server">
+    </asp:ObjectDataSource>
+
 </asp:Content>

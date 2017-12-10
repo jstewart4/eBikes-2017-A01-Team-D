@@ -52,7 +52,7 @@ namespace eBikeSystem.BLL
                                     PurchaseOrderDetailID = pod.PurchaseOrderDetailID,
                                     PartID = pod.PartID,
                                     Description = pod.Part.Description,
-                                    QuantityOnOrder = pod.Part.QuantityOnOrder,
+                                    QuantityOnOrder = pod.Quantity,
                                     QuantityOutstanding = pod.ReceiveOrderDetails.Select(rod => rod.QuantityReceived).Any() ? pod.Quantity - pod.ReceiveOrderDetails.Sum(rod => rod.QuantityReceived) : pod.Quantity,
                                 };
                 poDetails = poResults.ToList();

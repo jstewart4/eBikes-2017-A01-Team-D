@@ -11,6 +11,7 @@ using eBike.Data.DTOs;
 using eBike.Data.Entities;
 using eBike.Data.POCOs;
 
+
 public partial class WebSites_Receiving : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -64,7 +65,7 @@ public partial class WebSites_Receiving : System.Web.UI.Page
         lblVendorPhone.Text = vendorPODetails.VendorPhone;
         //DataSource for the GridView
         PODetailsGV.DataSource = vendorPODetails.PODetails;
-        PODetailsGV.DataBind();   
+        PODetailsGV.DataBind();        
     }
 
     protected void ForceCloser_Click(object sender, EventArgs e)
