@@ -30,7 +30,7 @@
              <asp:Label CssClass="col-sm-1" runat="server" Text="Presets: " AssociatedControlID="PresetDDL"></asp:Label>
             <asp:DropDownList CssClass="col-sm-2" ID="PresetDDL" AppendDataBoundItems="true"
                 runat="server" DataSourceID="PresetDDLODS" DataTextField="Description"
-                DataValueField="JobDetailID">
+                DataValueField="StandardJobID" OnSelectedIndexChanged="PresetDDL_SelectedIndexChanged">
                 <asp:ListItem Value="0" Enabled="true" Selected="True">Select...</asp:ListItem>
             </asp:DropDownList>
             <asp:Button CssClass="col-sm-1" ID="PresetButton" runat="server" Text="Select" OnClick="PresetButton_Click" />
@@ -44,10 +44,11 @@
 
         </div>
     </div>
+    <%-- OnDataBinding="PresetButton_Click" --%>
     <div class="row col-md-12">
         <div class="form-group" style="padding-bottom: 2rem; padding-top: 2rem;">
             <asp:Label CssClass="col-sm-1" AssociatedControlID="Description" runat="server" Text="Description"></asp:Label>
-            <asp:TextBox CssClass="col-sm-1" ID="Description" runat="server" Text="" Width="250px"></asp:TextBox>
+            <asp:TextBox CssClass="col-sm-1" ID="Description" runat="server" Text="" Width="250px" ></asp:TextBox>
             <asp:Label CssClass="col-sm-1" AssociatedControlID="Hours" runat="server" Text="Hours: "></asp:Label>
             <asp:TextBox CssClass="col-sm-1" ID="Hours" runat="server"></asp:TextBox>
         </div>
@@ -60,9 +61,42 @@
     </div>
 
     <div class="row col-md-12">
-        <asp:GridView ID="JobServiceGridView" runat="server" AllowPaging="True">
+        <asp:GridView ID="JobServiceGridView" runat="server" AllowPaging="True"
+            CssClass="table table-bordered table-striped table-hover" AutoGenerateColumns="False">
+            <Columns>
+                 <asp:TemplateField >
+                    <ItemTemplate>
+                        <asp:LinkButton ID="RemoveLinkButton" runat="server">Remove</asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
 
-           
+                <asp:TemplateField SortExpression="JobDetailID" HeaderText="Description">
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Bind("Description") %>' ID="DescriptionLabel"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                <asp:TemplateField SortExpression="JobDetailID" HeaderText="Hours">
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Bind("JobHours") %>' ID="DescriptionLabel"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                <asp:TemplateField SortExpression="JobDetailID" HeaderText="Coupon">
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Bind("CouponID") %>' ID="DescriptionLabel"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                <asp:TemplateField SortExpression="JobDetailID" HeaderText="Comments">
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Bind("Comments") %>' ID="DescriptionLabel"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+            </Columns>
+
+
         </asp:GridView>
     </div>
 

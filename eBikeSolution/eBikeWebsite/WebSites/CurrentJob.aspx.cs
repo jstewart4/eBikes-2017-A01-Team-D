@@ -33,11 +33,17 @@ public partial class WebSites_CurrentJob : System.Web.UI.Page
 
     protected void PresetButton_Click(object sender, EventArgs e)
     {
+        //JobController sysmgr = new JobController();
+        //int presetid = int.Parse(PresetDDL.SelectedValue);
 
+        //Description.Text = sysmgr.Description(presetid);
+        
     }
 
     protected void AddServiceButton_Click(object sender, EventArgs e)
     {
 
     }
+
+  
 }

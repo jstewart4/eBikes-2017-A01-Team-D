@@ -56,11 +56,11 @@ namespace eBikeSystem.BLL
 
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public List<JobDetail> presets()
+        public List<StandardJob> presets()
         {
             using (var context = new eBikeContext())
             {
-                var results = from x in context.JobDetails
+                var results = from x in context.StandardJobs
                               select x;
 
                 return results.ToList();
@@ -98,6 +98,18 @@ namespace eBikeSystem.BLL
             }
         }//eom
 
+        //public string Description(int presetid)
+        //{
+        //    using (var context = new eBikeContext())
+        //    {
+        //        var results = from x in context.StandardJobs
+        //                      where x.JobID.Equals(presetid)
+        //                      select x.Description;
 
+
+        //        return results.ToString();
+        //    }
+                
+        //}//eom
     }
 }
