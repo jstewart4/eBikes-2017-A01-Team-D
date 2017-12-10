@@ -58,16 +58,6 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
         ClearButton.Visible = true;
         TotalsGridView.Visible = true;
 
-
-        //TotalsGridView.DataSourceID = "TotalsODS";
-        //TotalsGridView.DataBind();
-
-        //PurchaseOrder purchaseordertotals = new PurchaseOrder();
-
-        //// pass the subtotal, taxamount to purchaseorder here
-        //purchaseordertotals.SubTotal = decimal.Parse(TotalsGridView.DataKeys[0].Values[0].ToString());
-        //purchaseordertotals.TaxAmount = decimal.Parse(TotalsGridView.DataKeys[0].Values[1].ToString());
-
         // set the current active order ODS to the listview
         CurrentPOListView.DataSourceID = "CurrentPOODS";
         CurrentPOListView.DataBind();
@@ -98,11 +88,30 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
                 purchaseorderdetails.Add(purchaseorderdetail);
             }
 
+
             // pass the data to the controller to create the suggested order
             var sysmgr = new PurchasingController();
-            sysmgr.NewSuggestedOrder(purchaseorder, purchaseorderdetails);
+            MessageUserControl.TryRun(() =>
+            {
+                sysmgr.NewSuggestedOrder(purchaseorder, purchaseorderdetails);
+
+            }, "Success", "Suggested purchase order created.");
 
             TotalsGridView.DataBind();
+
+            PurchaseOrder purchaseordertotals = new PurchaseOrder();
+
+            // pass the subtotal, taxamount to purchaseorder here
+            purchaseordertotals.SubTotal = Math.Round(decimal.Parse(TotalsGridView.DataKeys[0].Values[0].ToString()),2);
+            purchaseordertotals.TaxAmount = Math.Round(decimal.Parse(TotalsGridView.DataKeys[0].Values[1].ToString()),2);
+
+            // pass the totals to the controller to update the suggested order
+            var newsysmgr = new PurchasingController();
+            MessageUserControl.TryRun(() =>
+            {
+                newsysmgr.UpdateTotalsSuggestedOrder(purchaseorder, purchaseordertotals);
+
+            }, "Success", "Suggested purchase order totals updated.");
 
             // Bind the new current inventory for the suggested order
             CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
@@ -140,7 +149,37 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
 
     protected void UpdateButton_Click(object sender, EventArgs e)
     {
-        // !*!*! ADD THE UPDATE BUTTON LOGIC HERE
+        PurchaseOrder purchaseorder = new PurchaseOrder();
+
+        // get the vendorID from the DDL and set it into purchaseorder
+        purchaseorder.VendorID = int.Parse(VendorDDL.SelectedValue);
+
+        List<PurchaseOrderDetail> purchaseorderdetails = new List<PurchaseOrderDetail>();
+
+        foreach (ListViewItem item in CurrentPOListView.Items)
+        {
+
+            PurchaseOrderDetail purchaseorderdetail = new PurchaseOrderDetail();
+
+            purchaseorderdetail.PurchaseOrderDetailID = int.Parse((item.FindControl("PurchaseOrderDetailIDLabel2") as Label).Text.ToString());
+            purchaseorderdetail.PartID = int.Parse((item.FindControl("PartIDLabel2") as Label).Text.ToString());
+            purchaseorderdetail.Quantity = int.Parse((item.FindControl("QuantityTextBox2") as TextBox).Text.ToString());
+            purchaseorderdetail.PurchasePrice = decimal.Parse((item.FindControl("PurchasePriceTextBox2") as TextBox).Text.ToString());
+
+            purchaseorderdetails.Add(purchaseorderdetail);
+        }
+
+       var sysmgr = new PurchasingController();
+
+        MessageUserControl.TryRun(() =>
+        {
+            sysmgr.Update_PurchaseOrder(purchaseorder, purchaseorderdetails);
+
+        }, "Success", "Purchase Order item(s) quantity and purchase price updated");
+        
+        CurrentPOListView.DataBind();
+        TotalsGridView.DataBind();
+
     }
 
     protected void PlaceButton_Click(object sender, EventArgs e)

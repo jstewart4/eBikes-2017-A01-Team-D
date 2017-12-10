@@ -71,6 +71,8 @@
                     <tr style="background-color: #FFFFFF; color: #284775;">
                         <td style="display:none;">
                              <asp:Label Text='<%# Eval("PurchaseOrderID") %>' runat="server" ID="PurchaseOrderIDLabel2" /></td>
+                        <td style="display:none;">
+                             <asp:Label Text='<%# Eval("PurchaseOrderDetailID") %>' runat="server" ID="PurchaseOrderDetailIDLabel2" /></td>
                         <td>
                             <asp:Label Text='<%# Eval("PartID") %>' runat="server" ID="PartIDLabel2" /></td>
                         <td>
@@ -100,6 +102,8 @@
                     <tr style="background-color: #E0FFFF; color: #333333;">
                         <td style="display:none;">
                              <asp:Label Text='<%# Eval("PurchaseOrderID") %>' runat="server" ID="PurchaseOrderIDLabel2" /></td>
+                        <td style="display:none;">
+                             <asp:Label Text='<%# Eval("PurchaseOrderDetailID") %>' runat="server" ID="PurchaseOrderDetailIDLabel2" /></td>
                         <td>
                             <asp:Label Text='<%# Eval("PartID") %>' runat="server" ID="PartIDLabel2" /></td>
                         <td>

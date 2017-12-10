@@ -9,7 +9,7 @@ namespace eBike.Data.POCOs
     public class PurchaseOrderPartsPOCO
     {
         public int PurchaseOrderID { get; set; }
-        public int PurchaseDetailOrderID { get; set; }
+        public int PurchaseOrderDetailID { get; set; }
         public int PartID { get; set; }
         public string Description { get; set; }
         public int QuantityOnHand { get; set; }
