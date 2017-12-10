@@ -105,7 +105,7 @@ namespace eBikeSystem.BLL
                                    QuantityOnHand = x.QuantityOnHand,
                                    QuantityOnOrder = x.QuantityOnOrder,
                                    ReorderLevel = x.ReorderLevel,
-                                   Buffer = x.ReorderLevel - (x.QuantityOnHand + x.QuantityOnOrder),
+                                   Buffer = (x.QuantityOnHand + x.QuantityOnOrder) - x.ReorderLevel,
                                    PurchasePrice = x.PurchasePrice
                                }).OrderBy(z => z.PartID);
                 return results.ToList();
@@ -226,6 +226,67 @@ namespace eBikeSystem.BLL
             }
         }
 
+        public void Place_PurchaseOrder(PurchaseOrder purchaseorder, List<PurchaseOrderDetail> purchaseorderdetails)
+        {
+            using (var context = new eBikeContext())
+            {
+
+                var activeorder = (from x in context.PurchaseOrderDetails
+                                   where x.PurchaseOrder.VendorID == purchaseorder.VendorID && x.PurchaseOrder.PurchaseOrderNumber == null && x.PurchaseOrder.OrderDate == null
+                                   select x.PurchaseOrderID).FirstOrDefault();
+
+                var activeorderparts = from x in context.PurchaseOrderDetails
+                                       where x.PurchaseOrderID == activeorder
+                                       select x.PartID;
+
+                // get the max current order number...
+                var maxOrderNumber = (from x in context.PurchaseOrders
+                                        select x.PurchaseOrderNumber).Max();
+
+                // then set the new order number to the max plus 1
+                var updateOrderNumber = context.PurchaseOrders.Find(activeorder);
+                updateOrderNumber.PurchaseOrderNumber = maxOrderNumber + 1;
+
+                // update the OrderNumber field
+                context.Entry(updateOrderNumber).Property(y => y.PurchaseOrderNumber).IsModified = true;
+
+                // set the order date to todays date
+                var updateOrderDate = context.PurchaseOrders.Find(activeorder);
+                updateOrderDate.OrderDate = DateTime.Now;
+
+                // update the order date
+                context.Entry(updateOrderDate).Property(y => y.OrderDate).IsModified = true;
+
+                //List<Part> parts = new List<Part>();
+
+                //var updatepartdata = parts.Where(x => parts.Any(y => y.PartID == x.PartID));
+
+                foreach (var orderupdate in purchaseorderdetails)
+                {
+                    int partid = (from x in context.Parts
+                                    where x.PartID == orderupdate.PartID
+                                    select x.PartID).Single();
+
+                    int partQantityOnOrder = (from x in context.Parts
+                                             where x.PartID == partid
+                                              select x.QuantityOnOrder).Single();
+
+                    Part updateparts = context.Parts.Find(partid);
+                    
+                    updateparts.QuantityOnOrder = (partQantityOnOrder + orderupdate.Quantity);
+
+                    var newlyadded = context.Parts.Attach(updateparts);
+                    var updated = context.Entry(newlyadded);
+
+                    updated.State = EntityState.Modified;
+                }
+
+                // save the changes to database and end transaction
+                context.SaveChanges();
+
+            }
+        }
+
         // query to find parts for and display the suggested order 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<PurchaseOrderPartsPOCO> SuggestedPurchaseOrder_ByVendor(int vendorid)
@@ -281,7 +342,7 @@ namespace eBikeSystem.BLL
 
                     var results = (from x in context.PurchaseOrderDetails
                                    where x.PurchaseOrder.VendorID == vendorid && x.PurchaseOrder.PurchaseOrderNumber == null && x.PurchaseOrder.OrderDate == null
-                                   select (x.Quantity * x.Part.PurchasePrice)).Sum();
+                                   select (x.Quantity * x.PurchasePrice)).Sum();
 
                     ordertotals.SubTotal = results;
                     ordertotals.TaxAmount = Decimal.Multiply(results, 0.05m);

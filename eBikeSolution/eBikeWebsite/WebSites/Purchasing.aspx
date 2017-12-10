@@ -51,7 +51,9 @@
             <div class="form-group col-md-5">
             <asp:Label ID="VendorListLabel" runat="server" Text="Vendor"></asp:Label>&nbsp;&nbsp;&nbsp;
                 <asp:DropDownList ID="VendorDDL" runat="server" DataSourceID="VendorListODS" DataTextField="VendorName"
-                    DataValueField="VendorID" CssClass="form-control" AutoPostBack="false" AppendDataBoundItems="true" />&nbsp;&nbsp;&nbsp;
+                    DataValueField="VendorID" CssClass="form-control" AutoPostBack="false" AppendDataBoundItems="true">
+                    <asp:ListItem Value="0">Select a Vendor...</asp:ListItem>
+                </asp:DropDownList>&nbsp;&nbsp;&nbsp;
                 <asp:Button ID="GetCreatePOButton" CssClass="btn btn-info" runat="server" Text="Get / Create PO" OnClick="GetCreatePO_Click"/>
             </div>
             <div class="col-md-4">

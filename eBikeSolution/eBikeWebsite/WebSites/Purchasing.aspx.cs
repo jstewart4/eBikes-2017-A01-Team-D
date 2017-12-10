@@ -46,9 +46,23 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
         MessageUserControl.HandleDataBoundException(e);
     }
 
-    protected void GetCreatePO_Click(object sender, EventArgs e)
+    public void hideAll()
     {
-        // only show the GridViews, Listviews and buttons on click
+        CurrentPOListView.Visible = false;
+        CurrentInventoryListView.Visible = false;
+        VendorDetailGridView.Visible = false;
+        CurrentPOLabel.Visible = false;
+        CurrentInventoryLabel.Visible = false;
+        UpdateButton.Visible = false;
+        PlaceButton.Visible = false;
+        DeleteButton.Visible = false;
+        ClearButton.Visible = false;
+        TotalsGridView.Visible = false;
+    }
+    public void showAll()
+    {
+        CurrentPOListView.Visible = true;
+        CurrentInventoryListView.Visible = true;
         VendorDetailGridView.Visible = true;
         CurrentPOLabel.Visible = true;
         CurrentInventoryLabel.Visible = true;
@@ -57,6 +71,12 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
         DeleteButton.Visible = true;
         ClearButton.Visible = true;
         TotalsGridView.Visible = true;
+    }
+
+    protected void GetCreatePO_Click(object sender, EventArgs e)
+    {
+        // only show the GridViews, Listviews and buttons on click
+        showAll();
 
         // set the current active order ODS to the listview
         CurrentPOListView.DataSourceID = "CurrentPOODS";
@@ -176,7 +196,8 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
             sysmgr.Update_PurchaseOrder(purchaseorder, purchaseorderdetails);
 
         }, "Success", "Purchase Order item(s) quantity and purchase price updated");
-        
+
+        CurrentPOListView.DataSourceID = "CurrentPOODS";
         CurrentPOListView.DataBind();
         TotalsGridView.DataBind();
 
@@ -184,7 +205,35 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
 
     protected void PlaceButton_Click(object sender, EventArgs e)
     {
-        // !*!*! ADD THE PLACE ORDER BUTTON LOGIC HERE
+        PurchaseOrder purchaseorder = new PurchaseOrder();
+
+        // get the vendorID from the DDL and set it into purchaseorder
+        purchaseorder.VendorID = int.Parse(VendorDDL.SelectedValue);
+
+        List<PurchaseOrderDetail> purchaseorderdetails = new List<PurchaseOrderDetail>();
+
+        foreach (ListViewItem item in CurrentPOListView.Items)
+        {
+            PurchaseOrderDetail purchaseorderdetail = new PurchaseOrderDetail();
+
+            //purchaseorderdetail.PurchaseOrderDetailID = int.Parse((item.FindControl("PurchaseOrderDetailIDLabel2") as Label).Text.ToString());
+            purchaseorderdetail.PartID = int.Parse((item.FindControl("PartIDLabel2") as Label).Text.ToString());
+            purchaseorderdetail.Quantity = int.Parse((item.FindControl("QuantityTextBox2") as TextBox).Text.ToString());
+            // purchaseorderdetail.PurchasePrice = decimal.Parse((item.FindControl("PurchasePriceTextBox2") as TextBox).Text.ToString());
+
+            purchaseorderdetails.Add(purchaseorderdetail);
+        }
+
+        var sysmgr = new PurchasingController();
+
+        MessageUserControl.TryRun(() =>
+        {
+            sysmgr.Place_PurchaseOrder(purchaseorder, purchaseorderdetails);
+
+        }, "Success", "Purchase Order has been placed.");
+
+        hideAll();
+        VendorDDL.SelectedValue = "0";
     }
 
     protected void DeleteButton_Click(object sender, EventArgs e)
@@ -201,22 +250,15 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
             PurchasingController sysmgr = new PurchasingController();
             sysmgr.PurchaseOrder_Delete(purchaseOrderID);
 
-            CurrentPOListView.Visible = false;
-            CurrentInventoryListView.Visible = false;
-            VendorDetailGridView.Visible = false;
-            CurrentPOLabel.Visible = false;
-            CurrentInventoryLabel.Visible = false;
-            UpdateButton.Visible = false;
-            PlaceButton.Visible = false;
-            DeleteButton.Visible = false;
-            ClearButton.Visible = false;
-            TotalsGridView.Visible = false;
+            hideAll();
 
         }, "Removed", "Purchase order has been removed.");
     }
 
     protected void ClearButton_Click(object sender, EventArgs e)
     {
-        // !*!*! ADD THE CLEAR BUTTON LOGIC HERE
+        hideAll();
+        VendorDDL.SelectedValue = "0";
+        MessageUserControl.ShowInfo("Information", "Webpage cleared.");
     }
 }
