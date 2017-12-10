@@ -185,41 +185,89 @@ namespace eBikeSystem.BLL
                                    where x.PurchaseOrder.VendorID == purchaseorder.VendorID && x.PurchaseOrder.PurchaseOrderNumber == null && x.PurchaseOrder.OrderDate == null
                                    select x.PurchaseOrderID).FirstOrDefault();
 
-                var purchaseorderdetailID = (from x in purchaseorderdetails
-                                            where x.PurchaseOrderID == activeorder
-                                            select x.PurchaseOrderDetailID).ToList();
-
                 List<PurchaseOrderPartsPOCO> existing = (from x in context.PurchaseOrderDetails
-                                                    where x.PurchaseOrderID == activeorder
-                                                    select new PurchaseOrderPartsPOCO
-                                                    {
-                                                        PartID = x.PartID,
-                                                        Description = x.Part.Description,
-                                                        QuantityOnHand = x.Part.QuantityOnHand,
-                                                        QuantityOnOrder = x.Part.ReorderLevel,
-                                                        ReorderLevel = x.Part.QuantityOnOrder,
-                                                        Quantity = x.Quantity,
-                                                        PurchasePrice = x.PurchasePrice
-                                                    }).ToList();
+                                                         where x.PurchaseOrderID == activeorder
+                                                         select new PurchaseOrderPartsPOCO
+                                                         {
+                                                             PurchaseOrderDetailID = x.PurchaseOrderDetailID,
+                                                             PartID = x.PartID,
+                                                             Description = x.Part.Description,
+                                                             QuantityOnHand = x.Part.QuantityOnHand,
+                                                             QuantityOnOrder = x.Part.ReorderLevel,
+                                                             ReorderLevel = x.Part.QuantityOnOrder,
+                                                             Quantity = x.Quantity,
+                                                             PurchasePrice = x.PurchasePrice
+                                                         }).ToList();
 
+                var insertdata = purchaseorderdetails.Where(x => !existing.Any(y => y.PartID == x.PartID));
+                //var removedata = purchaseorderdetails.Where(x => !existing.Any(y => y.PartID == x.PartID));
                 var updatedata = purchaseorderdetails.Where(x => existing.Any(y => y.PartID == x.PartID));
 
-                foreach (var functionupdate in updatedata)
+                PurchaseOrderDetail detail = new PurchaseOrderDetail();
+
+                foreach (var insert in insertdata)
+                {
+                    detail = new PurchaseOrderDetail();
+                    detail.PartID = insert.PartID;
+                    detail.PurchasePrice = insert.PurchasePrice;
+                    detail.Quantity = insert.Quantity;
+                    detail.PurchaseOrderID = activeorder;
+
+                    if (detail.Quantity < 1)
+                    {
+                        throw new Exception("You must have at least 1 quantity for each item in the current purchase order.");
+                    }
+
+                    context.PurchaseOrderDetails.Add(detail);
+                }
+
+                var purchaseorderdetailpartid = (from x in purchaseorderdetails
+                                                 select x.PartID).ToList();
+
+                var existingpartsid = (from x in existing
+                                      select x.PartID).ToList();
+
+                // get the different part ID's between the two lists
+                var partIdToRemove = existingpartsid.Except(purchaseorderdetailpartid).ToList();
+
+                ///////////////////////////////////////////////////////////////////////////////////////
+                // ~!~!~!~ WORKING BUT ONLY FIRST ITEM IS REMOVED, NOT ALL ITEMS REMOVE ~!~!~!~ ///
+                // convert the partID to the purchaseorderdetailID for that row on the entity
+                var removedata = (from x in context.PurchaseOrderDetails
+                                  where x.PurchaseOrderID == activeorder && x.PartID == partIdToRemove.FirstOrDefault()
+                                  select x.PurchaseOrderDetailID).ToList();
+
+                foreach (var remove in removedata)
+                {
+                    detail = new PurchaseOrderDetail();
+                    detail.PurchaseOrderDetailID = remove;
+                    var existingdetailorderid = context.PurchaseOrderDetails.Find(detail.PurchaseOrderDetailID);
+                    context.PurchaseOrderDetails.Remove(existingdetailorderid);
+                }
+
+                foreach (var update in updatedata)
                 {
                     int detailid = (from x in context.PurchaseOrderDetails
-                              where x.PurchaseOrderID == activeorder && x.PartID == functionupdate.PartID
+                              where x.PurchaseOrderID == activeorder && x.PartID == update.PartID
                               select x.PurchaseOrderDetailID).Single();
 
-                    PurchaseOrderDetail update = context.PurchaseOrderDetails.Find(detailid);
+                    PurchaseOrderDetail updateDetails = context.PurchaseOrderDetails.Find(detailid);
 
-                    update.PurchasePrice = functionupdate.PurchasePrice;
-                    update.Quantity = functionupdate.Quantity;
+                    updateDetails.PurchasePrice = update.PurchasePrice;
+                    updateDetails.Quantity = update.Quantity;
 
-                    var newlyadded = context.PurchaseOrderDetails.Attach(update);
+                    if (update.Quantity < 1)
+                    {
+                        throw new Exception("You must have at least 1 quantity for each item in the current purchase order.");
+                    }
+
+                    var newlyadded = context.PurchaseOrderDetails.Attach(updateDetails);
                     var updated = context.Entry(newlyadded);
 
                     updated.State = EntityState.Modified;
                 }
+
+                
 
                 // save the changes to database and end transaction
                 context.SaveChanges();

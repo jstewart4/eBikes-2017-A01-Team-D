@@ -1,5 +1,6 @@
 ﻿using eBike.Data.Entities;
 using eBike.Data.Entities.Security;
+using eBike.Data.POCOs;
 using eBikeSystem.BLL;
 using eBikeSystem.BLL.Security;
 using System;
@@ -157,14 +158,118 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
         }
     }
 
+    // Remove item
     protected void CurrentPOListView_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
-        // !*!*! ADD THE REMOVE BUTTON LOGIC HERE
+        ListViewDataItem row = e.Item as ListViewDataItem;
+        PurchaseOrderPartsPOCO removeItem = new PurchaseOrderPartsPOCO();
+        removeItem.PartID = int.Parse((row.FindControl("PartIDLabel2") as Label).Text);
+        removeItem.Description = (row.FindControl("DescriptionLabel2") as Label).Text;
+        removeItem.QuantityOnHand = int.Parse((row.FindControl("QuantityOnHandLabel2") as Label).Text);
+        removeItem.QuantityOnOrder = int.Parse((row.FindControl("QuantityOnOrderLabel2") as Label).Text);
+        removeItem.ReorderLevel = int.Parse((row.FindControl("ReorderLevelLabel2") as Label).Text);
+        removeItem.PurchasePrice = decimal.Parse((row.FindControl("PurchasePriceTextBox2") as TextBox).Text);
+        removeItem.Quantity = 0;
+
+        List<PurchaseOrderPartsPOCO> currentInventoryList = new List<PurchaseOrderPartsPOCO>();
+        foreach (ListViewItem item in CurrentInventoryListView.Items)
+        {
+            PurchaseOrderPartsPOCO inventoryItem = new PurchaseOrderPartsPOCO();
+            inventoryItem.PartID = int.Parse((item.FindControl("PartIDLabel3") as Label).Text.ToString());
+            inventoryItem.Description = (item.FindControl("DescriptionLabel3") as Label).Text;
+            inventoryItem.QuantityOnHand = int.Parse((item.FindControl("QuantityOnHandLabel3") as Label).Text.ToString());
+            inventoryItem.QuantityOnOrder = int.Parse((item.FindControl("QuantityOnOrderLabel3") as Label).Text.ToString());
+            inventoryItem.ReorderLevel = int.Parse((item.FindControl("ReorderLevelLabel3") as Label).Text.ToString());
+            inventoryItem.PurchasePrice = decimal.Parse((item.FindControl("PurchasePriceLabel3") as Label).Text.ToString());
+            inventoryItem.Quantity = 0;
+            currentInventoryList.Add(inventoryItem);
+        }
+
+        List<PurchaseOrderPartsPOCO> currentOrderList = new List<PurchaseOrderPartsPOCO>();
+        foreach (ListViewItem item in CurrentPOListView.Items)
+        {
+            PurchaseOrderPartsPOCO orderItem = new PurchaseOrderPartsPOCO();
+            orderItem.PartID = int.Parse((item.FindControl("PartIDLabel2") as Label).Text.ToString());
+            orderItem.Description = (item.FindControl("DescriptionLabel2") as Label).Text.ToString();
+            orderItem.QuantityOnHand = int.Parse((item.FindControl("QuantityOnHandLabel2") as Label).Text.ToString());
+            orderItem.QuantityOnOrder = int.Parse((item.FindControl("QuantityOnOrderLabel2") as Label).Text.ToString());
+            orderItem.ReorderLevel = int.Parse((item.FindControl("ReorderLevelLabel2") as Label).Text.ToString());
+            orderItem.PurchasePrice = decimal.Parse((item.FindControl("PurchasePriceTextBox2") as TextBox).Text.ToString());
+            orderItem.Quantity = int.Parse((item.FindControl("QuantityTextBox2") as TextBox).Text);
+            currentOrderList.Add(orderItem);
+        }
+
+        int index = row.DataItemIndex;
+
+        List<PurchaseOrderPartsPOCO> dataRemoved = currentOrderList;
+        List<PurchaseOrderPartsPOCO> dataAdded = currentInventoryList;
+
+        dataRemoved.RemoveAt(index);
+        CurrentPOListView.DataSource = dataRemoved;
+        CurrentPOListView.DataSourceID = String.Empty;
+        CurrentPOListView.DataBind();
+
+        dataAdded.Add(removeItem);
+        CurrentInventoryListView.DataSource = dataAdded;
+        CurrentInventoryListView.DataSourceID = String.Empty;
+        CurrentInventoryListView.DataBind();
     }
 
+    // Add item
     protected void CurrentInventoryListView_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
-        // !*!*! ADD THE ADD BUTTON LOGIC HERE
+        ListViewDataItem row = e.Item as ListViewDataItem;
+        PurchaseOrderPartsPOCO addItem = new PurchaseOrderPartsPOCO();
+        addItem.PartID = int.Parse((row.FindControl("PartIDLabel3") as Label).Text);
+        addItem.Description = (row.FindControl("DescriptionLabel3") as Label).Text;
+        addItem.QuantityOnHand = int.Parse((row.FindControl("QuantityOnHandLabel3") as Label).Text);
+        addItem.QuantityOnOrder = int.Parse((row.FindControl("QuantityOnOrderLabel3") as Label).Text);
+        addItem.ReorderLevel = int.Parse((row.FindControl("ReorderLevelLabel3") as Label).Text);
+        addItem.PurchasePrice = decimal.Parse((row.FindControl("PurchasePriceLabel3") as Label).Text);
+        addItem.Quantity = 0;
+
+        List<PurchaseOrderPartsPOCO> currentInventoryList = new List<PurchaseOrderPartsPOCO>();
+        foreach (ListViewItem item in CurrentInventoryListView.Items)
+        {
+            PurchaseOrderPartsPOCO inventoryItem = new PurchaseOrderPartsPOCO();
+            inventoryItem.PartID = int.Parse((item.FindControl("PartIDLabel3") as Label).Text.ToString());
+            inventoryItem.Description = (item.FindControl("DescriptionLabel3") as Label).Text;
+            inventoryItem.QuantityOnHand = int.Parse((item.FindControl("QuantityOnHandLabel3") as Label).Text.ToString());
+            inventoryItem.QuantityOnOrder = int.Parse((item.FindControl("QuantityOnOrderLabel3") as Label).Text.ToString());
+            inventoryItem.ReorderLevel = int.Parse((item.FindControl("ReorderLevelLabel3") as Label).Text.ToString());
+            inventoryItem.PurchasePrice = decimal.Parse((item.FindControl("PurchasePriceLabel3") as Label).Text.ToString());
+            inventoryItem.Quantity = 0;
+            currentInventoryList.Add(inventoryItem);
+        }
+
+        List<PurchaseOrderPartsPOCO> currentOrderList = new List<PurchaseOrderPartsPOCO>();
+        foreach (ListViewItem item in CurrentPOListView.Items)
+        {
+            PurchaseOrderPartsPOCO orderItem = new PurchaseOrderPartsPOCO();
+            orderItem.PartID = int.Parse((item.FindControl("PartIDLabel2") as Label).Text.ToString());
+            orderItem.Description = (item.FindControl("DescriptionLabel2") as Label).Text.ToString();
+            orderItem.QuantityOnHand = int.Parse((item.FindControl("QuantityOnHandLabel2") as Label).Text.ToString());
+            orderItem.QuantityOnOrder = int.Parse((item.FindControl("QuantityOnOrderLabel2") as Label).Text.ToString());
+            orderItem.ReorderLevel = int.Parse((item.FindControl("ReorderLevelLabel2") as Label).Text.ToString());
+            orderItem.PurchasePrice = decimal.Parse((item.FindControl("PurchasePriceTextBox2") as TextBox).Text.ToString());
+            orderItem.Quantity = int.Parse((item.FindControl("QuantityTextBox2") as TextBox).Text);
+            currentOrderList.Add(orderItem);
+        }
+
+        int index = row.DataItemIndex;
+
+        List<PurchaseOrderPartsPOCO> dataRemoved = currentInventoryList;
+        List<PurchaseOrderPartsPOCO> dataAdded = currentOrderList;
+
+        dataRemoved.RemoveAt(index);
+        CurrentInventoryListView.DataSource = dataRemoved;
+        CurrentInventoryListView.DataSourceID = String.Empty;
+        CurrentInventoryListView.DataBind();
+
+        dataAdded.Add(addItem);
+        CurrentPOListView.DataSource = dataAdded;
+        CurrentPOListView.DataSourceID = String.Empty;
+        CurrentPOListView.DataBind();
     }
 
     protected void UpdateButton_Click(object sender, EventArgs e)
@@ -197,9 +302,16 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
 
         }, "Success", "Purchase Order item(s) quantity and purchase price updated");
 
+        // rebind the current PO
         CurrentPOListView.DataSourceID = "CurrentPOODS";
         CurrentPOListView.DataBind();
+
+        // rebind the totals for the current PO
         TotalsGridView.DataBind();
+
+        // rebind the current inventory list
+        CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
+        CurrentInventoryListView.DataBind();
 
     }
 
@@ -216,10 +328,8 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
         {
             PurchaseOrderDetail purchaseorderdetail = new PurchaseOrderDetail();
 
-            //purchaseorderdetail.PurchaseOrderDetailID = int.Parse((item.FindControl("PurchaseOrderDetailIDLabel2") as Label).Text.ToString());
             purchaseorderdetail.PartID = int.Parse((item.FindControl("PartIDLabel2") as Label).Text.ToString());
             purchaseorderdetail.Quantity = int.Parse((item.FindControl("QuantityTextBox2") as TextBox).Text.ToString());
-            // purchaseorderdetail.PurchasePrice = decimal.Parse((item.FindControl("PurchasePriceTextBox2") as TextBox).Text.ToString());
 
             purchaseorderdetails.Add(purchaseorderdetail);
         }
