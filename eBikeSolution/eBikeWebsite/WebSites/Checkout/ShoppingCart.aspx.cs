@@ -62,12 +62,21 @@ public partial class WebSites_Checkout_ShoppingCart : System.Web.UI.Page
         {
             int quantity = int.Parse((row.FindControl("QuantityTextBox") as TextBox).Text.ToString());
 
-            MessageUserControl.TryRun(() =>
+            if (quantity < 1)
             {
+                MessageUserControl.ShowInfo("Warning", "Quantity must be at least 1");
+            }
+            else
+            {
+                MessageUserControl.TryRun(() =>
+                {
 
-                sysmgr.Update_CartItem(username, partid, quantity);
+                    sysmgr.Update_CartItem(username, partid, quantity);
 
-            }, "Success", "Item quantity updated");
+                }, "Success", "Item quantity updated");
+            }
+
+            
         }
         else
         {

@@ -1,4 +1,5 @@
-﻿using eBike.Data.Entities.Security;
+﻿using eBike.Data.Entities;
+using eBike.Data.Entities.Security;
 using eBike.Data.POCOs;
 using eBikeSystem.BLL;
 using eBikeSystem.BLL.Security;
@@ -42,6 +43,27 @@ public partial class WebSites_Checkout_PlaceOrder : System.Web.UI.Page
 
                 EmployeeNameLabel.Text = "Current user: " + employeename;
             }
+
+            if (User.IsInRole(SecurityRoles.RegisteredUsers))
+            {
+                var sysmgr = new SalesController();
+
+                List<Part> backordered = sysmgr.Check_ForBackorders(User.Identity.Name);
+
+                if (backordered.Count > 0)
+                {
+                    string backorderalert = "The following items are low in stock and will be backordered: ";
+
+                    foreach (Part part in backordered)
+                    {
+                        backorderalert += part.Description + " ";
+                    }
+
+                    backorderalertlabel.Visible = true;
+                    backorderalertlabel.Text = "Warning! " + backorderalert;
+                }
+
+            }
         }
     }
 
@@ -74,7 +96,24 @@ public partial class WebSites_Checkout_PlaceOrder : System.Web.UI.Page
         MessageUserControl.TryRun(() =>
         {
             SalesController sysmgr = new SalesController();
-            sysmgr.Place_Order(username, couponid, totals, paymethod);
+            List<Part> backordered = sysmgr.Place_Order(username, couponid, totals, paymethod);
+
+            if (backordered.Count > 0)
+            {
+                backorderalertlabel.Text = "";
+                string backorderalert = "The following items have been backordered: ";
+
+                foreach (Part part in backordered)
+                {
+                    backorderalert += part.Description + " ";
+                }
+
+                backorderalertlabel.Visible = true;
+                backorderalertlabel.Text = backorderalert;
+            }
+
+            ShoppingCartList.DataBind();
+            TotalsGridView.DataBind();
 
         }, "Success", "Your order has been processed.");
 

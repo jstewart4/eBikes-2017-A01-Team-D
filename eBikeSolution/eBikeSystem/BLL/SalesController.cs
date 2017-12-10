@@ -334,6 +334,50 @@ namespace eBikeSystem.BLL
             }
         }//Remove_CartItem
 
+        public List<Part> Check_ForBackorders(string username)
+        {
+            using (var context = new eBikeContext())
+            {
+                List<Part> backordered = new List<Part>();
+
+                //Get the customers id
+                int customerid = (from x in context.OnlineCustomers
+                                  where x.UserName.Equals(username)
+                                  select x.OnlineCustomerID).FirstOrDefault();
+                if (customerid != 0)
+                {
+                    //Get the customers shopping cart id
+                    int shoppingcartid = (from x in context.ShoppingCarts
+                                          where x.OnlineCustomerID.Equals(customerid)
+                                          select x.ShoppingCartID).FirstOrDefault();
+
+                    if (shoppingcartid != 0)
+                    {
+                        //Get a list of all items in the customers shopping cart
+                        List<ShoppingCartItem> useritems = (from x in context.ShoppingCartItems
+                                                            where x.ShoppingCart.ShoppingCartID.Equals(shoppingcartid)
+                                                            select x).ToList();
+                        if (useritems.Count > 0)
+                        {
+                            foreach (ShoppingCartItem item in useritems)
+                            {
+                                Part part = (from x in context.Parts
+                                             where x.PartID.Equals(item.PartID)
+                                             select x).FirstOrDefault();
+
+                                if (item.Quantity > part.QuantityOnHand)
+                                {
+                                    backordered.Add(part);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return backordered;
+            }
+        }//Check_ForBackorders
+
         public List<Part> Place_Order(string username, int couponid, FinalTotalPOCO totals, string paymethod)
         {
             using (var context = new eBikeContext())

@@ -50,6 +50,11 @@
         .payment-title{
             font-size: 16px;
         }
+        .boalert{
+            font-size: 16px;
+            padding: 10px;
+            display: block;
+        }
     </style>
     <asp:Label ID="EmployeeNameLabel" runat="server" CssClass="displayemployeename"></asp:Label>
     <asp:Label ID="UserLabel" runat="server" Visible="false"></asp:Label>
@@ -135,6 +140,9 @@
                 </SelectedItemTemplate>
             </asp:ListView>
         </div>
+    </div>
+    <div class="row">
+        <asp:Label runat="server" Visible="false" ID="backorderalertlabel" CssClass="alert alert-warning boalert"></asp:Label>
     </div>
     <div class="row">
         <div class="col-md-4">
