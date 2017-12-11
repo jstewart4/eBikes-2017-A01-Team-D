@@ -1,4 +1,5 @@
-﻿using eBike.Data.Entities;
+﻿using eBike.Data.DTOs;
+using eBike.Data.Entities;
 using eBike.Data.POCOs;
 using eBikeSystem.DAL;
 using System;
@@ -12,7 +13,7 @@ namespace eBikeSystem.BLL
 {
     [DataObject]
     public class JobController
-    {
+    {//method for the list of current jobs on first page
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<JobListPoco> JobList()
         {
@@ -34,7 +35,7 @@ namespace eBikeSystem.BLL
             }
         }//eom
 
-       
+       //method to load the ddl of customers
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<customerPOCO> customerList()
         {
@@ -54,7 +55,7 @@ namespace eBikeSystem.BLL
 
         }//eom
 
-
+        //method for the ddl of presets
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<StandardJob> presets()
         {
@@ -68,7 +69,7 @@ namespace eBikeSystem.BLL
             }
         }//eom
 
-
+        //method for the ddl of coupons
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<Coupon> coupon()
         {
@@ -83,9 +84,9 @@ namespace eBikeSystem.BLL
         }//eom
 
 
-
+        //method to populate the current jobs services
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public List<JobDetail> JobDetail(int jobid)
+        public List<JobDetail> CurrentJobDetail(int jobid)
         {
             using (var context = new eBikeContext())
             {
@@ -98,7 +99,44 @@ namespace eBikeSystem.BLL
             }
         }//eom
 
+        //method to populate the current jobs services number 2 (for managing)
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<JobJobDetails> JobDetailManage(int jobid)
+        {
+            using (var context = new eBikeContext())
+            {
+                var results = from x in context.JobDetails
+                              where x.JobID.Equals(jobid)
+                              select new JobJobDetails
+                              {
+                                  JobDetailID = x.JobDetailID,
+                                  Description = x.Description,
+                                  StatusCode = x.Job.StatusCode
+                              };
 
+                return results.ToList();
+
+            }
+        }//eom
+
+        ////method to load a list of Parts associated with a jobdetailid
+        //[DataObjectMethod(DataObjectMethodType.Select, false)]
+        //public List<Part> ServiceParts(int jobid)
+        //{
+        //    using (var context = new eBikeContext())
+        //    {
+        //        var results = from x in context.JobDetailParts
+        //                      where x.JobDetailID == jobid
+        //                      select x.Part;
+
+        //        return results.ToList();
+
+        //    }
+        //}//eom
+
+
+
+        //method to load a list of Parts associated with a jobdetailid
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<Part> ServiceParts(int jobid)
         {
@@ -112,8 +150,7 @@ namespace eBikeSystem.BLL
 
             }
         }//eom
-
-        //public string Description(int presetid)
+        //public string PresetDescriptionHours(int presetid)
         //{
         //    using (var context = new eBikeContext())
         //    {

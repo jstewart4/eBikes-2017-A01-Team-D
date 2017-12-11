@@ -33,21 +33,21 @@ public partial class WebSites_CurrentJob : System.Web.UI.Page
             JobController sysmgr = new JobController();
             int jobId = int.Parse(JobID.Text);
 
-            JobServiceGridView.DataSource = sysmgr.JobDetail(jobId);
+            JobServiceGridView.DataSource = sysmgr.CurrentJobDetail(jobId);
             JobServiceGridView.DataBind();
 
 
         }
     }
 
-    protected void PresetButton_Click(object sender, EventArgs e)
-    {
-        //JobController sysmgr = new JobController();
-        //int presetid = int.Parse(PresetDDL.SelectedValue);
+    //protected void PresetButton_Click(object sender, EventArgs e)
+    //{
+    //    JobController sysmgr = new JobController();
+    //    int presetid = int.Parse(PresetDDL.SelectedValue);
 
-        //Description.Text = sysmgr.Description(presetid);
-        
-    }
+    //    Description.Text = sysmgr.PresetDescriptionHours(presetid);
+
+    //}
 
     protected void AddServiceButton_Click(object sender, EventArgs e)
     {
@@ -67,19 +67,29 @@ public partial class WebSites_CurrentJob : System.Web.UI.Page
     }
 
    protected void ViewPartsLinkButton_Click(object sender, EventArgs e)
-    {
-        GridViewRow agvrow = (GridViewRow)((LinkButton)sender).NamingContainer;
-        int jobserviceid = int.Parse(((Label)agvrow.FindControl("JobDetailIDLabel")).Text);
+   {
+   //     GridViewRow agvrow = (GridViewRow)((LinkButton)sender).NamingContainer;
+   //     int jobserviceid = int.Parse(((Label)agvrow.FindControl("JobDetailIDLabel")).Text);
 
-        JobController sysmgr = new JobController();
-        JobServiceGridView.DataSource = sysmgr.JobDetail(jobserviceid);
-        JobServiceGridView.DataBind();
+   //     JobController sysmgr = new JobController();
+   //     ServicePartsListView.DataSource = sysmgr.ServiceParts(jobserviceid);
+   //     ServicePartsListView.DataBind();
 
-    }
+   //     JobServiceGridView.Visible = false;
+   //     ServicePartsListView.Visible = true;
+   }
 
     protected void Manage_Click(object sender, EventArgs e)
     {
+        int jobId = int.Parse(JobID.Text);
+        JobController sysmgr = new JobController();
+        ManageServicesGridView.DataSource = sysmgr.JobDetailManage(jobId);
+        ManageServicesGridView.DataBind();
+
+
         JobServiceGridView.Visible = false;
-        //ManageServicesGridView.Visible = true;
+
+
+        ManageServicesGridView.Visible = true;
     }
 }
