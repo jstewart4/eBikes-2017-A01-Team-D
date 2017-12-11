@@ -396,7 +396,7 @@ namespace eBikeSystem.BLL
                     Sale newsale = new Sale();
                     newsale.SaleDate = DateTime.Now;
                     newsale.UserName = username;
-                    newsale.EmployeeID = 301;
+                    newsale.EmployeeID = 10;
                     newsale.TaxAmount = totals.GST;
                     newsale.SubTotal = totals.SubTotal;
                     //Check if a coupon has been selected (FK constraint)

@@ -1,0 +1,3 @@
+INSERT INTO [eBikes_DMIT 2018].[dbo].[Employees](SocialInsuranceNumber, LastName, FirstName, Address, City, Province, PostalCode, HomePhone, EmailAddress, PositionID)
+
+VALUES ('000000000','Online','Sales','eBike Main Office', 'Edmonton', 'AB', 'T5J5R5', '780.458.6299', 'noreply@eBike.ca' , 2)
