@@ -457,8 +457,52 @@
                         <asp:Label Text='<%# Eval("StandardJobParts") %>' runat="server" ID="StandardJobPartsLabel" /></td>
                 </tr>
             </SelectedItemTemplate>
-        </asp:ListView>--%>
+        </asp:ListView>--%> 
 
+    </div>
+
+    <div>
+        <asp:GridView ID="ServicePartsGridView" runat="server"
+            CssClass="table table-bordered table-striped table-hover" AutoGenerateColumns="False">
+            <Columns>
+
+                   <asp:TemplateField >
+                    <ItemTemplate>
+                        <asp:LinkButton ID="EditLinkButton" runat="server">Edit</asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+
+                <asp:TemplateField SortExpression="JobDetailID" HeaderText="Part ID">
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Bind("PartID") %>' ID="PartIDLabel"></asp:Label>
+                    </ItemTemplate>
+                 </asp:TemplateField>
+
+                 <asp:TemplateField SortExpression="JobDetailID" HeaderText="Description">
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Bind("Description") %>' ID="DescriptionLabel"></asp:Label>
+                    </ItemTemplate>
+                 </asp:TemplateField>
+
+
+                 <asp:TemplateField SortExpression="JobDetailID" HeaderText="Quantity">
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Bind("Quantity") %>' ID="QuantityLabel"></asp:Label>
+                    </ItemTemplate>
+                 </asp:TemplateField>
+
+                   <asp:TemplateField >
+                    <ItemTemplate>
+                        <asp:LinkButton ID="RemoveLinkButton" runat="server">Remove</asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+
+            </Columns>
+              
+
+        </asp:GridView>
     </div>
 
     <%-- ods area below --%>

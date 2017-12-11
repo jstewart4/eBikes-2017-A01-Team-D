@@ -138,13 +138,19 @@ namespace eBikeSystem.BLL
 
         //method to load a list of Parts associated with a jobdetailid
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public List<Part> ServiceParts(int jobid)
+        public List<JobPartDTO> ServiceParts(int jobid)
         {
             using (var context = new eBikeContext())
             {
                 var results = from x in context.JobDetailParts
                               where x.JobDetailID == jobid
-                              select x.Part;
+                              select new JobPartDTO
+                              {
+                                  PartID = x.Part.PartID,
+                                  Description = x.Part.Description,
+                                  Quantity = x.Quantity,
+
+                              };
 
                 return results.ToList();
 

@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\JobJobDetails.cs" />
+    <Compile Include="DTOs\JobPartDTO.cs" />
     <Compile Include="DTOs\VendorPurchaseOrderDetailsDTO.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Coupon.cs" />

@@ -68,16 +68,16 @@ public partial class WebSites_CurrentJob : System.Web.UI.Page
 
    protected void ViewPartsLinkButton_Click(object sender, EventArgs e)
    {
-   //     GridViewRow agvrow = (GridViewRow)((LinkButton)sender).NamingContainer;
-   //     int jobserviceid = int.Parse(((Label)agvrow.FindControl("JobDetailIDLabel")).Text);
+        GridViewRow agvrow = (GridViewRow)((LinkButton)sender).NamingContainer;
+        int jobserviceid = int.Parse(((Label)agvrow.FindControl("JobDetailIDLabel")).Text);
 
-   //     JobController sysmgr = new JobController();
-   //     ServicePartsListView.DataSource = sysmgr.ServiceParts(jobserviceid);
-   //     ServicePartsListView.DataBind();
+        JobController sysmgr = new JobController();
+        ServicePartsGridView.DataSource = sysmgr.ServiceParts(jobserviceid);
+        ServicePartsGridView.DataBind();
 
-   //     JobServiceGridView.Visible = false;
-   //     ServicePartsListView.Visible = true;
-   }
+        JobServiceGridView.Visible = true;
+        ServicePartsGridView.Visible = true;
+    }
 
     protected void Manage_Click(object sender, EventArgs e)
     {
