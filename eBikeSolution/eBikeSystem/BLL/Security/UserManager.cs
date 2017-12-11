@@ -57,6 +57,14 @@ namespace eBikeSystem.BLL.Security
                                       where x.UserName.Equals(username)
                                       select x.EmployeeID).First();
 
+
+                //// This is because in the eBikes database, Webmaster has no employeeID by default. Setting it as employee = 1 as a default.
+                if (findemployeeid == null)
+                {
+                    findemployeeid = 1;
+                }
+                ////
+
                 return findemployeeid.Value;
             }
         }
