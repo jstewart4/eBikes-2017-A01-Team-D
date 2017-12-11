@@ -149,7 +149,7 @@
                                 <AlternatingItemTemplate>
                                     <tr style="background-color: #FFFFFF; color: #284775;">
                                         <td>
-                                            <asp:Button runat="server" CommandName="Delete" Text="Remove" ID="DeleteButton" CssClass="btn btn-danger"/></td>
+                                            <asp:Button runat="server" CommandName="Delete" Text="Remove" ID="DeleteButton" CssClass="btn btn-danger" /></td>
                                        <%-- <td>
                                             <asp:Label Text='<%# Eval("CartID") %>' runat="server" ID="CartIDLabel" Visible="False"/></td>
                                         <td>
@@ -179,18 +179,18 @@
                                         <td>
                                             <asp:TextBox Text='<%# Bind("PurchaseOrderNumber") %>' runat="server" ID="PurchaseOrderNumberTextBox" Visibile="False" /></td>--%>
                                         <td>
-                                            <asp:TextBox Text='<%# Bind("VendorPartNumber") %>' runat="server" ID="VendorPartNumberTextBox" /></td>
+                                            <asp:TextBox Text='<%# Bind("VendorPartNumber") %>' runat="server" ID="txtVendorPartNumber" /></td>
                                         <td>
-                                            <asp:TextBox Text='<%# Bind("Description") %>' runat="server" ID="DescriptionTextBox" /></td>
+                                            <asp:TextBox Text='<%# Bind("Description") %>' runat="server" ID="txtDescription" /></td>
                                         
                                         <td>
-                                            <asp:TextBox Text='<%# Bind("Quantity") %>' runat="server" ID="QuantityTextBox" /></td>
+                                            <asp:TextBox Text='<%# Bind("Quantity") %>' runat="server" ID="txtQuantity" /></td>
                                     </tr>
                                 </InsertItemTemplate>
                                 <ItemTemplate>
                                     <tr style="background-color: #E0FFFF; color: #333333;">
                                        <td>
-                                            <asp:Button runat="server" CommandName="Delete" Text="Remove" ID="DeleteButton" CssClass="btn btn-danger"/></td>
+                                            <asp:Button runat="server" CommandName="Delete" Text="Remove" ID="DeleteButton" CssClass="btn btn-danger" CommandArgument='<%# Bind("CartID") %>'/></td>
                                         <%--<td>
                                             <asp:Label Text='<%# Eval("CartID") %>' runat="server" ID="CartIDLabel" Visibile="False"/></td>
                                         <td>
@@ -248,7 +248,8 @@
         SelectMethod="GetUnorderedVendorParts"
         TypeName="eBikeSystem.BLL.ReceivingController"
         DataObjectTypeName="eBike.Data.Entities.UnorderedPurchaseItemCart"
-        InsertMethod="Add_UnorderedVendorPart">
+        InsertMethod="Add_UnorderedVendorPart" 
+        DeleteMethod="Remove_UnorderedVendorPart">
         <SelectParameters>
             <asp:ControlParameter ControlID="lblPONumber" PropertyName="Text" DefaultValue="0" Name="poNumber" Type="Int32"></asp:ControlParameter>
         </SelectParameters>
