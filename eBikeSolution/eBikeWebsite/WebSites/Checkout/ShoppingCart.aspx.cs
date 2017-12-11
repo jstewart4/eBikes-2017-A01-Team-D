@@ -1,4 +1,5 @@
-﻿using eBike.Data.Entities.Security;
+﻿using eBike.Data.Entities;
+using eBike.Data.Entities.Security;
 using eBikeSystem.BLL;
 using eBikeSystem.BLL.Security;
 using System;
@@ -39,6 +40,31 @@ public partial class WebSites_Checkout_ShoppingCart : System.Web.UI.Page
                 string employeename = sysmgr.Get_EmployeeFullName(User.Identity.Name);
 
                 EmployeeNameLabel.Text = "Current user: " + employeename;
+            }
+
+            
+        }
+        if (User.IsInRole(SecurityRoles.RegisteredUsers))
+        {
+            var sysmgr = new SalesController();
+
+            List<Part> backordered = sysmgr.Check_ForBackorders(User.Identity.Name);
+
+            if (backordered.Count > 0)
+            {
+                string backorderalert = "The following items are low in stock and will be backordered: ";
+
+                foreach (Part part in backordered)
+                {
+                    backorderalert += part.Description + " ";
+                }
+
+                backorderalertlabel.Visible = true;
+                backorderalertlabel.Text = "Warning! " + backorderalert;
+            }
+            else
+            {
+                backorderalertlabel.Visible = false;
             }
         }
     }
@@ -91,5 +117,7 @@ public partial class WebSites_Checkout_ShoppingCart : System.Web.UI.Page
         ShoppingCartList.DataBind();
 
         TotalsGridView.DataBind();
+
+        Page_Load(this, e);
     }
 }

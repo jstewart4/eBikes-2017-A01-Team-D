@@ -34,7 +34,7 @@ namespace eBikeSystem.BLL
             using (var context = new eBikeContext())
             {
                 var results = from x in context.Parts
-                              where x.Category.CategoryID == categoryid
+                              where x.Category.CategoryID == categoryid && x.Discontinued == false
                               select new PartsListPOCO
                               {
                                   PartID = x.PartID,
