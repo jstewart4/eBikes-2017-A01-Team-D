@@ -76,85 +76,96 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
 
     protected void GetCreatePO_Click(object sender, EventArgs e)
     {
-        // only show the GridViews, Listviews and buttons on click
-        showAll();
-
-        // set the current active order ODS to the listview
-        CurrentPOListView.DataSourceID = "CurrentPOODS";
-        CurrentPOListView.DataBind();
-
-        if (CurrentPOListView.Items.Count == 0) // then create the suggested putchase order
+        if (VendorDDL.SelectedValue == "0")
         {
-            // set the suggested order ODS to the listview and bind it
-            CurrentPOListView.DataSourceID = "SuggestedPOODS";
-            CurrentPOListView.DataBind();
-
-            PurchaseOrder purchaseorder = new PurchaseOrder();
-
-            // get the vendorID from the DDL and set it into purchaseorder
-            purchaseorder.VendorID = int.Parse(VendorDDL.SelectedValue);
-
-            // create new list to store the purchase order details
-            List<PurchaseOrderDetail> purchaseorderdetails = new List<PurchaseOrderDetail>();
-
-            // go through the needed rows of the listview to get the data needed for suggested order and add it to the purchaseorderdetails list
-            foreach (ListViewItem item in CurrentPOListView.Items)
-            {
-                PurchaseOrderDetail purchaseorderdetail = new PurchaseOrderDetail();
-
-                purchaseorderdetail.PartID = int.Parse((item.FindControl("PartIDLabel2") as Label).Text.ToString());
-                purchaseorderdetail.Quantity = int.Parse((item.FindControl("QuantityTextBox2") as TextBox).Text.ToString());
-                purchaseorderdetail.PurchasePrice = decimal.Parse((item.FindControl("PurchasePriceTextBox2") as TextBox).Text.ToString());
-
-                purchaseorderdetails.Add(purchaseorderdetail);
-            }
-
-
-            // pass the data to the controller to create the suggested order
-            var sysmgr = new PurchasingController();
-            MessageUserControl.TryRun(() =>
-            {
-                sysmgr.NewSuggestedOrder(purchaseorder, purchaseorderdetails);
-
-            }, "Success", "Suggested purchase order created.");
-
-            TotalsGridView.DataBind();
-
-            PurchaseOrder purchaseordertotals = new PurchaseOrder();
-
-            // pass the subtotal, taxamount to purchaseorder here
-            purchaseordertotals.SubTotal = Math.Round(decimal.Parse(TotalsGridView.DataKeys[0].Values[0].ToString()),2);
-            purchaseordertotals.TaxAmount = Math.Round(decimal.Parse(TotalsGridView.DataKeys[0].Values[1].ToString()),2);
-
-            // pass the totals to the controller to update the suggested order
-            var newsysmgr = new PurchasingController();
-            MessageUserControl.TryRun(() =>
-            {
-                newsysmgr.UpdateTotalsSuggestedOrder(purchaseorder, purchaseordertotals);
-
-            }, "Success", "Suggested purchase order totals updated.");
-
-            // Bind the new current inventory for the suggested order
-            CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
-            CurrentInventoryListView.DataBind();
-
-            // this is for if the vendor has no parts available to be automatically put on the suggested purchase order
-            if (CurrentPOListView.Items.Count == 0)
-            {
-                MessageUserControl.ShowInfo("Information", "No active purchase order found. A suggested purchase order has been created, however, no parts from this vendor are eligible for the suggested purchase order.");
-            }
-            else // else, the suggested parts will be shown on the suggested order
-            {
-                MessageUserControl.ShowInfo("Information", "No active purchase order found. A suggested purchase order has been created.");
-            }
+            MessageUserControl.ShowInfo("You must first select a vendor from the list.");
         }
         else
         {
-            // Bind the new current inventory for the current active order
-            CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
-            CurrentInventoryListView.DataBind();
+            // only show the GridViews, Listviews and buttons on click
+            showAll();
 
-            MessageUserControl.ShowInfo("Information", "Current active order found.");
+            // set the current active order ODS to the listview
+            CurrentPOListView.DataSourceID = "CurrentPOODS";
+            CurrentPOListView.DataBind();
+
+            if (CurrentPOListView.Items.Count == 0) // then create the suggested putchase order
+            {
+                // set the suggested order ODS to the listview and bind it
+                CurrentPOListView.DataSourceID = "SuggestedPOODS";
+                CurrentPOListView.DataBind();
+
+                PurchaseOrder purchaseorder = new PurchaseOrder();
+
+                // get the vendorID from the DDL and set it into purchaseorder
+                purchaseorder.VendorID = int.Parse(VendorDDL.SelectedValue);
+
+                var usersysmgr = new UserManager();
+
+                int employeeId = usersysmgr.Get_EmployeeId(User.Identity.Name);
+
+                // create new list to store the purchase order details
+                List<PurchaseOrderDetail> purchaseorderdetails = new List<PurchaseOrderDetail>();
+
+                // go through the needed rows of the listview to get the data needed for suggested order and add it to the purchaseorderdetails list
+                foreach (ListViewItem item in CurrentPOListView.Items)
+                {
+                    PurchaseOrderDetail purchaseorderdetail = new PurchaseOrderDetail();
+
+                    purchaseorderdetail.PartID = int.Parse((item.FindControl("PartIDLabel2") as Label).Text.ToString());
+                    purchaseorderdetail.Quantity = int.Parse((item.FindControl("QuantityTextBox2") as TextBox).Text.ToString());
+                    purchaseorderdetail.PurchasePrice = decimal.Parse((item.FindControl("PurchasePriceTextBox2") as TextBox).Text.ToString());
+
+                    purchaseorderdetails.Add(purchaseorderdetail);
+                }
+
+
+                // pass the data to the controller to create the suggested order
+                var sysmgr = new PurchasingController();
+                MessageUserControl.TryRun(() =>
+                {
+                    sysmgr.NewSuggestedOrder(purchaseorder, purchaseorderdetails, employeeId);
+
+                }, "Success", "Suggested purchase order created.");
+
+                TotalsGridView.DataBind();
+
+                PurchaseOrder purchaseordertotals = new PurchaseOrder();
+
+                // pass the subtotal, taxamount to purchaseorder here
+                purchaseordertotals.SubTotal = Math.Round(decimal.Parse(TotalsGridView.DataKeys[0].Values[0].ToString()),2);
+                purchaseordertotals.TaxAmount = Math.Round(decimal.Parse(TotalsGridView.DataKeys[0].Values[1].ToString()),2);
+
+                // pass the totals to the controller to update the suggested order
+                var newsysmgr = new PurchasingController();
+                MessageUserControl.TryRun(() =>
+                {
+                    newsysmgr.UpdateTotalsSuggestedOrder(purchaseorder, purchaseordertotals);
+
+                }, "Success", "Suggested purchase order totals updated.");
+
+                // Bind the new current inventory for the suggested order
+                CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
+                CurrentInventoryListView.DataBind();
+
+                // this is for if the vendor has no parts available to be automatically put on the suggested purchase order
+                if (CurrentPOListView.Items.Count == 0)
+                {
+                    MessageUserControl.ShowInfo("Information", "No active purchase order found. A suggested purchase order has been created, however, no parts from this vendor are eligible for the suggested purchase order.");
+                }
+                else // else, the suggested parts will be shown on the suggested order
+                {
+                    MessageUserControl.ShowInfo("Information", "No active purchase order found. A suggested purchase order has been created.");
+                }
+            }
+            else
+            {
+                // Bind the new current inventory for the current active order
+                CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
+                CurrentInventoryListView.DataBind();
+
+                MessageUserControl.ShowInfo("Information", "Current active order found.");
+            }
         }
     }
 

@@ -49,6 +49,18 @@ namespace eBikeSystem.BLL.Security
             }
         }
 
+        public int Get_EmployeeId(string username)
+        {
+            using (var context = new eBikeContext())
+            {
+                var findemployeeid = (from x in Users.ToList()
+                                      where x.UserName.Equals(username)
+                                      select x.EmployeeID).First();
+
+                return findemployeeid.Value;
+            }
+        }
+
         public UserManager()
             : base(new UserStore<ApplicationUser>(new ApplicationDbContext()))
         {

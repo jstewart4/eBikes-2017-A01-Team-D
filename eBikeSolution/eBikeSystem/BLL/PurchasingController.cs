@@ -1,5 +1,7 @@
 ﻿using eBike.Data.Entities;
+using eBike.Data.Entities.Security;
 using eBike.Data.POCOs;
+using eBikeSystem.BLL.Security;
 using eBikeSystem.DAL;
 using System;
 using System.Collections.Generic;
@@ -136,13 +138,12 @@ namespace eBikeSystem.BLL
         }
 
         // this is to create the suggested order in the database
-        public void NewSuggestedOrder(PurchaseOrder purchaseorder, List<PurchaseOrderDetail> purchaseorderdetails)
+        public void NewSuggestedOrder(PurchaseOrder purchaseorder, List<PurchaseOrderDetail> purchaseorderdetails, int employeeId)
         {
             using (var context = new eBikeContext()) // start transaction
             {
-                // MUST CHANGE THIS TO REFLECT CURRENT LOGGED IN EMPLOYEE //
-                purchaseorder.EmployeeID = 1;
-                ////////////////////////////////////////////////////////////
+
+                purchaseorder.EmployeeID = employeeId;
 
                 // add the created suggested purchase order to the database
                 purchaseorder = context.PurchaseOrders.Add(purchaseorder);    //staging
@@ -200,7 +201,7 @@ namespace eBikeSystem.BLL
                                                          }).ToList();
 
                 var insertdata = purchaseorderdetails.Where(x => !existing.Any(y => y.PartID == x.PartID));
-                //var removedata = purchaseorderdetails.Where(x => !existing.Any(y => y.PartID == x.PartID));
+
                 var updatedata = purchaseorderdetails.Where(x => existing.Any(y => y.PartID == x.PartID));
 
                 PurchaseOrderDetail detail = new PurchaseOrderDetail();
@@ -230,11 +231,9 @@ namespace eBikeSystem.BLL
                 // get the different part ID's between the two lists
                 var partIdToRemove = existingpartsid.Except(purchaseorderdetailpartid).ToList();
 
-                ///////////////////////////////////////////////////////////////////////////////////////
-                // ~!~!~!~ WORKING BUT ONLY FIRST ITEM IS REMOVED, NOT ALL ITEMS REMOVE ~!~!~!~ ///
                 // convert the partID to the purchaseorderdetailID for that row on the entity
                 var removedata = (from x in context.PurchaseOrderDetails
-                                  where x.PurchaseOrderID == activeorder && x.PartID == partIdToRemove.FirstOrDefault()
+                                  where x.PurchaseOrderID == activeorder && partIdToRemove.Contains(x.PartID)
                                   select x.PurchaseOrderDetailID).ToList();
 
                 foreach (var remove in removedata)
