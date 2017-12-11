@@ -72,11 +72,7 @@
         <div class="col-md-3">
              <asp:Button ID="NewJob" runat="server" Text="New Job" OnClick="NewJob_Click" Visible ="true"/>
         </div>
-        <div class="col-md-3">
-            <asp:DropDownList ID="CustomerDDL" runat="server" DataSourceID="customerDDLODS" DataTextField="Name" DataValueField="CustomerID">
-
-            </asp:DropDownList> 
-        </div>
+     
 
     </div>
     <%--ODS AREA BELOW--%>
@@ -85,12 +81,7 @@
         SelectMethod="JobList" 
         TypeName="eBikeSystem.BLL.JobController"></asp:ObjectDataSource>
 
-   <asp:ObjectDataSource ID="customerDDLODS" runat="server" 
-       OldValuesParameterFormatString="original_{0}" 
-       SelectMethod="customerList" 
-       TypeName="eBikeSystem.BLL.JobController">
 
-    </asp:ObjectDataSource>
 
 </asp:Content>
 

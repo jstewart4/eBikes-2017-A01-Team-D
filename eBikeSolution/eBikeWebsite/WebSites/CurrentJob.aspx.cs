@@ -10,12 +10,21 @@ public partial class WebSites_CurrentJob : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        var newjob = Request.QueryString["job"];
         if (!Request.IsAuthenticated)
         {
             Response.Redirect("~/Account/Login.aspx");
         }
+        else if (newjob == "0") 
+        {
+            UserFullName.Text = User.Identity.Name.ToString();
+            
+
+        }
         else
         {
+            CustomerDDL.Visible = false;
+
             UserFullName.Text = User.Identity.Name.ToString();
             JobID.Text = Request.QueryString["id"];
             CustomerName.Text = Request.QueryString["name"];
@@ -50,5 +59,27 @@ public partial class WebSites_CurrentJob : System.Web.UI.Page
     protected void PresetDDL_SelectedIndexChanged(object sender, EventArgs e)
     {
 
+    }
+
+    protected void CustomerDDL_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        CustomerName.Text = CustomerDDL.SelectedItem.Text;
+    }
+
+   protected void ViewPartsLinkButton_Click(object sender, EventArgs e)
+    {
+        GridViewRow agvrow = (GridViewRow)((LinkButton)sender).NamingContainer;
+        int jobserviceid = int.Parse(((Label)agvrow.FindControl("JobDetailIDLabel")).Text);
+
+        JobController sysmgr = new JobController();
+        JobServiceGridView.DataSource = sysmgr.JobDetail(jobserviceid);
+        JobServiceGridView.DataBind();
+
+    }
+
+    protected void Manage_Click(object sender, EventArgs e)
+    {
+        JobServiceGridView.Visible = false;
+        //ManageServicesGridView.Visible = true;
     }
 }

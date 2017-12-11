@@ -98,6 +98,21 @@ namespace eBikeSystem.BLL
             }
         }//eom
 
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<Part> ServiceParts(int jobid)
+        {
+            using (var context = new eBikeContext())
+            {
+                var results = from x in context.JobDetailParts
+                              where x.JobDetailID == jobid
+                              select x.Part;
+
+                return results.ToList();
+
+            }
+        }//eom
+
         //public string Description(int presetid)
         //{
         //    using (var context = new eBikeContext())
@@ -109,7 +124,7 @@ namespace eBikeSystem.BLL
 
         //        return results.ToString();
         //    }
-                
+
         //}//eom
     }
 }

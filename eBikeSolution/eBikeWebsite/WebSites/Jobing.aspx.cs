@@ -46,8 +46,8 @@ public partial class WebSites_Jobing : System.Web.UI.Page
 
     protected void NewJob_Click(object sender, EventArgs e)
     {
-        CurrentJobsList.Visible = false;
-        NewJob.Visible = false;
+        var newjob = "0";
+        Response.Redirect(String.Format("CurrentJob.aspx?job={0}",newjob), false);
     }
 
 
@@ -58,5 +58,6 @@ public partial class WebSites_Jobing : System.Web.UI.Page
         string customerName = ((Label)agvrow.FindControl("NameLabel")).Text;
         string contactNumber = ((Label)agvrow.FindControl("ContactPhoneLabel")).Text;
         Response.Redirect(String.Format("CurrentJob.aspx?id={0}&name={1}&contact={2}", jobId, customerName, contactNumber), false);
+       
     }
 }
