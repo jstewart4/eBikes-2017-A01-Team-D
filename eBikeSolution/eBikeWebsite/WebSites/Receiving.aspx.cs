@@ -70,8 +70,7 @@ public partial class WebSites_Receiving : System.Web.UI.Page
 
     protected void ForceCloser_Click(object sender, EventArgs e)
     {
-        MessageUserControl.TryRun(() =>
-        {
+       
             if (string.IsNullOrEmpty(txtReasonFC.Text))
             {
                 MessageUserControl.ShowInfo("Warning", "Please provide reason for closing the purchase order.");
@@ -86,20 +85,24 @@ public partial class WebSites_Receiving : System.Web.UI.Page
                 poData.Notes = txtReasonFC.Text;
                 poData.Closed = true;
 
-                List<PurchaseOrderDetailsPOCO> poDetailsList = new List<PurchaseOrderDetailsPOCO>();
-                foreach (GridViewRow row in PODetailsGV.Rows)
+                MessageUserControl.TryRun(() =>
                 {
-                    PurchaseOrderDetailsPOCO data = new PurchaseOrderDetailsPOCO();
-                    data.PurchaseOrderID = int.Parse(((Label)row.FindControl("PurchaseOrderID")).Text);
-                    data.PartID = int.Parse(((Label)row.FindControl("PartID")).Text);
-                    data.QuantityOutstanding = int.Parse(((Label)row.FindControl("QuantityOutstanding")).Text);
-                    //add single item to the list
-                    poDetailsList.Add(data);
-                }
-                sysmng.ForceCloser_Update(poData, poDetailsList);
-                RefreshPage();       
+                    List<PurchaseOrderDetailsPOCO> poDetailsList = new List<PurchaseOrderDetailsPOCO>();
+                    foreach (GridViewRow row in PODetailsGV.Rows)
+                    {
+                        PurchaseOrderDetailsPOCO data = new PurchaseOrderDetailsPOCO();
+                        data.PurchaseOrderID = int.Parse(((Label)row.FindControl("PurchaseOrderID")).Text);
+                        data.PartID = int.Parse(((Label)row.FindControl("PartID")).Text);
+                        data.QuantityOutstanding = int.Parse(((Label)row.FindControl("QuantityOutstanding")).Text);
+                            //add single item to the list
+                            poDetailsList.Add(data);
+                    }
+                    sysmng.ForceCloser_Update(poData, poDetailsList);
+                    RefreshPage();
+                }, "Success","Order was closed successfully.");
+                           
             }
-        }, "Confirmation", "Order was successfully closed");
+        
     }
 
     private void RefreshPage()

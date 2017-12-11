@@ -16,13 +16,14 @@
             text-align: center;          
         }
     </style>
+     
     <asp:Label ID="EmployeeNameLabel" runat="server" CssClass="displayemployeename"></asp:Label>
      <div class="row">
         <div class="col-md-12">
             <h1 class="page-header">Receiving</h1>
         </div>
     </div>
-    <uc1:MessageUserControl runat="server" ID="MessageUserControl" />
+   
     <div class="row">
         <div class="col-md-12">
             <asp:GridView ID="OutstandingOrdersGV" CssClass="table table-bordered table-striped table-hover" runat="server" AutoGenerateColumns="False" DataSourceID="OutstandingOrdersODS">
@@ -61,7 +62,7 @@
             </asp:GridView>
         </div>
     </div>
-    </br>    
+       
     <div class="row">
         <div class="col-md-12">
             <ul class="nav nav-tabs">
@@ -71,8 +72,9 @@
         
             <div class="tab-content">
                 <div class="tab-pane fade" id="receiving" role="tabpanel">
-                    <asp:UpdatePanel ID="UpdatePanelReceiving" runat="server">
+                    <asp:UpdatePanel ID="UpdatePanelReceiving" runat="server">                        
                       <ContentTemplate>
+                          <uc1:MessageUserControl runat="server" ID="MessageUserControl" />
                           <asp:Label ID="Label6" runat="server" Text="Label"><b>PO: </b></asp:Label>
                           <asp:Label ID="lblPONumber" runat="server"></asp:Label>
                           <asp:Label ID="Label7" runat="server" Text="Label"><b>Vendor: </b></asp:Label>    
@@ -251,7 +253,4 @@
             <asp:ControlParameter ControlID="lblPONumber" PropertyName="Text" DefaultValue="0" Name="poNumber" Type="Int32"></asp:ControlParameter>
         </SelectParameters>
     </asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ObjectDataSource1" runat="server">
-    </asp:ObjectDataSource>
-
 </asp:Content>
