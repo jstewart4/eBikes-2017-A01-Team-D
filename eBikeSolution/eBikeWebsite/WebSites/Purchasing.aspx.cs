@@ -311,18 +311,18 @@ public partial class WebSites_Purchasing : System.Web.UI.Page
         {
             sysmgr.Update_PurchaseOrder(purchaseorder, purchaseorderdetails);
 
+            // rebind the current PO
+            CurrentPOListView.DataSourceID = "CurrentPOODS";
+            CurrentPOListView.DataBind();
+
+            // rebind the totals for the current PO
+            TotalsGridView.DataBind();
+
+            // rebind the current inventory list
+            CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
+            CurrentInventoryListView.DataBind();
+
         }, "Success", "Purchase Order item(s) quantity and purchase price updated");
-
-        // rebind the current PO
-        CurrentPOListView.DataSourceID = "CurrentPOODS";
-        CurrentPOListView.DataBind();
-
-        // rebind the totals for the current PO
-        TotalsGridView.DataBind();
-
-        // rebind the current inventory list
-        CurrentInventoryListView.DataSourceID = "CurrentInventoryODS";
-        CurrentInventoryListView.DataBind();
 
     }
 

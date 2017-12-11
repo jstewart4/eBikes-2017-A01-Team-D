@@ -56,7 +56,7 @@
                 </asp:DropDownList>&nbsp;&nbsp;&nbsp;
                 <asp:Button ID="GetCreatePOButton" CssClass="btn btn-info" runat="server" Text="Get / Create PO" OnClick="GetCreatePO_Click"/>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-7">
                 <asp:GridView ID="VendorDetailGridView" runat="server" AutoGenerateColumns="False" DataSourceID="VendorDetailsODS" Visible="false">
                     <Columns>
                         <asp:BoundField DataField="VendorName" HeaderText="Vendor Name" SortExpression="VendorName"></asp:BoundField>
@@ -148,13 +148,13 @@
             </asp:ListView>
         </div>
         <div class="form-inline col-md-12">
-            <div class="col-md-6">
+            <div class="col-md-5">
             <asp:Button ID="UpdateButton" CssClass="btn btn-primary" runat="server" Text="Update" OnClick="UpdateButton_Click" Visible="false"/>
             <asp:Button ID="PlaceButton" CssClass="btn btn-success" runat="server" Text="Place" OnClick="PlaceButton_Click" Visible="false"/>
             <asp:Button ID="DeleteButton" CssClass="btn btn-danger" runat="server" Text="Delete" OnClick="DeleteButton_Click" Visible="false"/>
             <asp:Button ID="ClearButton" CssClass="btn btn-default" runat="server" Text="Clear" OnClick="ClearButton_Click" Visible="false"/>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <asp:GridView ID="TotalsGridView" runat="server" Visible="false" AutoGenerateColumns="False" DataSourceID="TotalsODS" DataKeyNames="SubTotal, TaxAmount, Total">
                     <Columns>
                         <asp:BoundField DataField="SubTotal" HeaderText="SubTotal" SortExpression="SubTotal" DataFormatString="{0:C}"></asp:BoundField>
