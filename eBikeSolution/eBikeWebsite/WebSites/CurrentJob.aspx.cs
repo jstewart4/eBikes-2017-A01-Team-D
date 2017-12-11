@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using eBikeSystem.BLL;
+using eBike.Data.Entities;
 
 public partial class WebSites_CurrentJob : System.Web.UI.Page
 {
@@ -51,7 +52,31 @@ public partial class WebSites_CurrentJob : System.Web.UI.Page
 
     protected void AddServiceButton_Click(object sender, EventArgs e)
     {
+        try
+        {
+            Job item = new Job();
 
+            item.CustomerID = int.Parse(CustomerDDL.SelectedValue);
+            item.JobDateIn = DateTime.Now;
+            item.EmployeeID = int.Parse("3");
+            item.ShopRate = int.Parse("99");
+            item.StatusCode = 'I'.ToString();
+            item.VehicleIdentification = "vinaladlfmsdfm1234";
+           
+           
+
+
+            JobController sysmgr = new JobController();
+            int newjob = sysmgr.Job_Add(item);
+
+
+            JobServiceGridView.DataBind();
+
+        }
+        catch (Exception ex)
+        {
+           
+        }
     }
 
 

@@ -156,6 +156,20 @@ namespace eBikeSystem.BLL
 
             }
         }//eom
+
+
+        [DataObjectMethod(DataObjectMethodType.Insert, false)]
+        public int Job_Add(Job item)
+        {
+            using (var context = new eBikeContext())
+            {
+                item = context.Jobs.Add(item);    //staging
+                context.SaveChanges();              //commit of the request
+                return item.JobID;
+            }
+        }
+
+
         //public string PresetDescriptionHours(int presetid)
         //{
         //    using (var context = new eBikeContext())
